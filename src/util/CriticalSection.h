@@ -13,10 +13,11 @@ class CriticalSection
     
     public:
     CriticalSection( int spinCount ) {
-        InitalizeCriticalSectionAndSpinCount( &mSection, spinCount );
+		InitializeCriticalSectionAndSpinCount( &mSection, spinCount );
     }
     CriticalSection( ) {
-        InitalizeCriticalSectionAndSpinCount( &mSection, DefaultSpinCount );
+		InitializeCriticalSectionAndSpinCount( &mSection, DefaultSpinCount );
+		
     }
 
     ~CriticalSection() {
@@ -40,6 +41,6 @@ class CriticalSection
     }
 };
 
-typedef LightMutex CriticalSection;
+typedef CriticalSection LightMutex;
 
 };

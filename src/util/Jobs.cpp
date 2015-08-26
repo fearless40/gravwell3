@@ -1,8 +1,10 @@
-
+#include "../stdafx.h"
 #include "Lock.h"
+#include "Job.h"
+#include "Jobs.h"
 
-namespace Util {
-namespace Work {
+using namespace Util::Work;
+
 
 void Jobs::JobSubmitDependentWork( WorkData data ) {
     Jobs * jobs = reinterpret_cast<Jobs *> data.inData;
@@ -12,7 +14,7 @@ void Jobs::JobSubmitDependentWork( WorkData data ) {
     job->mWork->func( job->mWork->data );
     
     // Now signify to the Jobs class that the dependencies need to be completed.
-    jobs->JobDependentWorkCompleted( job )
+	jobs->JobDependentWorkCompleted(job);
     
     // Now delete the job
     delete job;
@@ -117,4 +119,3 @@ void Jobs::SubmitJobsThatDependenciesHaveBeenMet( WorkData * data ) {
 
 
 
-}};

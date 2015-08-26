@@ -49,7 +49,7 @@ void ThreadPool::initalize( int nbrThreads )
 void Util::Work::ThreadPool::submitWork(WorkItem item)
 {
 	PTP_WORK work = CreateThreadpoolWork(DefaultWorkApplicationFunction,
-		reinterpret_cast<void*>new WorkItem(item),
+		reinterpret_cast<void*>(new WorkItem(item)),
 		mEnviro);
 
 

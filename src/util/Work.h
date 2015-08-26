@@ -6,6 +6,7 @@ namespace Util
 		struct WorkData
 		{
 			WorkData( WorkData && data ) = default;
+			WorkData() = default;
 			void * inData;
 			void * outData;
 		};
@@ -18,6 +19,8 @@ namespace Util
 				data.inData = inData;
 				data.outData = outData;
 			}
+
+			WorkItem() { };
 			
 			WorkItem( WorkItem && item ) = default;
 			

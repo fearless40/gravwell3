@@ -1,8 +1,14 @@
 #include "CriticalSection.h"
+#include <atomic>
+#include <vector>
 
 namespace Util {
 namespace Work {    
-    
+
+
+	class Job;
+	class ThreadPool;
+
    /// Work Flow / ownership of memory
    // 1. Call new Job and then set it up. Once done send the Job pointer into Jobs. 
    // 2. Now Jobs owns the job and memory associated with it. The user must not use the pointer as it is now invalid.
@@ -12,8 +18,6 @@ namespace Work {
     {
         private:
         static const int MaxNumberOfWaitingJobs = 100;
-        
-        typedef uint_32 JobHandle; 
         
     	CriticalSection mCS;
     	
@@ -30,7 +34,7 @@ namespace Work {
         static void JobSubmitDependentWork( WorkData data );
         
         // Background Thread that cleans mDep and submits Job that all dependencies have been met
-        static void SubmitJobsThatDependenciesHaveBeenMet( WorkData * data )
+		static void SubmitJobsThatDependenciesHaveBeenMet(WorkData * data);
         
         // Signal that a job is complete (handle scheduling backgground thread)
         void JobDependentWorkCompleted( Job * job );
