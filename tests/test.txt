@@ -1,0 +1,11 @@
+Starting RefCount testing...
+Passed RefPtr<tRef> w = new tRef()
+Passed RefPtr<tRef> w2 = w;
+Passed w2.release
+Passed w2.release w->getRef() == 1
+Passed w2 = w
+Passed w2 == 2 after w2 = w
+Passed w2-getRef()==3 after w3(2)
+Passed w2->getRef()==2 after w3 goes out of scope
+Passed w2 == 1 after w.release()
+Passed w2 = nullptr, w2 == false

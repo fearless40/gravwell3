@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{cc3547de-7afa-4791-a276-e6d2bb1158be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="d3d11">
+      <UniqueIdentifier>{4cb06a8d-d3bf-4f52-907d-dff68c7d066c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engine">
+      <UniqueIdentifier>{fceb6e19-8d3f-4392-8da9-4f31a3538620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game-gwell">
+      <UniqueIdentifier>{7e342ecd-0b50-4bc3-aed0-3c4022389f96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cull">
+      <UniqueIdentifier>{2a8267e1-9d42-44d6-821d-53bac38f1c09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="procedural">
+      <UniqueIdentifier>{8b22fbcc-4b02-4a74-b70f-38546e50c727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tests">
+      <UniqueIdentifier>{93ec7440-fced-4f4c-b993-43141012da1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render">
+      <UniqueIdentifier>{211684f3-2630-4e52-b3c2-c53dbb1b1790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{ed9b494b-7c80-4952-b95c-3710765e5c2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="media">
+      <UniqueIdentifier>{56f3dca7-9755-4c58-8c96-d19249796ef7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="media\pixelshaders">
+      <UniqueIdentifier>{8f98e652-41a0-4979-9928-9764cf7fac65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="media\vertexshaders">
+      <UniqueIdentifier>{bef84482-e6c5-4d75-87b5-25a86a9433bb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\main\App.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main\D3D11App.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main\D3DWindow.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main\Gravwell 3.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main\Window.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\BufferManager.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\BufferManagerHelpers.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\ConstantBufferArrayManager.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\ConstantBufferManager.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\D3D11.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\IndexBufferManager.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\Mesh.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\ShaderManager.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\VertexBufferManager.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\VertexShader.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\VertexShaderManager.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\VertexTypeDescription.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\d3d11\VertexTypeManager.cpp">
+      <Filter>d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\engine\MicroManager.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\game-gwell\LargeObjectManager.cpp">
+      <Filter>game-gwell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\GenericHandle.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\Job.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\Jobs.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\ThreadPool.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\Work.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render\Camera.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render\Material.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render\MeshBuilder.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render\MeshCPU.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render\MeshManager.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render\Model.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render\ModelBuilder.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render\ModelManager.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render\RenderableInstance.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\render\RenderQue.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tests\LowLevelTest.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tests\MicroManagerTest.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\procedural\BoxGenerator.cpp">
+      <Filter>procedural</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\procedural\MakeBox.cpp">
+      <Filter>procedural</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\procedural\MeshGeneratorHelper.cpp">
+      <Filter>procedural</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\procedural\PlaneGenerator.cpp">
+      <Filter>procedural</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\procedural\SphereGenerator.cpp">
+      <Filter>procedural</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\main\App.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\main\D3D11App.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\main\D3DWindow.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\main\Gravwell 3.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\main\Resource.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\main\Window.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\BufferManager.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\BufferManagerHelpers.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\ConstantBufferArray.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\ConstantBufferArrayManager.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\ConstantBufferManager.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\D3D11.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\D3DPointer.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\Handles.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\IndexBufferManager.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\Mesh.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\ShaderManager.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\VertexBufferManager.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\VertexShader.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\VertexShaderManager.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\VertexTypeDescription.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\d3d11\VertexTypeManager.h">
+      <Filter>d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\MicroManager.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game-gwell\LargeObjectManager.h">
+      <Filter>game-gwell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cull\Cull2DBoxVsSphereWithOffset.h">
+      <Filter>cull</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\CriticalSection.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\FreeListVector.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\GenericHandle.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\GenericHandleManager.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\InvasiveRefCount.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\Job.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\Jobs.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\Lock.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\Math.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\RefCountPointer.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\TagArray.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\ThreadPool.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\Work.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\Camera.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\Material.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\MeshBuilder.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\MeshCPU.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\MeshManager.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\Model.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\ModelBuilder.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\ModelManager.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\Render.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\RenderableInstance.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\render\RenderQue.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tests\LowLevelTest.h">
+      <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tests\MicroMangerTest.h">
+      <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\procedural\BoxGenerator.h">
+      <Filter>procedural</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\procedural\MeshGeneratorHelper.h">
+      <Filter>procedural</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\procedural\PlaneGenerator.h">
+      <Filter>procedural</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\procedural\Procedural.h">
+      <Filter>procedural</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\procedural\SphereGenerator.h">
+      <Filter>procedural</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\stdafx.h" />
+    <ClInclude Include="..\src\main\targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">
+      <Filter>media\vertexshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\VertexShader.hlsl">
+      <Filter>media\vertexshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\VSPosColor.hlsl">
+      <Filter>media\vertexshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\VSPosNormalUV.hlsl">
+      <Filter>media\vertexshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\VSPosUV.hlsl">
+      <Filter>media\vertexshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\PixelShaders\PixelShader.hlsl">
+      <Filter>media\pixelshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\PixelShaders\PSPosColor.hlsl">
+      <Filter>media\pixelshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\PixelShaders\PSPosNormalUV.hlsl">
+      <Filter>media\pixelshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\PixelShaders\PSPosUV.hlsl">
+      <Filter>media\pixelshaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

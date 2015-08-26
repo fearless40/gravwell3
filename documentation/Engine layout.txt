@@ -1,0 +1,20 @@
+Constant Buffers
+
+Vertex Buffers
+c0 = (engine-rare) rare to change data
+c1 = (engine-frame) set for groups of objects (view matrix, lights )
+c2 = (engine-object/instance) set per object (world matrix)
+c3-c4 = reserved
+c5 = (application-rare) defined globals (application changes only as needed)
+c6 = (application-frame)
+c7 = (application-object)
+
+Pixel Buffers
+c0 = (engine-rare) rare to change data
+c1 = (engine-frame) set for groups of objects (view matrix, lights )
+c2 = (engine-object/instance) set per object (world matrix)
+c3-c4 = reserved
+c5 = (application-rare) defined globals (application changes only as needed)
+c6 = (application-frame)
+c7 = (application-object)
+

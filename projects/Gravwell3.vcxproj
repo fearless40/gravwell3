@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\d3d11\BufferManager.cpp" />
+    <ClCompile Include="..\src\d3d11\BufferManagerHelpers.cpp" />
+    <ClCompile Include="..\src\d3d11\ConstantBufferArrayManager.cpp" />
+    <ClCompile Include="..\src\d3d11\ConstantBufferManager.cpp" />
+    <ClCompile Include="..\src\d3d11\D3D11.cpp" />
+    <ClCompile Include="..\src\d3d11\IndexBufferManager.cpp" />
+    <ClCompile Include="..\src\d3d11\Mesh.cpp" />
+    <ClCompile Include="..\src\d3d11\ShaderManager.cpp" />
+    <ClCompile Include="..\src\d3d11\VertexBufferManager.cpp" />
+    <ClCompile Include="..\src\d3d11\VertexShader.cpp" />
+    <ClCompile Include="..\src\d3d11\VertexShaderManager.cpp" />
+    <ClCompile Include="..\src\d3d11\VertexTypeDescription.cpp" />
+    <ClCompile Include="..\src\d3d11\VertexTypeManager.cpp" />
+    <ClCompile Include="..\src\engine\MicroManager.cpp" />
+    <ClCompile Include="..\src\game-gwell\LargeObjectManager.cpp" />
+    <ClCompile Include="..\src\main\App.cpp" />
+    <ClCompile Include="..\src\main\D3D11App.cpp" />
+    <ClCompile Include="..\src\main\D3DWindow.cpp" />
+    <ClCompile Include="..\src\main\Gravwell 3.cpp" />
+    <ClCompile Include="..\src\main\Window.cpp" />
+    <ClCompile Include="..\src\procedural\BoxGenerator.cpp" />
+    <ClCompile Include="..\src\procedural\MakeBox.cpp" />
+    <ClCompile Include="..\src\procedural\MeshGeneratorHelper.cpp" />
+    <ClCompile Include="..\src\procedural\PlaneGenerator.cpp" />
+    <ClCompile Include="..\src\procedural\SphereGenerator.cpp" />
+    <ClCompile Include="..\src\render\Camera.cpp" />
+    <ClCompile Include="..\src\render\Material.cpp" />
+    <ClCompile Include="..\src\render\MeshBuilder.cpp" />
+    <ClCompile Include="..\src\render\MeshCPU.cpp" />
+    <ClCompile Include="..\src\render\MeshManager.cpp" />
+    <ClCompile Include="..\src\render\Model.cpp" />
+    <ClCompile Include="..\src\render\ModelBuilder.cpp" />
+    <ClCompile Include="..\src\render\ModelManager.cpp" />
+    <ClCompile Include="..\src\render\RenderableInstance.cpp" />
+    <ClCompile Include="..\src\render\RenderQue.cpp" />
+    <ClCompile Include="..\src\stdafx.cpp" />
+    <ClCompile Include="..\src\tests\LowLevelTest.cpp" />
+    <ClCompile Include="..\src\tests\MicroManagerTest.cpp" />
+    <ClCompile Include="..\src\util\GenericHandle.cpp" />
+    <ClCompile Include="..\src\util\Job.cpp" />
+    <ClCompile Include="..\src\util\Jobs.cpp" />
+    <ClCompile Include="..\src\util\ThreadPool.cpp" />
+    <ClCompile Include="..\src\util\Work.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\cull\Cull2DBoxVsSphereWithOffset.h" />
+    <ClInclude Include="..\src\d3d11\BufferManager.h" />
+    <ClInclude Include="..\src\d3d11\BufferManagerHelpers.h" />
+    <ClInclude Include="..\src\d3d11\ConstantBufferArray.h" />
+    <ClInclude Include="..\src\d3d11\ConstantBufferArrayManager.h" />
+    <ClInclude Include="..\src\d3d11\ConstantBufferManager.h" />
+    <ClInclude Include="..\src\d3d11\D3D11.h" />
+    <ClInclude Include="..\src\d3d11\D3DPointer.h" />
+    <ClInclude Include="..\src\d3d11\Handles.h" />
+    <ClInclude Include="..\src\d3d11\IndexBufferManager.h" />
+    <ClInclude Include="..\src\d3d11\Mesh.h" />
+    <ClInclude Include="..\src\d3d11\ShaderManager.h" />
+    <ClInclude Include="..\src\d3d11\VertexBufferManager.h" />
+    <ClInclude Include="..\src\d3d11\VertexShader.h" />
+    <ClInclude Include="..\src\d3d11\VertexShaderManager.h" />
+    <ClInclude Include="..\src\d3d11\VertexTypeDescription.h" />
+    <ClInclude Include="..\src\d3d11\VertexTypeManager.h" />
+    <ClInclude Include="..\src\engine\MicroManager.h" />
+    <ClInclude Include="..\src\game-gwell\LargeObjectManager.h" />
+    <ClInclude Include="..\src\main\App.h" />
+    <ClInclude Include="..\src\main\D3D11App.h" />
+    <ClInclude Include="..\src\main\D3DWindow.h" />
+    <ClInclude Include="..\src\main\Gravwell 3.h" />
+    <ClInclude Include="..\src\main\Resource.h" />
+    <ClInclude Include="..\src\main\targetver.h" />
+    <ClInclude Include="..\src\main\Window.h" />
+    <ClInclude Include="..\src\procedural\BoxGenerator.h" />
+    <ClInclude Include="..\src\procedural\MeshGeneratorHelper.h" />
+    <ClInclude Include="..\src\procedural\PlaneGenerator.h" />
+    <ClInclude Include="..\src\procedural\Procedural.h" />
+    <ClInclude Include="..\src\procedural\SphereGenerator.h" />
+    <ClInclude Include="..\src\render\Camera.h" />
+    <ClInclude Include="..\src\render\Material.h" />
+    <ClInclude Include="..\src\render\MeshBuilder.h" />
+    <ClInclude Include="..\src\render\MeshCPU.h" />
+    <ClInclude Include="..\src\render\MeshManager.h" />
+    <ClInclude Include="..\src\render\Model.h" />
+    <ClInclude Include="..\src\render\ModelBuilder.h" />
+    <ClInclude Include="..\src\render\ModelManager.h" />
+    <ClInclude Include="..\src\render\Render.h" />
+    <ClInclude Include="..\src\render\RenderableInstance.h" />
+    <ClInclude Include="..\src\render\RenderQue.h" />
+    <ClInclude Include="..\src\stdafx.h" />
+    <ClInclude Include="..\src\tests\LowLevelTest.h" />
+    <ClInclude Include="..\src\tests\MicroMangerTest.h" />
+    <ClInclude Include="..\src\util\CriticalSection.h" />
+    <ClInclude Include="..\src\util\FreeListVector.h" />
+    <ClInclude Include="..\src\util\GenericHandle.h" />
+    <ClInclude Include="..\src\util\GenericHandleManager.h" />
+    <ClInclude Include="..\src\util\InvasiveRefCount.h" />
+    <ClInclude Include="..\src\util\Job.h" />
+    <ClInclude Include="..\src\util\Jobs.h" />
+    <ClInclude Include="..\src\util\Lock.h" />
+    <ClInclude Include="..\src\util\Math.h" />
+    <ClInclude Include="..\src\util\RefCountPointer.h" />
+    <ClInclude Include="..\src\util\TagArray.h" />
+    <ClInclude Include="..\src\util\ThreadPool.h" />
+    <ClInclude Include="..\src\util\Work.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\media\PixelShaders\PixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\media\PixelShaders\PSPosColor.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\media\PixelShaders\PSPosNormalUV.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\media\PixelShaders\PSPosUV.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\VertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\VSPosColor.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\VSPosNormalUV.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\VSPosUV.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{27C6AEED-69E1-498D-8887-A5747BAA605E}</ProjectGuid>
+    <RootNamespace>Gravwell3</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\debug\</OutDir>
+    <IntDir>..\obj\debug\</IntDir>
+    <IncludePath>E:\Programming\Lib\boost_1_54_0;E:\Programming\Lib;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\release\</OutDir>
+    <IntDir>..\obj\release\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
