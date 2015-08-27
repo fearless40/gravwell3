@@ -8,8 +8,7 @@ namespace Util {
         Lock();
         
         public:
-        Lock( LockAble & item ) {
-            mItem = item;
+        Lock( LockAble & item ) : mItem(item) {
             mItem.lock();
         }
         ~Lock() {
@@ -25,12 +24,11 @@ namespace Util {
         TryLock();
         
         public:
-        TryLock(TryLockAble & item) {
-            mItem = item;
+        TryLock(TryLockAble & item) : mItem( item ){
             mItem.tryLock();
         }
         
-        ~TryLock( TryLockAble & item ) {
+        ~TryLock( ) {
             mItem.unlock();
         }
     };

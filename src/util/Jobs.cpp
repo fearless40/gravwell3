@@ -2,16 +2,18 @@
 #include "Lock.h"
 #include "Job.h"
 #include "Jobs.h"
+#include "ThreadPool.h"
 
 using namespace Util::Work;
 
 
 void Jobs::JobSubmitDependentWork( WorkData data ) {
-    Jobs * jobs = reinterpret_cast<Jobs *> data.inData;
-    Job  * job = reinterpret_cast<Job *> data.outData;
+    Jobs * jobs = reinterpret_cast<Jobs *>(data.inData);
+    Job  * job  = reinterpret_cast<Job  *>(data.outData);
     
     // Actually call the user code
-    job->mWork->func( job->mWork->data );
+    job->mWork.func( job->mWork.data );
+	
     
     // Now signify to the Jobs class that the dependencies need to be completed.
 	jobs->JobDependentWorkCompleted(job);
@@ -48,14 +50,14 @@ void Jobs::submit(Job * job) {
 
     // Job has dependents
     
-    Lock( mCS );
+    Lock<CriticalSection> lock( mCS );
     for( int loop = 0; loop < job->mNextDependent; ++loop )
     {
         // DONT Add the children
         // addDependents(job->mDependents[loop]);
 
         // Now add the parent to the list, use the free list if non 0
-        mDep[mFreeList.back()] = job;
+		mDependents[mFreeList.back()] = job;
         mFreeList.pop_back();
     };
     
@@ -73,21 +75,21 @@ void Jobs::JobDependentWorkCompleted( Job * job ) {
     // Make sure that we don't have a hundred SubmitJobsThatDependenciesHaveBeenMet (only need one running at a time)
     if( SubmitJobsThatDependenciesHaveBeenMetCounter == 0 ) {
         // Submit the work
-        mPool.submitWork( WorkItem(SubmitJobsThatDependenciesHaveBeenMet, this, nullptr ));
+        mPool.submitWork( wiHelper(SubmitJobsThatDependenciesHaveBeenMet, this, nullptr ));
     }
     
 }
 
-void Jobs::SubmitJobsThatDependenciesHaveBeenMet( WorkData * data ) {
-    Jobs * jobs = reinterpret_cast<Jobs *> data->inData;
+void Jobs::SubmitJobsThatDependenciesHaveBeenMet( WorkData data ) {
+    Jobs * jobs = reinterpret_cast<Jobs *> (data.inData);
     
     ++jobs->SubmitJobsThatDependenciesHaveBeenMetCounter;
     
-    Lock( jobs->mCS );
+    Lock<CriticalSection> lock( jobs->mCS );
     
     // Always scan the entire array
-    for( int loop = 0; loop < jobs->mDependents.size(); ++loop ) {
-        if( jobs->mDependents[loop] && jobs->mDependents[loop].mWaiting == 0 ) {
+    for( int loop = 0; loop < Jobs::MaxNumberOfWaitingJobs; ++loop ) {
+        if( jobs->mDependents[loop] && jobs->mDependents[loop]->mWaiting == 0 ) {
             // We can submit the job
             Job * jTemp = jobs->mDependents[loop]; 
             jobs->mDependents[loop] = nullptr;

@@ -23,7 +23,7 @@ namespace Work {
     	
     	// Useing a static array allows me to use less locking. As now I always know who owns a 
     	// job pointer and that the array will never be in validated.
-    	Job * mDep[MaxNumberOfWaitingJobs];
+    	Job * mDependents[MaxNumberOfWaitingJobs];
     	std::vector<int> mFreeList;
     	ThreadPool & mPool;
     	std::atomic_int SubmitJobsThatDependenciesHaveBeenMetCounter;
@@ -34,7 +34,7 @@ namespace Work {
         static void JobSubmitDependentWork( WorkData data );
         
         // Background Thread that cleans mDep and submits Job that all dependencies have been met
-		static void SubmitJobsThatDependenciesHaveBeenMet(WorkData * data);
+		static void SubmitJobsThatDependenciesHaveBeenMet(WorkData data);
         
         // Signal that a job is complete (handle scheduling backgground thread)
         void JobDependentWorkCompleted( Job * job );

@@ -116,7 +116,7 @@ namespace Test {
 		mData->sphere = ModelBuilder::makeStaticGeometryModel( md3d, VertexTypeManager::getVertexType(VertexTypeManager::Pos_Normal_UV), D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST, meshSphere->toMeshCPU() );
 		ModelManager::fromHandle(mData->sphere).mVSShader = modelShader;
 
-		mData->cam.setPerspectiveFOV( DirectX::XMConvertToRadians(45),width / height, 0.1, 500 );
+		mData->cam.setPerspectiveFOV( DirectX::XMConvertToRadians(45),width / height, 0.1f, 500.0f );
 		mData->cam.lookAt( .0f,.0f,.0f );
 		mData->cam.setPosition( .0f, .0f, -30.0f );
 		mData->cam.setRotationEuler( .0f,.0f,.0f);
@@ -185,7 +185,7 @@ namespace Test {
 		XMVECTOR pos	= Math::toVector(.0f,.0f,-10.0f,.0f);
 		
 
-		roll += 0.0001;
+		roll += 0.0001f;
 	
 		world	= XMMatrixRotationRollPitchYaw(0.f,roll,0.f);
 		view	= mData->cam.getView();
