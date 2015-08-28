@@ -26,7 +26,7 @@ void ThreadPool::initalize( int nbrThreads )
 		nbrThreads = getMaxNumberOfHardwareThreads();
 	
 	// initalize the private thread pool environment 
-	InitializeThreadpoolEnvironment(mEnviro);
+	InitializeThreadpoolEnvironment(&mEnviro);
 	
 	// Create the pool
 	mPool = CreateThreadpool( 0 );
@@ -40,19 +40,19 @@ void ThreadPool::initalize( int nbrThreads )
 	mCleanGroup = CreateThreadpoolCleanupGroup();
 
 	// Set the call back pool
-	SetThreadpoolCallbackPool(mEnviro, mPool);
+	SetThreadpoolCallbackPool(&mEnviro, mPool);
 	
 	// Set the cleanup group
-	SetThreadpoolCallbackCleanupGroup(mEnviro, mCleanGroup, nullptr);
+	SetThreadpoolCallbackCleanupGroup(&mEnviro, mCleanGroup, nullptr);
 }
 
 void Util::Work::ThreadPool::submitWork(WorkItem item)
 {
 	PTP_WORK work = CreateThreadpoolWork(DefaultWorkApplicationFunction,
 		reinterpret_cast<void*>(new WorkItem(item)),
-		mEnviro);
+		&mEnviro);
 
-
+	SubmitThreadpoolWork(work);
 }
 
 

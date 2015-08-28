@@ -11,7 +11,7 @@ namespace Util
 		{
 		private:
 			PTP_POOL mPool;
-			PTP_CALLBACK_ENVIRON mEnviro;
+			TP_CALLBACK_ENVIRON mEnviro;
 			PTP_CLEANUP_GROUP mCleanGroup;
 
 		public:

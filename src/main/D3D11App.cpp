@@ -44,6 +44,7 @@ D3D11App::~D3D11App(void)
 
 bool D3D11App::initalize() 
 {
+
 	D3DWindow::RegisterWindowClass(hInst, IDI_GRAVWELL3, IDI_SMALL);
 	pimpl->main = new D3DWindow();
 	pimpl->main->initalize(false,false);
