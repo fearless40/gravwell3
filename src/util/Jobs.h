@@ -19,7 +19,7 @@ namespace Work {
         private:
         static const int MaxNumberOfWaitingJobs = 100;
         
-    	CriticalSection mCS;
+    	Util::CriticalSection mCS;
     	
     	// Useing a static array allows me to use less locking. As now I always know who owns a 
     	// job pointer and that the array will never be in validated.
@@ -44,7 +44,8 @@ namespace Work {
     
         // Submit work without any dependencies 
     	void createSubmit(WorkFunction func, void * inData, void * outData);
-    
+		void createSubmit(WorkItem item);
+
     	// Also will add all the dependents from the job to the waiting array
     	// In debug mode will fail if you attempt to add a Job with its waiting member not = 0 
     	void submit(Job * job);

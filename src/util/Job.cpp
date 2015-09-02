@@ -19,6 +19,11 @@ Util::Work::Job::Job(WorkFunction func, void * inData, void * outData) :
 	mWork.data.outData = outData;
 }
 
+Util::Work::Job::Job(WorkItem item) : mWork(item), mNextDependent(0), mWaiting(0)
+{
+
+}
+
 Util::Work::Job::Job() : mNextDependent(0), mWaiting(0)
 {
 }
@@ -49,7 +54,7 @@ void Util::Work::Job::setData(void * inData, void * outData)
 void Util::Work::Job::addDependent(Job * job)
 {
 	// Make sure we don't create more dependents that we have allocated
-	assert(mNextDependent > MaxNumberOfDependents);
+	assert(mNextDependent < MaxNumberOfDependents);
 
 	job->incrementWaiting();
 	
@@ -60,7 +65,7 @@ void Util::Work::Job::addDependent(Job * job)
 void Util::Work::Job::addDependents(Job ** jobs, int nbrJobs)
 {
 	// Make sure we don't create more dependents that we have allocated
-	assert(mNextDependent + nbrJobs > MaxNumberOfDependents);
+	assert(mNextDependent + nbrJobs < MaxNumberOfDependents);
 
 	for (int counter = 0; counter < nbrJobs; ++counter) {
 		jobs[counter]->incrementWaiting();

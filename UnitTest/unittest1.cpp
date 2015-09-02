@@ -84,6 +84,76 @@ namespace UnitTest
 			Assert::AreEqual(100, t1);
 		}
 		
+		TEST_METHOD(FailedCriticalSection) {
+			int t1 = 0;
+			Util::CriticalSection cs;
+			ThreadPool pool;
 
+			pool.initalize();
+
+			auto lockAdder = [](WorkData data) -> void {
+				
+				int k = 0, z = 0;
+				int * i = reinterpret_cast<int*>(data.inData);
+				k = *i;
+				for (int w = k; w < 1000; ++w)
+				{
+					z += 1;
+					//z = z * w;
+
+					if (z > 213455) break;
+				}
+
+				k += 1;
+				*i = k;
+			};
+
+			for (int loop = 0; loop < 100; ++loop)
+			{
+				pool.submitWork(wiHelper(lockAdder, &t1, &cs));
+			}
+
+			Sleep(500);
+
+			Assert::AreEqual(100, t1);
+			//Assert::Fail(L"This test will always fail.");
+		}
+
+		TEST_METHOD(AdvancedCriticalSection) {
+			
+			int t1 = 0;
+			Util::CriticalSection cs;
+			ThreadPool pool;
+
+			pool.initalize();
+
+			auto lockAdder = [](WorkData data) -> void {
+				Util::CriticalSection * cs = reinterpret_cast<Util::CriticalSection*>(data.outData);
+				Util::Lock<Util::CriticalSection> lock(*cs);
+				int k = 0, z = 0;
+				int * i = reinterpret_cast<int*>(data.inData);
+				k = *i;
+				for (int w = k; w < 1000; ++w)
+				{
+					z += 1;
+					//z = z * w;
+
+					if (z > 213455) break;
+				}
+
+				k += 1;
+				*i = k;
+			};
+
+			for (int loop = 0; loop < 100; ++loop)
+			{
+				pool.submitWork(wiHelper(lockAdder, &t1, &cs));
+			}
+
+			Sleep(500);
+
+			Assert::AreEqual(100, t1);
+			//Assert::Fail(L"This test will always fail.");
+		}
 	};
 }

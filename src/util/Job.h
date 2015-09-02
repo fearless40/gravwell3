@@ -26,6 +26,7 @@ namespace Util
 
 		public:
 			Job(WorkFunction func, void * inData = nullptr, void * outData = nullptr);
+			Job(WorkItem item);
 			Job();
 			~Job();
 

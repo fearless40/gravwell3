@@ -22,7 +22,7 @@ void Jobs::JobSubmitDependentWork( WorkData data ) {
     delete job;
 }
 
-Jobs::Jobs( ThreadPool & pool ) : mPool( pool )
+Jobs::Jobs( ThreadPool & pool ) : mPool( pool ), SubmitJobsThatDependenciesHaveBeenMetCounter(0)
 {
     // Initalize the free list
     mFreeList.reserve(MaxNumberOfWaitingJobs);
@@ -36,10 +36,15 @@ void Jobs::createSubmit(WorkFunction func, void * inData, void * outData)
     mPool.submitWork( WorkItem( func, inData, outData) );
 }
 
+void Util::Work::Jobs::createSubmit(WorkItem item)
+{
+	mPool.submitWork(item);
+}
+
 void Jobs::submit(Job * job) {
     
     // This means the job is waiting on some other job to complete and may already be in the que
-    assert( job->mWaiting != 0 );
+    assert( job->mWaiting == 0 );
     
     // If the job has no dependents then just submit it and remove it
     if( job->mNextDependent == 0 ) {
