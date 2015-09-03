@@ -26,9 +26,14 @@ Jobs::Jobs( ThreadPool & pool ) : mPool( pool ), SubmitJobsThatDependenciesHaveB
 {
     // Initalize the free list
     mFreeList.reserve(MaxNumberOfWaitingJobs);
-    for( int loop = 0; loop < MaxNumberOfWaitingJobs; ++loop) {
+    for( int loop = MaxNumberOfWaitingJobs - 1 ; loop >= 0; --loop) {
         mFreeList.push_back(loop);
     }
+
+	// Initalize the dependent array
+	for (int loop = 0; loop < MaxNumberOfWaitingJobs; ++loop) {
+		mDependents[loop] = nullptr;
+	}
 }
 
 void Jobs::createSubmit(WorkFunction func, void * inData, void * outData)
@@ -50,6 +55,7 @@ void Jobs::submit(Job * job) {
     if( job->mNextDependent == 0 ) {
         mPool.submitWork( job->mWork );
         delete job;  // Ok to delete because the thread pool holds onto the data
+		return;
     }
     
 
@@ -61,8 +67,8 @@ void Jobs::submit(Job * job) {
         // DONT Add the children
         // addDependents(job->mDependents[loop]);
 
-        // Now add the parent to the list, use the free list if non 0
-		mDependents[mFreeList.back()] = job;
+        // Now add the child(dependent item) to the list, use the free list if non 0
+		mDependents[mFreeList.back()] = job->mDependents[loop];
         mFreeList.pop_back();
     };
     

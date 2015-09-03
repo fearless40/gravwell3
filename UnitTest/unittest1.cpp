@@ -14,7 +14,7 @@ namespace UnitTest
 	{
 	public:
 		
-		TEST_METHOD(CreateAndUseThreadPool)
+		TEST_METHOD(ThreadPool_Creation)
 		{
 			// TODO: Your test code here
 			int i = 0; 
@@ -32,7 +32,7 @@ namespace UnitTest
 			Assert::AreEqual(1, i);
 		}
 
-		TEST_METHOD(MultipleThreadsRunning)
+		TEST_METHOD(ThreadPool_MultipleThreads)
 		{
 			int t1 = 0, t2 = 2, t3 = 4, t4 = 6, t5 = 8;
 			ThreadPool pool;
@@ -60,7 +60,7 @@ namespace UnitTest
 
 		}
 
-		TEST_METHOD(CriticalSection) {
+		TEST_METHOD(ThreadPool_CriticalSection) {
 			int t1 = 0;
 			Util::CriticalSection cs;
 			ThreadPool pool;
@@ -84,7 +84,7 @@ namespace UnitTest
 			Assert::AreEqual(100, t1);
 		}
 		
-		TEST_METHOD(FailedCriticalSection) {
+		TEST_METHOD(ThreadPool_CriticalSection_Failed) {
 			int t1 = 0;
 			Util::CriticalSection cs;
 			ThreadPool pool;
@@ -119,7 +119,7 @@ namespace UnitTest
 			//Assert::Fail(L"This test will always fail.");
 		}
 
-		TEST_METHOD(AdvancedCriticalSection) {
+		TEST_METHOD(THreadPool_CriticalSection_Advanced) {
 			
 			int t1 = 0;
 			Util::CriticalSection cs;
