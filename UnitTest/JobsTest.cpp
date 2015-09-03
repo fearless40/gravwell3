@@ -77,6 +77,52 @@ namespace UnitTest
 			Assert::AreEqual("Hello", word);
 
 		}
+		
+		TEST_METHOD(Jobs_AdvanceActivate_2)
+		{
+			Util::Work::ThreadPool pool;
+			Util::Work::Jobs jobs(pool);
+			char word[32] = "";
+			int  let[5] = { 0,1,2,3,4 };
+			
+			auto addText = [](WorkData data) -> void {
+				char * str = reinterpret_cast<char *> (data.inData);
+				int  * letter = reinterpret_cast<int *>(data.outData);
+
+				char adder[4] = "";
+
+				switch (*letter) {
+				case 0: strcat(str, "H"); break;
+				case 1: strcat(str, "e"); break;
+				case 2: strcat(str, "l"); break;
+				case 3: strcat(str, "l"); break;
+				case 4: strcat(str, "o"); break;
+				};
+			};
+
+			pool.initalize();
+
+			Util::Work::Job * j0, *j1, *j2, *j3, *j4;
+			j0 = new Job(wiHelper(addText, word, &let[0]));
+			j1 = new Job(wiHelper(addText, word, &let[1]));
+			j2 = new Job(wiHelper(addText, word, &let[2]));
+			j3 = new Job(wiHelper(addText, word, &let[3]));
+			j4 = new Job(wiHelper(addText, word, &let[4]));
+
+			j0->addDependent(j1);
+			j1->addDependent(j2);
+			j2->addDependent(j3);
+			j2->addDependent(j4);
+			
+			jobs.submit(j0);
+
+			Sleep(500);
+
+			// Either are correct
+			Assert::AreEqual("Hello", word);
+			Assert::AreEqual("Helol", word);
+
+		}
 
 		TEST_METHOD(Jobs_ComplicatedUse) 
 		{
