@@ -118,9 +118,11 @@ namespace UnitTest
 
 			Sleep(500);
 
-			// Either are correct
-			Assert::AreEqual("Hello", word);
-			Assert::AreEqual("Helol", word);
+			
+			if( _stricmp("Hello",word) == 0)
+				Assert::AreEqual("Hello", word);
+			else			
+				Assert::AreEqual("Helol", word);
 
 		}
 
