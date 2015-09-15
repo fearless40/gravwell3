@@ -43,7 +43,35 @@ struct GamePosition {
 	Math::float4 rot;		// 4 * 4 byte floats
 };							// Total: 32 bytes
 
-// GamePosition and EntityVisual are array syncronized
+struct Movable {
+	Math::float3 velocity;
+	Math::float3 accleration;
+	Handle gameposition;
+};
+
+struct CollisionData {
+	Handle entity;
+	Handle GamePosition;
+	uint32_t flags;
+	uint32_t teams;
+	float sphere;		// Creates a full sphere
+	float EmptySphere;	// Creates a ring
+	float * boxes;		// Collision bounding boxes
+};
+
+// Seperate Numbers are things in sequence.
+// Same number different letter can happen at the same time
+/*
+1. 	Generate: ( GamePosition + CollisionData ) --> CollisionStructure
+2.	TransForm: (CollisionStructure ) --> Collisions = {Pairs of colliding structures} 
+3.  Inform: Entity ( about Collisions )
+	3a. Transform: (GamePosition, Movable, Health) by Collisions 
+	3c.	Update: (AI, UI, NetWork)
+4. 	TransForm: ( GamePosition ) by (Movable)  --> GamePositionNew
+	4a. Cull (GamePositionNew) by CullData
+	4b.	Render --> (GamePositionNew)
+5.	GamePositionNew --> GamePosition
+*/
 
 struct EntityVisual {
 	Handle GamePosition;	
@@ -78,15 +106,7 @@ struct CullData {
 	float * boxes;
 };
 
-struct CollisionData {
-	Handle entity;
-	Handle GamePosition;
-	uint32_t flags;
-	uint32_t teams;
-	float sphere;		// Creates a full sphere
-	float EmptySphere;	// Creates a ring
-	float * boxes;		// Collision bounding boxes
-};
+
 
 struct GravityGenerator {
 	float maxGravityRadius;
@@ -94,22 +114,7 @@ struct GravityGenerator {
 	Handle gameposition;
 };
 	
-struct Movable {
-	Math::float3 velocity;
-	Math::float3 accleration;
-	Handle gameposition;
-};
 
-
-
-// Seperate Numbers are things in sequence.
-// Same number different letter can happen at the same time
-
-1.  Loop over Movable and update GamePosition
-2a. Loop over CollisionData and update Entity and update Movable
-2b. Loop over GamePosition and send to Render
-3.  loop over RenderItems with CullData and do cull 
-4.  Render items to screen
 
 
 // More advanced items
@@ -120,12 +125,13 @@ struct AI {
 	State machine data;
 	event onCollision;
 	event onDeath;
-}
+};
 
 struct PlanetMotion {
-	Math::float3 centerPoint;
-	Math::float3 radius;
-}
+	Math::float3 center;
+	float radius;
+	float radian;
+};
 
 
 struct Bullet {
@@ -134,7 +140,7 @@ struct Bullet {
 	Handle OwnerEntity;
 	Handle Entity;
 	Handle GamePosition;
-}
+};
 
 struct Missle {
 	// Velocity is always changing
