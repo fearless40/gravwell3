@@ -30,8 +30,6 @@ namespace LargeObjectManager
 }
 
 struct Entity {
-	Handle GamePosition;
-	Handle CollisionData;
 	event onCollision;
 	event onDeath;
 	event onDamage;
@@ -49,14 +47,18 @@ struct Movable {
 	Handle gameposition;
 };
 
-struct CollisionData {
+struct Collidable {
 	Handle entity;
 	Handle GamePosition;
+	Handle CollisionDataPrototype;
 	uint32_t flags;
 	uint32_t teams;
-	float sphere;		// Creates a full sphere
-	float EmptySphere;	// Creates a ring
-	float * boxes;		// Collision bounding boxes
+};
+
+struct CollisionDataPrototype {
+	float sphere;
+	float sphereEmpty;
+	float * boxes;
 };
 
 // Seperate Numbers are things in sequence.
@@ -127,7 +129,7 @@ struct AI {
 	event onDeath;
 };
 
-struct PlanetMotion {
+struct FakeOrbitalMotion {
 	Math::float3 center;
 	float radius;
 	float radian;
