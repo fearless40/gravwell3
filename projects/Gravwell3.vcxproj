@@ -81,6 +81,13 @@
     <ClInclude Include="..\src\d3d11\VertexShaderManager.h" />
     <ClInclude Include="..\src\d3d11\VertexTypeDescription.h" />
     <ClInclude Include="..\src\d3d11\VertexTypeManager.h" />
+    <ClInclude Include="..\src\engine\Component.h" />
+    <ClInclude Include="..\src\engine\DataHandlerFreeList.h" />
+    <ClInclude Include="..\src\engine\LinkByArray.h" />
+    <ClInclude Include="..\src\engine\LinkByHandle.h" />
+    <ClInclude Include="..\src\engine\LinkByID.h" />
+    <ClInclude Include="..\src\engine\LinkByNone.h" />
+    <ClInclude Include="..\src\engine\LinkBySparse.h" />
     <ClInclude Include="..\src\engine\MicroManager.h" />
     <ClInclude Include="..\src\game-gwell\Entity.h" />
     <ClInclude Include="..\src\game-gwell\Game.h" />

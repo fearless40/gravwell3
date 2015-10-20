@@ -348,6 +348,27 @@
     <ClInclude Include="..\src\game-gwell\Game.h">
       <Filter>game-gwell</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\engine\Component.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\LinkByHandle.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\LinkByID.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\LinkBySparse.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\LinkByArray.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\DataHandlerFreeList.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\LinkByNone.h">
+      <Filter>engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

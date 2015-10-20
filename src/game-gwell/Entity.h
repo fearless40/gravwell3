@@ -218,6 +218,13 @@ class HandleType = {
 class Component< LinkType, ComponentType >
 class ComponentManagerID< IDDef, Position, Movable, Collidable, Bullet, Missle, Explosion, FakeOrbitalMotion > Entities;
 
+class ComponenetManager< Position_Comp, Movable_Comp, Collidable_Comp, Bullet_Comp > Entitys;
+
+pos = Entity.get<Position>(id);
+Entity.set<Position>(id, &pos);
+
+Entity = Entity.create();
+Entity.set<Position>(&pos);
 
 IDDef id = Entities.new();
 Entities.set<Position>(id, &pos);
@@ -226,30 +233,9 @@ Entities.processParellel<Movable>(doSomethingWithTheData)
 Movable * items = Entities.get<Movable>();
 class ComponentMangerHandle;
 
-Component <  DataHandlerFreeList<Position>, LinkById< EntityID, uint32_t > , HandleGenerator> Positions;
 
-Positions.add(Entity, pos(x, y, z));
-pos = Positions.get(Entity);
-Positions * posArray = Positions.getAll();
-Positions.gc();
-Positions.remove(Entity);
-View = Positions.view(FilterFunction).duplicate();
-View = Positions.view(FilterFunction).readonly();
-Positions[x] = pos;
-Positions.set(Enitity, pos);
-Positions.edit(Entity, posNewValue);
-Positions.handleGet(Entity);
-Positions.handleEdit(Handle value, pos);
 
-template < class InputType, class OutputType, int Offset = 0 >
-	class LinkByID {
-		HashMap< InputType, OutputType >  mapper;
-		OutputType get(InputType);
-		OutputType add(InputType ItemID, OutputType next);
-		OutputType remove(InputType);
-		void move(InputType, InputType);
-		static size_t getMemSizeForNumberOfItems(int nbr_items);
-	};
+
 
 
 template <class InType, class OutType>
@@ -293,20 +279,13 @@ struct HandleGeneratorGenerations {
 	}
 };
 
-template <class DataType>
-struct DataHandlerFreeList {
-	DataType * mBegin;
-	uint32_t * mFreeList;
-	size_t	   mMaxItems;
 
-	
+
 };
 
-template <class DataType, class Linker, class Handles >
+template <class DataType, class DataHandler, class Linker, class Handles >
 struct Component {
-	DataType	* mBegin;
-	uint32_t	mEnd
-	size_t	 	mMaxNbrItems;
+	DataHandler data;
 	Linker linker;
 	Handles handles;
 
@@ -325,7 +304,7 @@ struct Component {
 
 	void remove(Linker::InputType entity) {
 		auto pos = linker.remove(entity);
-
+		data.remove(handles.remove(pos));
 	}
 };
 Component <  Position, LinkById< EntityID, uint32_t >, HandleGenerator> Positions;
