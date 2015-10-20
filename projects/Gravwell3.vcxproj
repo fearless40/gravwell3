@@ -82,6 +82,8 @@
     <ClInclude Include="..\src\d3d11\VertexTypeDescription.h" />
     <ClInclude Include="..\src\d3d11\VertexTypeManager.h" />
     <ClInclude Include="..\src\engine\MicroManager.h" />
+    <ClInclude Include="..\src\game-gwell\Entity.h" />
+    <ClInclude Include="..\src\game-gwell\Game.h" />
     <ClInclude Include="..\src\game-gwell\LargeObjectManager.h" />
     <ClInclude Include="..\src\main\App.h" />
     <ClInclude Include="..\src\main\D3D11App.h" />

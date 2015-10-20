@@ -342,6 +342,12 @@
     </ClInclude>
     <ClInclude Include="..\src\stdafx.h" />
     <ClInclude Include="..\src\main\targetver.h" />
+    <ClInclude Include="..\src\game-gwell\Entity.h">
+      <Filter>game-gwell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game-gwell\Game.h">
+      <Filter>game-gwell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">
