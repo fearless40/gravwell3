@@ -24,7 +24,7 @@ template <int GenerationSize, int IndexSize, int UserSize = 0 >
 struct Generator_GenericHandle {
 	BOOST_MPL_ASSERT(( mpl::less_equal< mpl::int_<GenerationSize + IndexSize + UserSize>, mpl::int_<64> > ));
 	
-	typedef mpl::vector< uint8_t, uint16_t, uint32_t, uint64_t > Size_Types;
+	typedef mpl::vector< std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t > Size_Types;
 	
 	// Calculate the min size that the bits can be held in.
 	// vec = mpl::sequence type
