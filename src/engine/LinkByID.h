@@ -3,18 +3,13 @@
 
 #include <hash_map>
 
+#include "ComponentSystem.h"
 
 template < class IDType, class OutTransform  >
-class LinkByID {
-public:
-	typedef IDType In_ID;
-	typedef OutTransform Out_ID;
-
-	const static bool isLinkClass = true;
-
-protected:
+class LinkByID : public Linker<IDType, OutTransform> {
 	std::hash_map< In_ID, Out_ID >  mapper;
-	
+
+public:
 	Out_ID get(In_ID id) {}
 
 	Out_ID add(In_ID  id, Out_ID nextEmptyOutID) {}

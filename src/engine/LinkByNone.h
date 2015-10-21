@@ -1,14 +1,12 @@
 #pragma once
 
-
+#include "ComponentSystem.h"
 
 template < class IDType, class OutTransform  >
-struct LinkByNone {
+struct LinkByNone : public Linker{
 public:
 	typedef IDType In_ID;
 	typedef OutTransform Out_ID;
-
-	const static bool isLinkClass = true;
 	const static bool isLinkEmpty = false;
 };
 

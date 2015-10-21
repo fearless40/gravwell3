@@ -369,6 +369,15 @@
     <ClInclude Include="..\src\engine\LinkByNone.h">
       <Filter>engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\engine\ComponentSystem.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\GeneratorHandle.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\GeneratorID.h">
+      <Filter>engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

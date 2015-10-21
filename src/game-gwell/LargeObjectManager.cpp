@@ -10,7 +10,7 @@
 using namespace DirectX;
 
 
-
+/*
 namespace LargeObjectManager 
 {
 
@@ -47,3 +47,4 @@ namespace LargeObjectManager
 	}
 
 };
+*/

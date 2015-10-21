@@ -1,6 +1,7 @@
 
 
 #pragma once
+/*
 #include "../render/RenderableInstance.h"
 #include "../util/Math.h"
 
@@ -64,16 +65,16 @@ struct CollisionDataPrototype {
 // Seperate Numbers are things in sequence.
 // Same number different letter can happen at the same time
 /*
-1. 	Generate: ( GamePosition + CollisionData ) --> CollisionStructure
-2.	TransForm: (CollisionStructure ) --> Collisions = {Pairs of colliding structures} 
-3.  Inform: Entity ( about Collisions )
-	3a. Transform: (GamePosition, Movable, Health) by Collisions 
-	3c.	Update: (AI, UI, NetWork)
-4. 	TransForm: ( GamePosition ) by (Movable)  --> GamePositionNew
-	4a. Cull (GamePositionNew) by CullData
-	4b.	Render --> (GamePositionNew)
-5.	GamePositionNew --> GamePosition
-*/
+//1. 	Generate: ( GamePosition + CollisionData ) --> CollisionStructure
+//2.	TransForm: (CollisionStructure ) --> Collisions = {Pairs of colliding structures} 
+//3.  Inform: Entity ( about Collisions )
+//	3a. Transform: (GamePosition, Movable, Health) by Collisions 
+//	3c.	Update: (AI, UI, NetWork)
+//4. 	TransForm: ( GamePosition ) by (Movable)  --> GamePositionNew
+//	4a. Cull (GamePositionNew) by CullData
+//	4b.	Render --> (GamePositionNew)
+//5.	GamePositionNew --> GamePosition
+
 
 struct EntityVisual {
 	Handle GamePosition;	
@@ -186,3 +187,4 @@ struct BlackHole {
 
 
 }
+*/

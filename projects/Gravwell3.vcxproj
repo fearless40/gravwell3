@@ -82,7 +82,10 @@
     <ClInclude Include="..\src\d3d11\VertexTypeDescription.h" />
     <ClInclude Include="..\src\d3d11\VertexTypeManager.h" />
     <ClInclude Include="..\src\engine\Component.h" />
+    <ClInclude Include="..\src\engine\ComponentSystem.h" />
     <ClInclude Include="..\src\engine\DataHandlerFreeList.h" />
+    <ClInclude Include="..\src\engine\GeneratorHandle.h" />
+    <ClInclude Include="..\src\engine\GeneratorID.h" />
     <ClInclude Include="..\src\engine\LinkByArray.h" />
     <ClInclude Include="..\src\engine\LinkByHandle.h" />
     <ClInclude Include="..\src\engine\LinkByID.h" />

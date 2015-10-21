@@ -6,7 +6,7 @@
 
 
 typedef unsigned __int32 uint32_t;
-
+/*
 
 struct Instance {
 	uint32_t id;
@@ -308,3 +308,5 @@ struct Component {
 	}
 };
 Component <  Position, LinkById< EntityID, uint32_t >, HandleGenerator> Positions;
+
+*/

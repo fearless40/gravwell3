@@ -16,22 +16,28 @@ Positions.edit(Entity, posNewValue);
 Positions.handleGet(Entity);
 Positions.handleEdit(Handle value, pos);
 */
-
+#include <../boost_1_54_0/boost/mpl/if.hpp>
+#include "ComponentSystem.h"
 
 template <class DataType, class Allocator, class DataHandler, class InputLinker, class OutputLinker >
-class Component {
+class _Component : public Component {
 public:
 	typedef DataType Data_Type;
-	static const bool isComponentClass = true;
+
 
 
 protected:
 
+	Allocator	 alloc;
 	DataHandler  data;
 	InputLinker  inLink;
 	OutputLinker outLink;
 
 	OutputLinker::In_ID add(InputLinker::In_ID entity, Data_Type & data_entry) {
+		
+		
+		
+		
 		auto posl = inLinker.add(entity, data.getNextIndex() );
 		assert(posl != data.getNextIndex());
 		/*if (posl != mEnd) // User is updating an entity component rather than adding a new one
