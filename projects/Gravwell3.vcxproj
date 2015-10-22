@@ -86,6 +86,8 @@
     <ClInclude Include="..\src\engine\DataHandlerFreeList.h" />
     <ClInclude Include="..\src\engine\GeneratorHandle.h" />
     <ClInclude Include="..\src\engine\GeneratorID.h" />
+    <ClInclude Include="..\src\engine\GeneratorNull.h" />
+    <ClInclude Include="..\src\engine\Handle.h" />
     <ClInclude Include="..\src\engine\LinkByArray.h" />
     <ClInclude Include="..\src\engine\LinkByHandle.h" />
     <ClInclude Include="..\src\engine\LinkByID.h" />
@@ -244,7 +246,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\debug\</OutDir>
     <IntDir>..\obj\debug\</IntDir>
-    <IncludePath>E:\Programming\Lib\boost_1_54_0;E:\Programming\Lib;$(IncludePath)</IncludePath>
+    <IncludePath>E:\Programming\Lib\boost_1_59_0;E:\Programming\Lib;E:\Programming\Lib\boost_1_59_0\boost;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\Programming\Lib\boost_1_59_0\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\release\</OutDir>

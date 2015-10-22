@@ -78,7 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\Programming\Lib\boost_1_54_0;E:\Programming\gravwell3\src;$(IncludePath)</IncludePath>
+    <IncludePath>E:\Programming\Lib\boost_1_59_0\;E:\Programming\gravwell3\src;E:\Programming\Lib\boost_1_59_0\boost;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\Programming\Lib\boost_1_59_0\libs\any;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
