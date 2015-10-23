@@ -5,19 +5,25 @@
 
 #include "ComponentSystem.h"
 
-template < class IDType, class OutTransform  >
-class LinkByID : public Linker<IDType, OutTransform> {
-	std::hash_map< In_ID, Out_ID >  mapper;
+namespace ComponentSys {
 
-public:
-	Out_ID get(In_ID id) {}
-
-	Out_ID add(In_ID  id, Out_ID nextEmptyOutID) {}
-
-	// Returns the items Out_ID and then removes mapping
-	Out_ID remove(In_ID id) {}
-
-	// Re-associates an 
-	//void move(In_ID oldid, In_ID newid) {}
-
+	template < class ID_External, class ID_Internal  >
+	class LinkByID : public Linker<ID_External, ID_Internal> {
+		std::hash_map< ID_ext, ID_in >  mapper;
+	
+	public:
+		ID_in get(ID_ext id) {}
+	
+		ID_in link(ID_ext id, ID_in internal) {}
+	
+		// Returns the items Out_ID and then removes mapping
+		ID_in unlink(ID_ext id) {}
+		
+		// Reverse look up. Can be much slower depending on the underlying data holder
+		ID_in unlinkByInternal( ID_in internal );
+	
+		// Re-associates an 
+		//void move(In_ID oldid, In_ID newid) {}
+	
+	};
 };

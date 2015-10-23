@@ -5,6 +5,10 @@
 
 namespace ComponentSys {
 
+	// Generator useful for generating handles.
+	// Handles are a direct way to look up the data however the handle itself is an opaque value.
+	// Useful as it only has one layer of indirection away from the actual DataStorage (depengin on how DataStorage is setup)
+
 	template <int GenerationSize, int IndexSize>
 	class GeneratorHandle : public GeneratorTraits< Handle<GenerationSize,IndexSize>::Index_Type, 
 		Handle<GenerationSize, IndexSize>::type > {
