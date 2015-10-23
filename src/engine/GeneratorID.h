@@ -3,6 +3,7 @@
 
 #include "ComponentSystem.h"
 #include "ID.h"
+#include <unordered_map>
 
 namespace ComponentSys {
     
@@ -10,9 +11,13 @@ namespace ComponentSys {
     // The compiler will remove all the function call away making it as 
     // fast as direct array lookup (depending on how the DataStorage is setup to run)
     
-    template <class OutValue> 
-    struct GeneratorID : GeneratorTraits<ID<GeneratorID<OutValue> >,OutValue> {
-        ID_ext create(ID_in index) {
+    template <class OutValue, class IDType = ID<GeneratorID<OutValue> >
+    class GeneratorID : GeneratorTraits<IDType,OutValue> {
+		uint32_t nextID;
+		std::unordered_map<
+
+	public:
+		ID_ext create(ID_in index) {
 			return index;
 		}
 		ID_in get(ID_ext index) {
