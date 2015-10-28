@@ -20,7 +20,7 @@ namespace ComponentSys {
 		ID_in unlink(ID_ext id) {}
 		
 		// Reverse look up. Can be much slower depending on the underlying data holder
-		ID_in unlinkByInternal( ID_in internal );
+		ID_in unlinkByInternal(ID_in internal) {}
 	
 		// Re-associates an 
 		//void move(In_ID oldid, In_ID newid) {}

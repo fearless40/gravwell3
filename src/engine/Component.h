@@ -20,6 +20,7 @@ Positions.handleEdit(Handle value, pos);
 #include "ComponentSystem.h"
 #include "GeneratorNull.h"
 #include "LinkNull.h"
+#include <boost\static_assert.hpp>
 
 namespace ComponentSys {
 
@@ -235,7 +236,8 @@ template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator
 // I have moved data into the public access for the class. 
 	template <class Data, class Allocator, class DataStorage >
 	class Component<class Data, class Allocator, class DataStorage, LinkNull, GeneratorNull > : public ComponentTraits {
-	public:
+		BOOST_STATIC_ASSERT_MSG(false, Need_To_specify_some_form_of_external_linkadge);
+		/*public:
 		typedef Data Data_Type;
 
 		DataStorage  data;
@@ -256,7 +258,7 @@ template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator
 		 Data_Type * getAll() {
 			 return data.getAll();
 		 }
-
+	*/
 	};
 	};
 
