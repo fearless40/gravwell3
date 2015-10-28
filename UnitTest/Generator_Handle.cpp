@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include <type_traits>
 #include <cstdint>
+#include <../boost/mpl/assert.hpp>
 #include "../src/engine/Handle.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

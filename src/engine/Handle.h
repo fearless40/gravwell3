@@ -1,10 +1,7 @@
 #pragma once
 
 #include <../boost/mpl/assert.hpp>
-#include <../boost/mpl/vector.hpp>
-#include <../boost/mpl/find_if.hpp>
-#include <../boost/mpl/less_equal.hpp>
-#include <../boost/mpl/int.hpp>
+#include "../util/MinTypeSize.hpp"
 #include <cstdint>
 
 namespace  mpl = boost::mpl;
@@ -22,32 +19,12 @@ namespace ComponentSys {
 	struct Handle {
 		BOOST_MPL_ASSERT((mpl::less_equal< mpl::int_<GenerationSize + IndexSize + UserSize>, mpl::int_<64> >));
 
-		typedef mpl::vector< std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t > Size_Types;
-
-		// Calculate the min size that the bits can be held in.
-		// vec = mpl::sequence type
-		// sz = integer representing number of bits requested
-		template <typename vec, int sz>
-		struct MinTypeSize {
-			typedef mpl::int_<sz> BitSize;
-
-			template< int item  >
-			struct compare {
-				template <class T> struct apply {
-					typedef  typename mpl::less_equal< mpl::int_<item>, mpl::int_<sizeof(T) * 8> > type;
-				};
-			};
-
-			typedef typename mpl::find_if<Size_Types, compare<sz> >::type iter;
-			typedef typename mpl::deref<iter>::type type;
-		};
-
 		// Type Defs
 		typedef Handle<GenerationSize, IndexSize, UserSize> type;
-		typedef typename MinTypeSize<Size_Types, GenerationSize + IndexSize + UserSize>::type Handle_Type;
-		typedef typename MinTypeSize<Size_Types, GenerationSize>::type Generation_Type;
-		typedef typename MinTypeSize<Size_Types, IndexSize>::type Index_Type;
-		typedef typename MinTypeSize<Size_Types, UserSize>::type User_Type;
+		typedef typename Util::MinTypeSize<GenerationSize + IndexSize + UserSize>::type Handle_Type;
+		typedef typename Util::MinTypeSize<GenerationSize>::type Generation_Type;
+		typedef typename Util::MinTypeSize<IndexSize>::type Index_Type;
+		typedef typename Util::MinTypeSize<UserSize>::type User_Type;
 
 		// Masks for storing the data
 		static const Handle_Type Generation_Mask = (1 << GenerationSize) - 1;

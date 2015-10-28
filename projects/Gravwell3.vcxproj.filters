@@ -390,6 +390,9 @@
     <ClInclude Include="..\src\engine\LinkNull.h">
       <Filter>engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\util\MinTypeSize.hpp">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

@@ -1,5 +1,7 @@
 #pragma once
 #include <functional>
+#include <unordered_map>
+#include "../util/MinTypeSize.hpp"
 
 namespace ComponentSys {
     
@@ -7,21 +9,56 @@ namespace ComponentSys {
 	// Template Parameter: Type is only used by the compiler to prevent ID from being 
 	//		crossed into different classes. 
 
-    template <class Type> 
+    template <class Type, int BitSize = 16> 
 	struct ID {
-		int value;
+		typedef typename Util::MinTypeSize<BitSize>::type Value_Type;
+		typedef ID<Type, BitSize> type;
+		Value_Type value;
+
+		struct hash {
+			std::size_t operator() (const type & k) const {
+				return std::hash<type::Value_Type>()(k.value);
+			}
+		};
+
+
+		template<class ValueType>
+		class unordered_map : public std::unordered_map<type, ValueType, typename type::hash> {
+			//typedef typename std::unordered_map<type, ValueType, typename type::hash> type;
+		};
+
+		bool operator == (const type & k) const {
+			return value == k.value;
+		}
+
+		bool operator != (const type & k) const {
+			return value != k.value;
+		}
+
+		bool operator < (const type & k) const {
+			return value < k.value;
+		}
+
+		bool operator > (const type & k) const {
+			return value > k.value;
+		}
+
+		bool operator <= (const type & k) const {
+			return value <= k.value;
+		}
+
+		bool operator >= (const type & k) const {
+			return value >= k.value;
+		}
+
+	
+		
 	};
 
-	template< class Type>
-	bool operator == (const ID<Type> & id1, const ID<Type> & id2) {
-		return id1.value == id2.value;
-	}
+	
+	
+
+	
 
 }
 
-namespace std {
-	template<class Type>
-	size_t hash < ID<Type> > (ID<Type> id ) {
-		return std::hash(id.value);
-	};
-};

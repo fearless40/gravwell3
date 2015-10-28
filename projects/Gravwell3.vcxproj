@@ -134,6 +134,7 @@
     <ClInclude Include="..\src\util\Jobs.h" />
     <ClInclude Include="..\src\util\Lock.h" />
     <ClInclude Include="..\src\util\Math.h" />
+    <ClInclude Include="..\src\util\MinTypeSize.hpp" />
     <ClInclude Include="..\src\util\RefCountPointer.h" />
     <ClInclude Include="..\src\util\TagArray.h" />
     <ClInclude Include="..\src\util\ThreadPool.h" />
