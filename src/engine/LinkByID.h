@@ -9,7 +9,7 @@ namespace ComponentSys {
 
 	template < class ID_External, class ID_Internal  >
 	class LinkByID : public Linker<ID_External, ID_Internal> {
-		std::hash_map< ID_ext, ID_in >  mapper;
+		
 	
 	public:
 		ID_in get(ID_ext id) {}

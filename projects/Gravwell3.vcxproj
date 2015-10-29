@@ -96,6 +96,8 @@
     <ClInclude Include="..\src\engine\LinkBySparse.h" />
     <ClInclude Include="..\src\engine\LinkNull.h" />
     <ClInclude Include="..\src\engine\MicroManager.h" />
+    <ClInclude Include="..\src\engine\View.h" />
+    <ClInclude Include="..\src\engine\ViewArray.h" />
     <ClInclude Include="..\src\game-gwell\Entity.h" />
     <ClInclude Include="..\src\game-gwell\Game.h" />
     <ClInclude Include="..\src\game-gwell\LargeObjectManager.h" />

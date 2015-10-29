@@ -62,17 +62,15 @@ namespace ComponentSys {
 	
 	
 		// Associates an ID with a new data entry and sets the value		
-		 Data_Type & add(const link::ID_ext entity, const Data_Type & data_entry)  {
-			auto internalIndex = linker.link(entity, data.getNextIndex());
-			data[internalIndex] = data_entry;
-			return data[internalIndex];
+		// For speed does not return the item associated 
+		void add(const link::ID_ext entity, const Data_Type & data_entry)  {
+			linker.link(entity, add(data_entry));
 		}
 
-		// Creates a new value with no external associations. Returns handle
-		 gen::ID_ext create(const Data_type & data_entry) {
-			 auto posl = data.getNextIndex();
-			 data[posl] = data_entry;
-			 return generator.create(posl);
+		// Creates a new value with no external link. Returns handle which allows
+		// it to be accessd later. Handles can be invalidated!
+		gen::ID_ext create(const Data_type & data_entry) {
+			 return generator.create(data.add(data_entry));
 		 }
 
 		// Associates handle with id

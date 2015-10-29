@@ -24,47 +24,39 @@ void get(IndexType index);
 
 #include <algorithm>
 #include <vector>
+#include "ComponentSystem.h"
+namespace ComponentSys {
 
-template <class DataType, class Allocator>
-class DataHandlerFreeList
-{
-public:
-	typedef uint32_t Index_Type;
-	typedef std::pair<Index_Type, Index_Type> Index_Swap;
-	typedef std::vector<Index_Swap> SwapList;
-	typedef DataType Data_Type;
+	template <class DataType, class Allocator>
+	class DataHandlerFreeList : DataHandlerTraits<DataType, uint32_t, true>
+	{
+	protected:
 
-	static const bool Swaps = false;
-	static const bool isDataHandlerClass = true;
+		std::vector<Data_Type> data;
+		std::vector<uint32_t> freelist;
 
-protected:
+	public:
+		// Returns the index of the added item
+		Index_Type add(Data_Type & data) {}
+		Index_Type add(Data_Type && data) {}
 
-	std::vector<Data_Type> data;
-	std::vector<uint32_t> freelist;
+		// pair_1 = Old Index position
+		// pair_2 = New position.
+		// Necessary if the class swaps items out rather than just flagging them as empty
+		Index_Swap remove(Index_Type index) {}
 
-public:
-	// Returns the index of the added item
-	Index_Type add(Data_Type & data) {}
-	Index_Type add(Data_Type && data) {}
+		Data_Type & get(Data_Type index) {}
 
-	// pair_1 = Old Index position
-	// pair_2 = New position.
-	// Necessary if the class swaps items out rather than just flagging them as empty
-	Index_Swap remove(Index_Type index) {}
+		operator Data_Type & [](Index_Type index) {};
 
-	Data_Type & get(Data_Type index) {}
+		const Data_Type & get(Index_Type index) const {}
 
-	operator Data_Type & [](Index_Type index) {};
+		template <ViewMemoryUse VT>
+		auto getAll() -> ViewArray<Data_Type,VT>{
+		}
 
-	const Data_Type & get(Index_Type index) const {}
-	
-	Data_Type * getAll() {}
-
-	// Special functions
-	// Gets the next index without filling removing it from the list
-	Index_Type getNextIndex() {} 
-
-	// Garbage Collect and if items were moved to new locations then 
-	// generate the swap list
-	SwapList gc() {}
-};
+		// Garbage Collect and if items were moved to new locations then 
+		// generate the swap list
+		SwapList gc() {}
+	};
+}

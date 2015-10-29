@@ -393,6 +393,12 @@
     <ClInclude Include="..\src\util\MinTypeSize.hpp">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\engine\View.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\ViewArray.h">
+      <Filter>engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">
