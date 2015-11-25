@@ -15,6 +15,10 @@ Positions.set(Enitity, pos);
 Positions.edit(Entity, posNewValue);
 Positions.handleGet(Entity);
 Positions.handleEdit(Handle value, pos);
+
+Entities.get<position>(shipX);
+Entities.getCombinedView<position, collision>(filterFunction).duplicate();
+
 */
 #include <../boost/mpl/if.hpp>
 #include "ComponentSystem.h"
@@ -64,7 +68,7 @@ namespace ComponentSys {
 		// Associates an ID with a new data entry and sets the value		
 		// For speed does not return the item associated 
 		void add(const link::ID_ext entity, const Data_Type & data_entry)  {
-			linker.link(entity, add(data_entry));
+			linker.link(entity, data.add(data_entry));
 		}
 
 		// Creates a new value with no external link. Returns handle which allows
@@ -103,20 +107,44 @@ namespace ComponentSys {
 			 data[generator.get(id)] = data;
 		 }
 
+		template <bool MemoryMove = DataStorage::dataHandlerMovesMemory>
+		void remove(linker::ID_ext entity) { }
+
+		template <>
+		void remove<true>(linker::ID_ext entity) { 
+			auto pos = linker.unlink(entity);
+			gen.remove(pos);
+			DataStorage::Index_Swap is = data.remove(pos);
+			linker.relink(is.first, is.second);
+		}
+	
 		// Remove data by using ID
-		void remove(linker::ID_ext entity) {
+		template<>
+		void remove<false>(linker::ID_ext entity) {
 			auto pos = linker.unlink(entity);
 			gen.remove(pos);
 			data.remove(pos);
 		}
 		
-		
+		template <bool MemoryMove = DataStorage::dataHandlerMovesMemory>
+		void remove(gen::ID_ext id) {}
+
 		// Remove data by using handle.
-		void remove(gen::ID_ext id){
+		template <>
+		void remove<false>(gen::ID_ext id){
 			auto pos = generator.remove(id);
 			linker.unlinkByInternal(pos);
 			data.remove(pos);
 		}
+
+		template <>
+		void remove<true>(gen::ID_ext id) {
+			auto pos = generator.remove(id);
+			linker.unlinkByInternal(pos);
+			auto is = data.remove(pos);
+			linker.relink(is.first, is.second);
+		}
+
 	};
 
 // Specialization For class with NO external Link look up
@@ -192,10 +220,8 @@ template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator
 	
 	
 		// Associates an ID with a new data entry and sets the value		
-		 Data_Type & add(const link::ID_ext entity, const Data_Type & data_entry)  {
-			auto internalIndex = linker.link(entity, data.getNextIndex());
-			data[internalIndex] = data_entry;
-			return data[internalIndex];
+		 void add(const link::ID_ext entity, const Data_Type & data_entry)  {
+			 linker.link(entity, data.add(data_entry));
 		}
 
 		
@@ -258,7 +284,7 @@ template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator
 		 }
 	*/
 	};
-	};
+	} //End Hidden
 
 	// Helper constructor to allow using void instead of having to use LinkNull or GeneratorNull
 	

@@ -83,7 +83,7 @@
     <ClInclude Include="..\src\d3d11\VertexTypeManager.h" />
     <ClInclude Include="..\src\engine\Component.h" />
     <ClInclude Include="..\src\engine\ComponentSystem.h" />
-    <ClInclude Include="..\src\engine\DataHandlerFreeList.h" />
+    <ClInclude Include="..\src\engine\DataHandlerDenseArray.h" />
     <ClInclude Include="..\src\engine\GeneratorHandle.h" />
     <ClInclude Include="..\src\engine\GeneratorID.h" />
     <ClInclude Include="..\src\engine\GeneratorNull.h" />

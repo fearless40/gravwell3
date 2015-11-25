@@ -28,35 +28,47 @@ void get(IndexType index);
 namespace ComponentSys {
 
 	template <class DataType, class Allocator>
-	class DataHandlerFreeList : DataHandlerTraits<DataType, uint32_t, true>
+	class DataHandlerDenseArray : DataHandlerTraits<DataType, std::size_t, true>
 	{
 	protected:
-
 		std::vector<Data_Type> data;
-		std::vector<uint32_t> freelist;
+		
 
 	public:
 		// Returns the index of the added item
-		Index_Type add(Data_Type & data) {}
-		Index_Type add(Data_Type && data) {}
+		Index_Type add(Data_Type & data) {
+			data.push_back(data);
+			return data.size() - 1;
+		}
+		Index_Type add(Data_Type && data) {
+			data.push_back(data);
+			return data.size() - 1;
+		}
 
 		// pair_1 = Old Index position
 		// pair_2 = New position.
 		// Necessary if the class swaps items out rather than just flagging them as empty
-		Index_Swap remove(Index_Type index) {}
-
-		Data_Type & get(Data_Type index) {}
-
-		operator Data_Type & [](Index_Type index) {};
-
-		const Data_Type & get(Index_Type index) const {}
-
-		template <ViewMemoryUse VT>
-		auto getAll() -> ViewArray<Data_Type,VT>{
+		Index_Swap remove(Index_Type index) {
+			Index_Swap ret = { --data.size(), index };
+			data[index] = data[ret.first];
+			return ret;
 		}
 
-		// Garbage Collect and if items were moved to new locations then 
-		// generate the swap list
-		SwapList gc() {}
+		Data_Type & get(Data_Type index) {
+			return data[index];
+		}
+
+		operator Data_Type & [](Index_Type index) {
+			return data[index];
+		}
+
+		const Data_Type & getConst(Index_Type index) const {
+			return data[index];
+		}
+
+		/*template <ViewMemoryUse VT>
+		auto getAll() -> ViewArray<Data_Type,VT>{
+		}*/
+
 	};
 }

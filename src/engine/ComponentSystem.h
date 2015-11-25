@@ -30,13 +30,14 @@ namespace ComponentSys {
 
 	template< class DataType, class IndexType, bool MovesMemory = false >
 	struct DataHandlerTraits {
+
 	};
 
 	template< class DataType, class IndexType>
 	struct DataHandlerTraits<DataType,IndexType,true> {
 		typedef DataType Data_Type;
 		typedef IndexType Index_Type;
-		typedef std::pair<Index_Type, Index_Type> Index_Swap;
+		typedef std::pair<Index_Type, Index_Type> Index_Swap;		//first = oldIndex, second = newIndex
 		typedef std::vector<Index_Swap> SwapList;
 		static constexpr bool dataHandlerMovesMemory = true;
 		static constexpr bool isDataHandlerClass = true;

@@ -363,9 +363,6 @@
     <ClInclude Include="..\src\engine\LinkByArray.h">
       <Filter>engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\engine\DataHandlerFreeList.h">
-      <Filter>engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\engine\LinkByNone.h">
       <Filter>engine</Filter>
     </ClInclude>
@@ -397,6 +394,9 @@
       <Filter>engine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\engine\ViewArray.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\DataHandlerDenseArray.h">
       <Filter>engine</Filter>
     </ClInclude>
   </ItemGroup>

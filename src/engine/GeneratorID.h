@@ -13,12 +13,12 @@ namespace ComponentSys {
     
     template <class OutValue, class IDType = ID<GeneratorID<OutValue> >
     class GeneratorID : GeneratorTraits<IDType,OutValue> {
-		uint32_t nextID;
-		std::unordered_map<
+		uint32_t nextID = 0;
+		
 
 	public:
 		ID_ext create(ID_in index) {
-			return index;
+			return nextID++;
 		}
 		ID_in get(ID_ext index) {
 			return index;
