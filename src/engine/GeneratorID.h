@@ -6,13 +6,13 @@
 #include <unordered_map>
 
 namespace ComponentSys {
-    
-    // Simple Class that allows direct look up of a data item. 
-    // The compiler will remove all the function call away making it as 
-    // fast as direct array lookup (depending on how the DataStorage is setup to run)
-    
-    template <class OutValue, class IDType = ID<GeneratorID<OutValue> >
-    class GeneratorID : GeneratorTraits<IDType,OutValue> {
+	
+	// Simple Class that allows direct look up of a data item. 
+	// The compiler will remove all the function call away making it as 
+	// fast as direct array lookup (depending on how the DataStorage is setup to run)
+	
+	template <class OutValue, class IDType = ID<GeneratorID<OutValue> >
+	class GeneratorID : GeneratorTraits<IDType,OutValue> {
 		uint32_t nextID = 0;
 		
 
@@ -26,5 +26,5 @@ namespace ComponentSys {
 		ID_in remove(ID_ext index) {
 			return index;
 		}
-    };
+	};
 }

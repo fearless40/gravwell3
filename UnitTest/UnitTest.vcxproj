@@ -115,7 +115,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>E:\Programming\gravwell3\obj\debug;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ThreadPool.obj;Work.obj;Jobs.obj;Job.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ThreadPool.obj;Work.obj;Jobs.obj;Job.obj;DataHandlerDenseArray.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -161,6 +161,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataHandlerDenseArray.cpp" />
     <ClCompile Include="Generator_Handle.cpp" />
     <ClCompile Include="ID_Test.cpp" />
     <ClCompile Include="JobsTest.cpp" />

@@ -6,7 +6,7 @@ namespace ComponentSys {
 	struct LinkerTraits {
 		typedef ID_Type ID_ext;
 		typedef IDTransform_Type ID_in;
-		const constexpr bool isLinkClass = true;
+		static constexpr bool isLinkClass = true;
 	};
 
 	template <class ID_Internal, class ID_External>
@@ -28,13 +28,13 @@ namespace ComponentSys {
 		static constexpr bool isComponentClass = true;
 	};
 
-	template< class DataType, class IndexType, bool MovesMemory = false >
+	template< class DataType, class IndexType, bool MovesMemory >
 	struct DataHandlerTraits {
-
+		//static_assert(false,"Fuck");
 	};
 
-	template< class DataType, class IndexType>
-	struct DataHandlerTraits<DataType,IndexType,true> {
+	template<class DataType, class IndexType>
+	struct DataHandlerTraitsMoves {
 		typedef DataType Data_Type;
 		typedef IndexType Index_Type;
 		typedef std::pair<Index_Type, Index_Type> Index_Swap;		//first = oldIndex, second = newIndex

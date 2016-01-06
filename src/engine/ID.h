@@ -4,12 +4,12 @@
 #include "../util/MinTypeSize.hpp"
 
 namespace ComponentSys {
-    
+	
 	/// Very simple class representing an opaque value
 	// Template Parameter: Type is only used by the compiler to prevent ID from being 
 	//		crossed into different classes. 
 
-    template <class Type, int BitSize = 16> 
+	template <class Type, int BitSize = 16> 
 	struct ID {
 		typedef typename Util::MinTypeSize<BitSize>::type Value_Type;
 		typedef ID<Type, BitSize> type;

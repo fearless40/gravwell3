@@ -25,8 +25,10 @@ namespace ComponentSys {
 	
 		// Returns the items Out_ID and then removes mapping
 		ID_in unlink(ID_ext id) {
+			ID_Internal id_in = etoi[id];
 			itoe.remove(etoi[id]);
 			etoi.remove(id);
+			return id_in;
 		}
 		
 		// Reverse look up. Can be much slower depending on the underlying data holder

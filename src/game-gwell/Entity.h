@@ -59,14 +59,14 @@ public:
 template <class _Type, class _IndexType = uint32_t, class _ListType = std::vector<_Type> >
 class Component 
 {
-    public: 
-        typedef _Type           value_type;
-        typedef _ListType       list_type;
-        typedef _IndexType      index_type;
+	public: 
+		typedef _Type           value_type;
+		typedef _ListType       list_type;
+		typedef _IndexType      index_type;
 		
-        
-        ListType data;
-        
+		
+		ListType data;
+		
 		index_type add(value_type & value) {
 			data.push_back(value);
 			return std::distance(data.begin(), data.end());
@@ -78,60 +78,60 @@ class Component
 		void remove(index_type index) {
 			data.remove( )
 		}
-        
-        // Access a single member
-        value_type & get( index_type index );
-        const value_type & getConst( index_type index ) const;
-        
-        // Access the whole array
+		
+		// Access a single member
+		value_type & get( index_type index );
+		const value_type & getConst( index_type index ) const;
+		
+		// Access the whole array
 		list_type::value_type * get();
-        const list_type::value_type * getConst() const;
-        
-        
+		const list_type::value_type * getConst() const;
+		
+		
 };
 
 template <class _Type, class _ListType = std::vector<_Type>, class _FreeListType = std::vector<uint32_t> >
 class ComponentFreeList  
 {
-    public: 
-        typedef _Type           value_type;
-        typedef _ListType       list_type;
-        typedef _FreeListType   freelist_type;
+	public: 
+		typedef _Type           value_type;
+		typedef _ListType       list_type;
+		typedef _FreeListType   freelist_type;
 }
 
 
 template <class _Type,  class _ComponentType >
 class ComponentHandle   {
-    public:
-    typedef GenericHandle<10,22>          index_type;
-    typedef _Type						  value_type;
+	public:
+	typedef GenericHandle<10,22>          index_type;
+	typedef _Type						  value_type;
 
 	_ComponentType						data;
 }
 
 template< class Type, class ComponentLink > 
 class ComponentLinkFull : protected Component<Type> {
-    public:
-    typedef ComponentLink::Handle   Handle;
-    typedef Type                    DataType;
-    typedef ComponentOneToOne<Type, ComponentLink> type;
-    
-    
-    add( Handle h, Type & value ) {
-        type::put( h.mIndex, value );
-    }
-    
-    remove( HandleType h ) {
-        type::remove( h.mIndex );
-    }
-    
-    datatype & get( Handle h) {
-        type::get( h.mIndex );
-    }
-    
-    uint32_t size() {
-        type::size();
-    }
+	public:
+	typedef ComponentLink::Handle   Handle;
+	typedef Type                    DataType;
+	typedef ComponentOneToOne<Type, ComponentLink> type;
+	
+	
+	add( Handle h, Type & value ) {
+		type::put( h.mIndex, value );
+	}
+	
+	remove( HandleType h ) {
+		type::remove( h.mIndex );
+	}
+	
+	datatype & get( Handle h) {
+		type::get( h.mIndex );
+	}
+	
+	uint32_t size() {
+		type::size();
+	}
 }
 
 
@@ -185,22 +185,22 @@ public:
 
 
 class EntityManager {
-    public:
-    ComponentHandle< EntityData, EntityHandle > entities;
-    ComponentOneToOne< DebugName, EntityHandle >  names;
-    ComponentOneToMaybe< Team >       teams;    
-    
-    EntityHandle newEntity( EntityData & data, const char * n ) {
-        EntityHandle h = entities.add( data );
-        names.add( h, n );
-    }
-    
-    void removeEntity( EntityHandle h ) {
-        entities.remove( h );
-        names.remvoe( h );
-    }
-    
-    
+	public:
+	ComponentHandle< EntityData, EntityHandle > entities;
+	ComponentOneToOne< DebugName, EntityHandle >  names;
+	ComponentOneToMaybe< Team >       teams;    
+	
+	EntityHandle newEntity( EntityData & data, const char * n ) {
+		EntityHandle h = entities.add( data );
+		names.add( h, n );
+	}
+	
+	void removeEntity( EntityHandle h ) {
+		entities.remove( h );
+		names.remvoe( h );
+	}
+	
+	
 }
 
 teams.add( EntityHandle t, teamID ) 

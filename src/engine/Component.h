@@ -44,7 +44,7 @@ namespace ComponentSys {
 	//		I did think of leavin the interface the same and just throwing assert errors however I feel that would make it
 	//		harder to work with. 
 	namespace Hidden {
-	template <class Data, class Allocator, class DataStorage, class InternalLinker, class ExtrefGenerator >
+	template <class Data, /*class Allocator,*/ class DataStorage, class InternalLinker, class ExtrefGenerator >
 	class Component : public ComponentTraits {
 	public:
 		typedef Data Data_Type;
@@ -52,7 +52,7 @@ namespace ComponentSys {
 
 
 	protected:
-		Allocator	 alloc;
+		//Allocator	 alloc;
 		DataStorage  data;
 		InternalLinker  linker;
 		ExtrefGenerator generator;
@@ -148,7 +148,7 @@ namespace ComponentSys {
 	};
 
 // Specialization For class with NO external Link look up
-template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator >
+/*template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator >
 	class Component<class Data, class Allocator, class DataStorage, LinkNull, class ExtrefGenerator > : public ComponentTraits {
 	public:
 		typedef Data Data_Type;
@@ -197,21 +197,21 @@ template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator
 			data.remove(pos);
 		}
 	};
-	
+	*/
 // Specialiation for class with NO internal linkadge 
-	template <class Data, class Allocator, class DataStorage, class InternalLinker >
-	class Component<class Data, class Allocator, class DataStorage, class InternalLinker, GeneratorNull > : public ComponentTraits {
+	template <class Data, /*class Allocator,*/ class DataStorage, class InternalLinker >
+	class Component< Data, DataStorage, InternalLinker, GeneratorNull > : 
+		public ComponentTraits {
 	public:
 		typedef Data Data_Type;
 
 
 
 	protected:
-		Allocator	 alloc;
+		//Allocator	 alloc;
 		DataStorage  data;
 		InternalLinker  linker;
 
-		typedef ExtrefGenerator gen;
 		typedef InternalLinker link;
 
 	public:
@@ -224,22 +224,12 @@ template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator
 			 linker.link(entity, data.add(data_entry));
 		}
 
-		
-		// Associates handle with id
-		 void link(gen::ID_ext local, link::ID_ext external) {
-			 linker.add(external, generator.get(local));
-		 }
 		 
 		// Gets copy of Data associated with ID
 		 Data_Type get(const link::ID_ext entity) const {
 			 return data[linker.get(entity)];
 		 }
 
-		
-		// Gets the entire set of data as a contigous array for stream processing
-		 Data_Type * getAll() {
-			 return data.getAll();
-		 }
 
 		// Change a data by looking up by ID. Will not create a new Data.
 		 void set(const link::ID_ext entity, const Data_Type & data) {
@@ -247,11 +237,22 @@ template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator
 		 }
 
 		
-		// Remove data by using ID
-		void remove(linker::ID_ext entity) {
-			auto pos = linker.unlink(entity);
-			data.remove(pos);
-		}
+		 template <bool MemoryMove = DataStorage::dataHandlerMovesMemory>
+		 void remove(linker::ID_ext entity) { }
+
+		 template <>
+		 void remove<true>(linker::ID_ext entity) {
+			 auto pos = linker.unlink(entity);
+			 DataStorage::Index_Swap is = data.remove(pos);
+			 linker.relink(is.first, is.second);
+		 }
+
+		 // Remove data by using ID
+		 template<>
+		 void remove<false>(linker::ID_ext entity) {
+			 auto pos = linker.unlink(entity);
+			 data.remove(pos);
+		 }
 		
 		
 		};
@@ -260,7 +261,7 @@ template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator
 // I have moved data into the public access for the class. 
 	template <class Data, class Allocator, class DataStorage >
 	class Component<class Data, class Allocator, class DataStorage, LinkNull, GeneratorNull > : public ComponentTraits {
-		BOOST_STATIC_ASSERT_MSG(false, Need_To_specify_some_form_of_external_linkadge);
+		static_assert( false, "Need To specify some form of external linkadge");
 		/*public:
 		typedef Data Data_Type;
 
@@ -288,16 +289,16 @@ template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator
 
 	// Helper constructor to allow using void instead of having to use LinkNull or GeneratorNull
 	
-	template <class Data, class Allocator, class DataStorage, class InternalLinker, class ExtrefGenerator >
-	struct Component : Hidden::Component<class Data, class Allocator, class DataStorage, class InternalLinker, class ExtrefGenerator > { };
+	//template <class Data, class Allocator, class DataStorage, class InternalLinker, class ExtrefGenerator >
+	//struct Component : Hidden::Component<class Data, class Allocator, class DataStorage, class InternalLinker, class ExtrefGenerator > { };
 	
-	template <class Data, class Allocator, class DataStorage, class InternalLinker >
-	struct Component<class Data, class Allocator, class DataStorage, void , void > : Hidden::Component<class Data, class Allocator, class DataStorage, InternalLinker, class GeneratorNull > { };
+	template <class Data, class DataStorage, class ExternalLinker >
+	struct Component< Data, DataStorage, ExternalLinker > : Hidden::Component< Data, DataStorage, ExternalLinker, GeneratorNull > { };
 	
-	template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator >
-	struct Component<class Data, class Allocator, class DataStorage, void , class ExtrefGenerator > : Hidden::Component<class Data, class Allocator, class DataStorage, LinkNull, class ExtrefGenerator > { };
+	//template <class Data class DataStorage,  class ExtrefGenerator >
+	//struct Component<class Data, class DataStorage, class ExtrefGenerator > : Hidden::Component<class Data, void, class DataStorage, LinkNull, class ExtrefGenerator > { };
 	
-	template <class Data, class Allocator, class DataStorage >
-	struct Component<class Data, class Allocator, class DataStorage, void , void > : Hidden::Component<class Data, class Allocator, class DataStorage, LinkNull, GeneratorNull > { };
+	//template <class Data, class Allocator, class DataStorage >
+	//struct Component<class Data, class Allocator, class DataStorage, void , void > : Hidden::Component<class Data, class Allocator, class DataStorage, LinkNull, GeneratorNull > { };
 	
 }

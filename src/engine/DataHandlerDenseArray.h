@@ -27,8 +27,8 @@ void get(IndexType index);
 #include "ComponentSystem.h"
 namespace ComponentSys {
 
-	template <class DataType, class Allocator>
-	class DataHandlerDenseArray : DataHandlerTraits<DataType, std::size_t, true>
+	template <class DataType /*, class Allocator*/>
+	class DataHandlerDenseArray : public DataHandlerTraitsMoves<DataType, std::size_t>
 	{
 	protected:
 		std::vector<Data_Type> data;
@@ -36,20 +36,20 @@ namespace ComponentSys {
 
 	public:
 		// Returns the index of the added item
-		Index_Type add(Data_Type & data) {
+		Index_Type add(const Data_Type & data) {
 			data.push_back(data);
 			return data.size() - 1;
 		}
-		Index_Type add(Data_Type && data) {
-			data.push_back(data);
+		/*Index_Type add(Data_Type && data) {
+			data.emplace_back(data);
 			return data.size() - 1;
-		}
+		}*/
 
 		// pair_1 = Old Index position
 		// pair_2 = New position.
 		// Necessary if the class swaps items out rather than just flagging them as empty
 		Index_Swap remove(Index_Type index) {
-			Index_Swap ret = { --data.size(), index };
+			Index_Swap ret  { data.size()-1, index };
 			data[index] = data[ret.first];
 			return ret;
 		}
@@ -58,7 +58,7 @@ namespace ComponentSys {
 			return data[index];
 		}
 
-		operator Data_Type & [](Index_Type index) {
+		Data_Type & operator [](Index_Type index) {
 			return data[index];
 		}
 
