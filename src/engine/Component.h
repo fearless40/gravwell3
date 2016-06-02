@@ -23,8 +23,8 @@ Entities.getCombinedView<position, collision>(filterFunction).duplicate();
 #include <../boost/mpl/if.hpp>
 #include "ComponentSystem.h"
 #include "GeneratorNull.h"
-#include "LinkNull.h"
-#include <boost\static_assert.hpp>
+#include "LinkNull.h
+
 
 namespace ComponentSys {
 
@@ -43,10 +43,11 @@ namespace ComponentSys {
 	//		class are thrown by the compiler and not by the runtime. 
 	//		I did think of leavin the interface the same and just throwing assert errors however I feel that would make it
 	//		harder to work with. 
-	namespace Hidden {
-	template <class Data, /*class Allocator,*/ class DataStorage, class InternalLinker, class ExtrefGenerator >
-	class Component : public ComponentTraits {
+	/*
+		template < class DataStorage, class InternalLinker, class ExtrefGenerator >
+		class Component		{
 	public:
+		typedef ComponentTraits traits;
 		typedef Data Data_Type;
 
 
@@ -146,7 +147,7 @@ namespace ComponentSys {
 		}
 
 	};
-
+	*/
 // Specialization For class with NO external Link look up
 /*template <class Data, class Allocator, class DataStorage,  class ExtrefGenerator >
 	class Component<class Data, class Allocator, class DataStorage, LinkNull, class ExtrefGenerator > : public ComponentTraits {
@@ -198,21 +199,24 @@ namespace ComponentSys {
 		}
 	};
 	*/
-// Specialiation for class with NO internal linkadge 
-	template <class Data, /*class Allocator,*/ class DataStorage, class InternalLinker >
-	class Component< Data, DataStorage, InternalLinker, GeneratorNull > : 
-		public ComponentTraits {
+// Specialiation for class with NO generator link 
+	template < class DataStorage, class ExternalLinker >
+	class Component {
 	public:
-		typedef Data Data_Type;
-
+		typedef ComponentTraits traits;
+		typedef typename DataStorage::traits::Data_Type Data_Type;
+		typedef typename DataStorage::traits::Index_Type Index_Type;
+		typedef typename ExternalLinker::traits::ID_ext ID_ext;
+		typedef typename ExternalLinker::traits::ID_in ID_in;
 
 
 	protected:
-		//Allocator	 alloc;
-		DataStorage  data;
-		InternalLinker  linker;
+		typedef typename ExternalLinker link;
+		
+		DataStorage		 data;
+		ExternalLinker	 linker;
 
-		typedef InternalLinker link;
+		
 
 	public:
 		Component() { }
@@ -220,28 +224,28 @@ namespace ComponentSys {
 	
 	
 		// Associates an ID with a new data entry and sets the value		
-		 void add(const link::ID_ext entity, const Data_Type & data_entry)  {
+		 void add(const ID_ext entity, const Data_Type & data_entry)  {
 			 linker.link(entity, data.add(data_entry));
 		}
 
 		 
 		// Gets copy of Data associated with ID
-		 Data_Type get(const link::ID_ext entity) const {
-			 return data[linker.get(entity)];
+		 Data_Type get(const ID_ext entity) const {
+			 return data.get(linker.get(entity));
 		 }
 
 
 		// Change a data by looking up by ID. Will not create a new Data.
-		 void set(const link::ID_ext entity, const Data_Type & data) {
-			 data[linker.get(entity)] = data;
+		 void update(const ID_ext entity, const Data_Type & data_entry) {
+			 data.edit(linker.get(entity), data_entry);
 		 }
 
 		
-		 template <bool MemoryMove = DataStorage::dataHandlerMovesMemory>
-		 void remove(linker::ID_ext entity) { }
+		 template <bool MemoryMove = DataStorage::traits::dataHandlerMovesMemory>
+		 void remove(ID_ext entity) { }
 
 		 template <>
-		 void remove<true>(linker::ID_ext entity) {
+		 void remove<true>(ID_ext entity) {
 			 auto pos = linker.unlink(entity);
 			 DataStorage::Index_Swap is = data.remove(pos);
 			 linker.relink(is.first, is.second);
@@ -249,44 +253,16 @@ namespace ComponentSys {
 
 		 // Remove data by using ID
 		 template<>
-		 void remove<false>(linker::ID_ext entity) {
+		 void remove<false>(ID_ext entity) {
 			 auto pos = linker.unlink(entity);
 			 data.remove(pos);
 		 }
 		
 		
-		};
-	
-// Specialization For no look up at all. Very bad class. I may make this class throw an error. However to make the class still useable
-// I have moved data into the public access for the class. 
-	template <class Data, class Allocator, class DataStorage >
-	class Component<class Data, class Allocator, class DataStorage, LinkNull, GeneratorNull > : public ComponentTraits {
-		static_assert( false, "Need To specify some form of external linkadge");
-		/*public:
-		typedef Data Data_Type;
-
-		DataStorage  data;
-
-	protected:
-		Allocator	 alloc;
-
-
-		typedef ExtrefGenerator gen;
-		typedef InternalLinker link;
-
-	public:
-		Component() { }
-		~Component(){ }
-	
-
-		// Gets the entire set of data as a contigous array for stream processing
-		 Data_Type * getAll() {
-			 return data.getAll();
-		 }
-	*/
 	};
-	} //End Hidden
+	
 
+	/*
 	// Helper constructor to allow using void instead of having to use LinkNull or GeneratorNull
 	
 	//template <class Data, class Allocator, class DataStorage, class InternalLinker, class ExtrefGenerator >
@@ -300,5 +276,5 @@ namespace ComponentSys {
 	
 	//template <class Data, class Allocator, class DataStorage >
 	//struct Component<class Data, class Allocator, class DataStorage, void , void > : Hidden::Component<class Data, class Allocator, class DataStorage, LinkNull, GeneratorNull > { };
-	
+	*/
 }
