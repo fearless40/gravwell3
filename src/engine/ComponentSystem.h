@@ -31,12 +31,13 @@ namespace ComponentSys {
 	template< class DataType, class IndexType, bool MovesMemory >
 	struct DataHandlerTraits {
 		//static_assert(false,"Fuck");
+		
 	};
 
 	template<class DataType, class IndexType>
-	struct DataHandlerTraitsMoves {
-		typedef DataType Data_Type;
-		typedef IndexType Index_Type;
+	struct DataHandlerTraits<DataType, IndexType, true>  {
+		typedef  DataType  Data_Type;
+		typedef  IndexType  Index_Type;
 		typedef std::pair<Index_Type, Index_Type> Index_Swap;		//first = oldIndex, second = newIndex
 		typedef std::vector<Index_Swap> SwapList;
 		static constexpr bool dataHandlerMovesMemory = true;

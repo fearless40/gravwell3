@@ -13,10 +13,14 @@ namespace UnitTest
 	TEST_CLASS(ID_TEST)
 	{
 	public:
-		typedef ComponentSys::DataHandlerDenseArray< int > Data;
+		
+		
+
+		typedef cs::DataHandlerDenseArray< int > Data;
 
 		TEST_METHOD(DataHandlerDenseArray_Initialization) {
-			ComponentSys::DataHandlerDenseArray< int > x;
+				
+			cs::DataHandlerDenseArray< int > x;
 		}
 
 		TEST_METHOD(DataHandlerDenseArray_Add_Item) {
@@ -25,7 +29,7 @@ namespace UnitTest
 
 			index = x.add(32);
 			index = x.add(33);
-			Assert::AreEqual(static_cast<Data::Index_Type>(2), index);
+			Assert::AreEqual(static_cast<Data::Index_Type>(1), index);
 		}
 
 		TEST_METHOD(DataHandlerDenseArray_get) {
@@ -71,7 +75,6 @@ namespace UnitTest
 			d = x[index];
 			Assert::AreEqual(32, d);
 		}
-
 
 
 	};

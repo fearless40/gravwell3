@@ -348,13 +348,7 @@
     <ClInclude Include="..\src\game-gwell\Game.h">
       <Filter>game-gwell</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\engine\Component.h">
-      <Filter>engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\engine\LinkByHandle.h">
-      <Filter>engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\engine\LinkByID.h">
       <Filter>engine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\engine\LinkBySparse.h">
@@ -397,6 +391,12 @@
       <Filter>engine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\engine\DataHandlerDenseArray.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\LinkHash.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\Component.h">
       <Filter>engine</Filter>
     </ClInclude>
   </ItemGroup>

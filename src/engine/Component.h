@@ -23,7 +23,7 @@ Entities.getCombinedView<position, collision>(filterFunction).duplicate();
 #include <../boost/mpl/if.hpp>
 #include "ComponentSystem.h"
 #include "GeneratorNull.h"
-#include "LinkNull.h
+//#include "LinkNull.h
 
 
 namespace ComponentSys {
