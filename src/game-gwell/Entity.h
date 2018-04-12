@@ -59,4 +59,6 @@ namespace Entity {
 	void destroy(EntityID id);
 
 	bool isValidEntity(EntityID id);
+
+	using Vector = std::vector<EntityID>;
 }

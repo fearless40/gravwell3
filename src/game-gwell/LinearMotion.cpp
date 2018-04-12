@@ -4,14 +4,15 @@
 #include <algorithm>
 #include <mutex>
 #include "Game.h"
+#include "Coord.h"
 #include "Entity.h"
 #include "LinearMotion.h"
 
 namespace LinearMotion {
-	std::vector<Coord> xPos;
-	std::vector<Coord> yPos;
-	std::vector<Coord> xChange;
-	std::vector<Coord> yChange;
+	std::vector<Game::Coord> xPos;
+	std::vector<Game::Coord> yPos;
+	std::vector<Game::Coord> xChange;
+	std::vector<Game::Coord> yChange;
 	std::vector<EntityID> entities;
 
 	using LMVector = std::vector<LinearMotionItem>;

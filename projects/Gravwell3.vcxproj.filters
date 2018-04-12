@@ -179,6 +179,9 @@
     <ClCompile Include="..\src\game-gwell\Game.cpp">
       <Filter>game-gwell</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\game-gwell\Position.cpp">
+      <Filter>game-gwell</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\App.h">
@@ -364,6 +367,15 @@
       <Filter>game-gwell</Filter>
     </ClInclude>
     <ClInclude Include="..\src\game-gwell\Coord.h">
+      <Filter>game-gwell</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeStep.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game-gwell\Position.h">
+      <Filter>game-gwell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game-gwell\Temp.hpp">
       <Filter>game-gwell</Filter>
     </ClInclude>
   </ItemGroup>
