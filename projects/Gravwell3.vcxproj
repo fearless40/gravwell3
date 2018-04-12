@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -33,7 +33,10 @@
     <ClCompile Include="..\src\d3d11\VertexTypeDescription.cpp" />
     <ClCompile Include="..\src\d3d11\VertexTypeManager.cpp" />
     <ClCompile Include="..\src\engine\MicroManager.cpp" />
+    <ClCompile Include="..\src\game-gwell\Entity.cpp" />
+    <ClCompile Include="..\src\game-gwell\Game.cpp" />
     <ClCompile Include="..\src\game-gwell\LargeObjectManager.cpp" />
+    <ClCompile Include="..\src\game-gwell\LinearMotion.cpp" />
     <ClCompile Include="..\src\main\App.cpp" />
     <ClCompile Include="..\src\main\D3D11App.cpp" />
     <ClCompile Include="..\src\main\D3DWindow.cpp" />
@@ -81,26 +84,12 @@
     <ClInclude Include="..\src\d3d11\VertexShaderManager.h" />
     <ClInclude Include="..\src\d3d11\VertexTypeDescription.h" />
     <ClInclude Include="..\src\d3d11\VertexTypeManager.h" />
-    <ClInclude Include="..\src\engine\Component.h" />
-    <ClInclude Include="..\src\engine\ComponentSystem.h" />
-    <ClInclude Include="..\src\engine\DataHandlerDenseArray.h" />
-    <ClInclude Include="..\src\engine\GeneratorHandle.h" />
-    <ClInclude Include="..\src\engine\GeneratorID.h" />
-    <ClInclude Include="..\src\engine\GeneratorNull.h" />
-    <ClInclude Include="..\src\engine\Handle.h" />
-    <ClInclude Include="..\src\engine\ID.h" />
-    <ClInclude Include="..\src\engine\LinkByArray.h" />
-    <ClInclude Include="..\src\engine\LinkByHandle.h" />
-    <ClInclude Include="..\src\engine\LinkHash.h" />
-    <ClInclude Include="..\src\engine\LinkByNone.h" />
-    <ClInclude Include="..\src\engine\LinkBySparse.h" />
-    <ClInclude Include="..\src\engine\LinkNull.h" />
     <ClInclude Include="..\src\engine\MicroManager.h" />
-    <ClInclude Include="..\src\engine\View.h" />
-    <ClInclude Include="..\src\engine\ViewArray.h" />
+    <ClInclude Include="..\src\game-gwell\Coord.h" />
     <ClInclude Include="..\src\game-gwell\Entity.h" />
     <ClInclude Include="..\src\game-gwell\Game.h" />
     <ClInclude Include="..\src\game-gwell\LargeObjectManager.h" />
+    <ClInclude Include="..\src\game-gwell\LinearMotion.h" />
     <ClInclude Include="..\src\main\App.h" />
     <ClInclude Include="..\src\main\D3D11App.h" />
     <ClInclude Include="..\src\main\D3DWindow.h" />
@@ -192,32 +181,32 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{27C6AEED-69E1-498D-8887-A5747BAA605E}</ProjectGuid>
     <RootNamespace>Gravwell3</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -251,13 +240,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\debug\</OutDir>
     <IntDir>..\obj\debug\</IntDir>
-    <IncludePath>E:\Programming\Lib\boost_1_59_0;E:\Programming\Lib;E:\Programming\Lib\boost_1_59_0\boost;$(IncludePath)</IncludePath>
     <LibraryPath>E:\Programming\Lib\boost_1_59_0\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\Programming\Lib\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\release\</OutDir>
     <IntDir>..\obj\release\</IntDir>
-    <IncludePath>E:\Programming\Lib\boost_1_54_0;E:\Programming\Lib;$(IncludePath)</IncludePath>
+    <IncludePath>E:\Programming\Lib\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -276,7 +265,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Strict</FloatingPointModel>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -304,6 +296,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <FloatingPointModel>Strict</FloatingPointModel>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

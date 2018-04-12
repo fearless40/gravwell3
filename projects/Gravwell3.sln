@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Gravwell3", "Gravwell3.vcxproj", "{27C6AEED-69E1-498D-8887-A5747BAA605E}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "..\UnitTest\UnitTest.vcxproj", "{6FFF6A56-91B3-4572-95A8-FA652A9B2300}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,16 +21,11 @@ Global
 		{27C6AEED-69E1-498D-8887-A5747BAA605E}.Release|x64.Build.0 = Release|x64
 		{27C6AEED-69E1-498D-8887-A5747BAA605E}.Release|x86.ActiveCfg = Release|Win32
 		{27C6AEED-69E1-498D-8887-A5747BAA605E}.Release|x86.Build.0 = Release|Win32
-		{6FFF6A56-91B3-4572-95A8-FA652A9B2300}.Debug|x64.ActiveCfg = Debug|x64
-		{6FFF6A56-91B3-4572-95A8-FA652A9B2300}.Debug|x64.Build.0 = Debug|x64
-		{6FFF6A56-91B3-4572-95A8-FA652A9B2300}.Debug|x86.ActiveCfg = Debug|Win32
-		{6FFF6A56-91B3-4572-95A8-FA652A9B2300}.Debug|x86.Build.0 = Debug|Win32
-		{6FFF6A56-91B3-4572-95A8-FA652A9B2300}.Release|x64.ActiveCfg = Release|x64
-		{6FFF6A56-91B3-4572-95A8-FA652A9B2300}.Release|x64.Build.0 = Release|x64
-		{6FFF6A56-91B3-4572-95A8-FA652A9B2300}.Release|x86.ActiveCfg = Release|Win32
-		{6FFF6A56-91B3-4572-95A8-FA652A9B2300}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF5E9755-1A9D-4A01-BE6C-ED354887C5FC}
 	EndGlobalSection
 EndGlobal
