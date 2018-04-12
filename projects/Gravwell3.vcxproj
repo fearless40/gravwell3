@@ -33,6 +33,7 @@
     <ClCompile Include="..\src\d3d11\VertexTypeDescription.cpp" />
     <ClCompile Include="..\src\d3d11\VertexTypeManager.cpp" />
     <ClCompile Include="..\src\engine\MicroManager.cpp" />
+    <ClCompile Include="..\src\game-gwell\BroadCollisions.cpp" />
     <ClCompile Include="..\src\game-gwell\Entity.cpp" />
     <ClCompile Include="..\src\game-gwell\Game.cpp" />
     <ClCompile Include="..\src\game-gwell\LargeObjectManager.cpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="..\src\d3d11\VertexTypeDescription.h" />
     <ClInclude Include="..\src\d3d11\VertexTypeManager.h" />
     <ClInclude Include="..\src\engine\MicroManager.h" />
+    <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
     <ClInclude Include="..\src\game-gwell\Coord.h" />
     <ClInclude Include="..\src\game-gwell\Entity.h" />
     <ClInclude Include="..\src\game-gwell\Game.h" />

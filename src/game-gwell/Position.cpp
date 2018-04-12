@@ -20,7 +20,7 @@ namespace Position {
 		auto out = nextVector();
 		auto valuesIterator = ents.begin();
 
-		std::copy_if(positions.begin(), positions.end(), out.begin(), [valuesIterator](auto & x) {
+		std::copy_if(positions.begin(), positions.end(), out.begin(), [&valuesIterator](auto & x) {
 			if (*valuesIterator == x.id) {
 				++valuesIterator;
 				return true;
@@ -29,6 +29,7 @@ namespace Position {
 				++valuesIterator;
 				return false;
 			}
+			return false;
 		});
 
 		return { out };
