@@ -19,7 +19,7 @@ namespace Position {
 
 	using Positions = std::vector<Pos>;
 	
-	Temp<const Positions> get(Temp<Entity::Vector,Sorted> values); 
+	Temp<const Positions> get(Temp<const Entity::Vector,Sorted> values); 
 
 	Temp<Positions> getWriter();
 

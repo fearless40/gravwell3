@@ -1,4 +1,6 @@
 #pragma once
+#include "Temp.hpp"
+#include "Entity.h"
 
 namespace BroadCollisions {
 	struct CInfo {
@@ -18,7 +20,8 @@ namespace BroadCollisions {
 	Temp<CInfos> getWriter();
 	void setWriter(Temp<CInfos> writer);
 
-	void update();
+	//Depends on positions component
+	void update(Temp<Entity::Vector, Sorted> changed_pos);
 
 	Temp<const Collisions> getCollisions();
 

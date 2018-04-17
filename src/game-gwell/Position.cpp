@@ -15,7 +15,7 @@ namespace Position {
 		return Positions{};
 	}
 
-	Temp<const Positions> get(Temp<Entity::Vector,Sorted> values) {
+	Temp<const Positions> get(Temp<const Entity::Vector,Sorted> values) {
 		auto ents = values.get();
 		auto out = nextVector();
 		auto valuesIterator = ents.begin();

@@ -20,6 +20,12 @@ public:
 	}
 
 	Temp(Item & it) : item(it) {}
+
+	operator Item & () const {
+		return get();
+	}
+
+	
 	
 private:
 	Item & item;

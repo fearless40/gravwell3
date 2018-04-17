@@ -12,12 +12,13 @@ namespace BroadCollisions {
 		Game::Coord x1, y1, x2, y2;
 	};
 
+		
 	//Unsorted
 	Entity::Vector ids;
 	std::vector<partialabb> pabbs;
 	std::vector<uint32_t> teams;
-
 	std::vector<fullabb> cache;
+	Collisions colCache;
 
 	bool overlaps(const fullabb & lhs, const fullabb & rhs) {
 		return  (lhs.x1 < rhs.x2)	&&
@@ -48,17 +49,31 @@ namespace BroadCollisions {
 		}
 	}
 
-	void update() {
-		auto changed{ Position::getChanged().get() };
-		std::sort(changed.begin(), changed.end());
-		auto updatedPositions = Position::get({changed}).get();
-
+	void update(Temp<const Entity::Vector, Sorted> changed_pos) {
+		auto updatedPositions = Position::get(changed_pos).get();
+		
 		//Regenerate cache
-		assert(changed.size() == updatedPositions.size()); //The two must be of the same size
+		assert(changed_pos.get().size() == updatedPositions.size()); //The two must be of the same size
 
-		update_cache(changed, updatedPositions);
+		update_cache(changed_pos, updatedPositions);
 
+		colCache.clear();
 
+		for (int i = 0; i < teams.size()-1; ++i) {
+			auto firstVal = teams[i];
+			auto first_aabb = cache[i];
+			for (int k = i + 1; k < teams.size(); ++k) {
+				if (firstVal != teams[k]) {
+					if (overlaps(first_aabb, cache[k])) {
+						colCache.emplace_back(ids[i], ids[k]);
+					}
+				}
+			}
+		}
+	}
+
+	Temp<const Collisions> getCollisions() {
+		return { colCache };
 	}
 }
 
