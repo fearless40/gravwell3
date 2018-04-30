@@ -2,6 +2,7 @@
 #include "BroadCollisions.h"
 #include "Position.h"
 #include <algorithm>
+#include "../util/VectorCache.hpp"
 
 
 namespace BroadCollisions {
@@ -12,6 +13,7 @@ namespace BroadCollisions {
 		Game::Coord x1, y1, x2, y2;
 	};
 
+	VectorCache<CInfo> cInfoCache;
 		
 	//Unsorted
 	Entity::Vector ids;
@@ -19,6 +21,20 @@ namespace BroadCollisions {
 	std::vector<uint32_t> teams;
 	std::vector<fullabb> cache;
 	Collisions colCache;
+
+	Temp<CInfos> getWriter() {
+		return { cInfoCache.get() };
+	}
+
+	void setWriter(Temp<CInfos> writer) {
+		for (const auto & x : writer.get()) {
+			ids.push_back(x.id);
+			pabbs.emplace_back(x.width, x.height);
+			teams.push_back(x.team);
+			cache.emplace_back(0, 0, 0, 0);
+		}
+		cInfoCache.recycle(writer.get());
+	}
 
 	bool overlaps(const fullabb & lhs, const fullabb & rhs) {
 		return  (lhs.x1 < rhs.x2)	&&

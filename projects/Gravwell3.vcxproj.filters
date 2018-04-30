@@ -185,6 +185,9 @@
     <ClCompile Include="..\src\game-gwell\BroadCollisions.cpp">
       <Filter>game-gwell</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\game-gwell\Physics.cpp">
+      <Filter>game-gwell</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\App.h">
@@ -378,10 +381,16 @@
     <ClInclude Include="..\src\game-gwell\Position.h">
       <Filter>game-gwell</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\game-gwell\Temp.hpp">
+    <ClInclude Include="..\src\game-gwell\BroadCollisions.h">
       <Filter>game-gwell</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\game-gwell\BroadCollisions.h">
+    <ClInclude Include="..\src\util\Temp.hpp">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\VectorCache.hpp">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game-gwell\Physics.h">
       <Filter>game-gwell</Filter>
     </ClInclude>
   </ItemGroup>

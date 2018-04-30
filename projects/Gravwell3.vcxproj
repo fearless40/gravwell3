@@ -38,6 +38,7 @@
     <ClCompile Include="..\src\game-gwell\Game.cpp" />
     <ClCompile Include="..\src\game-gwell\LargeObjectManager.cpp" />
     <ClCompile Include="..\src\game-gwell\LinearMotion.cpp" />
+    <ClCompile Include="..\src\game-gwell\Physics.cpp" />
     <ClCompile Include="..\src\game-gwell\Position.cpp" />
     <ClCompile Include="..\src\main\App.cpp" />
     <ClCompile Include="..\src\main\D3D11App.cpp" />
@@ -93,8 +94,8 @@
     <ClInclude Include="..\src\game-gwell\Game.h" />
     <ClInclude Include="..\src\game-gwell\LargeObjectManager.h" />
     <ClInclude Include="..\src\game-gwell\LinearMotion.h" />
+    <ClInclude Include="..\src\game-gwell\Physics.h" />
     <ClInclude Include="..\src\game-gwell\Position.h" />
-    <ClInclude Include="..\src\game-gwell\Temp.hpp" />
     <ClInclude Include="..\src\main\App.h" />
     <ClInclude Include="..\src\main\D3D11App.h" />
     <ClInclude Include="..\src\main\D3DWindow.h" />
@@ -133,7 +134,9 @@
     <ClInclude Include="..\src\util\MinTypeSize.hpp" />
     <ClInclude Include="..\src\util\RefCountPointer.h" />
     <ClInclude Include="..\src\util\TagArray.h" />
+    <ClInclude Include="..\src\util\Temp.hpp" />
     <ClInclude Include="..\src\util\ThreadPool.h" />
+    <ClInclude Include="..\src\util\VectorCache.hpp" />
     <ClInclude Include="..\src\util\Work.h" />
     <ClInclude Include="TimeStep.h" />
   </ItemGroup>
