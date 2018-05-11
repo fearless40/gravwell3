@@ -2,6 +2,9 @@
 #include "Physics.h"
 #include <unordered_map>
 #include <optional>
+#include <algorithm>
+#include "Position.h"
+#include "../util/Temp.hpp"
 
 namespace Physics {
 
@@ -24,6 +27,7 @@ namespace Physics {
 			yForce.clear();
 			xAcc.clear();
 			yAcc.clear();
+			
 		}
 
 		void addForce(EntityID id, float xF, float yF) {
@@ -146,7 +150,22 @@ namespace Physics {
 			game.ids.push_back(id);
 			game.xVel.push_back(0.f);
 			game.yVel.push_back(0.f);
-			game.entityMap[id] = game.ids.size();
+			game.entityMap[id] = game.ids.size()-1;
 		}
+	}
+
+	void update_positions() {
+		auto entries = Position::get(Temp( game.ids )).get();
+		for (unsigned i = 0; i < entries.size(); ++i) {
+			float xPos = entries[i].x.asFloat();
+			float yPos = entries[i].y.asFloat();
+			xPos += game.xVel[i];
+			yPos += game.yVel[i];
+			entries[i].x = Game::Coord(xPos);
+			entries[i].y = Game::Coord(yPos);
+		}
+
+		Position::set(entries);
+		
 	}
 }

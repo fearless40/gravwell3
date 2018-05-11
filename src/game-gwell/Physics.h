@@ -20,8 +20,8 @@ namespace Physics {
 	using SingleAxisForces = std::vector<float>;
 	using Forces = std::vector<Force>;
 
-	Forces & getWriter();
-	void setWriter(Forces & f);
+	Temp<Forces> getWriter();
+	void setWriter(Temp<Forces> f);
 
 	/*
 		spaceship.engineThrust --> Physics.add(engine push)
@@ -35,13 +35,13 @@ namespace Physics {
 	void update_velocities();	
 
 	// Applies max speed values to items in the universe
-	void apply_universal_constants();
+	//void apply_universal_constants();
 	
 	// Applies a friction amount to all items in the universe
-	void apply_friction();
+	//void apply_friction();
 
 	// Same as above but in one loop
-	void apply_friction_and_universal();
+	//void apply_friction_and_universal();
 	
 	// Changes the position of items based on the force
 	void update_positions();

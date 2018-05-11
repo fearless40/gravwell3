@@ -15,7 +15,19 @@ namespace Position {
 		return Positions{};
 	}
 
-	Temp<const Positions> get(Temp<const Entity::Vector,Sorted> values) {
+	Temp<Positions> get(Temp<const Entity::Vector> values) {
+		auto ents = values.get();
+		auto out = nextVector();
+		for (auto & x : ents) {
+			auto result = std::lower_bound(positions.begin(), positions.end(), x);
+			if (result != positions.end() && result->id == x) {
+				out.push_back(*result);
+			}
+		}
+		return out;
+	}
+
+	Temp<Positions> get(Temp<const Entity::Vector,Sorted> values) {
 		auto ents = values.get();
 		auto out = nextVector();
 		auto valuesIterator = ents.begin();
@@ -35,11 +47,17 @@ namespace Position {
 		return { out };
 	}
 
-	Temp<Positions> getWriter() {
+	Temp<Positions> getEmpty() {
 		return { nextVector() };
 	}
 
-	void setWriter(Temp<Positions>  newPos) {
+	Temp<Positions> getAll() {
+		auto results = nextVector();
+		std::copy(positions.begin(), positions.end(), std::back_inserter( results ));
+		return results;
+	}
+
+	void set(Temp<Positions>  newPos) {
 		auto newValues = newPos.get();
 		for (auto & x : newValues) {
 			auto value = std::lower_bound(positions.begin(), positions.end(), x);

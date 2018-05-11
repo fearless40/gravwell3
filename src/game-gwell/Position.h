@@ -2,7 +2,7 @@
 
 #include "Game.h"
 #include "Entity.h"
-#include "Temp.hpp"
+#include "../util/Temp.hpp"
 
 namespace Position {
 	struct Pos {
@@ -19,11 +19,13 @@ namespace Position {
 
 	using Positions = std::vector<Pos>;
 	
-	Temp<const Positions> get(Temp<const Entity::Vector,Sorted> values); 
+	Temp<Positions> get(Temp<const Entity::Vector,Sorted> values); 
+	Temp<Positions> get(Temp<const Entity::Vector> values);
 
-	Temp<Positions> getWriter();
+	Temp<Positions> getEmpty();
+	Temp<Positions> getAll();
 
-	void setWriter(Temp<Positions>  positions);
+	void set(Temp<Positions>  positions);
 
 	Temp<const Entity::Vector> getChanged();
 
