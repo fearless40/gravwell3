@@ -2,8 +2,8 @@
 
 #pragma once
 
+using EntityID = uint64_t;
 
-using EntityID = __int64;
 
 namespace EntityUtil {
 
@@ -49,12 +49,48 @@ namespace EntityUtil {
 
 namespace Entity {
 
-	enum class Hint {
-		Temporary,
-		LongTerm
+	/*
+	template <class EntityLike> 
+	constexpr auto ID(EntityLike && item) {
+		return EntityType{ item.id() };
+	}
+
+	template <class StorageType>
+	class EntityType {
+		constexpr StorageType mid;
+	public:
+		using type = StorageType;
+		
+		template <class EntityLikeType>
+		constexpr EntityType(const EntityLikeType & elt) { mid = ID(elt); }
+		constexpr EntityType() {};
+		constexpr EntityType(type ty) : mid(ty) {}
+		constexpr EntityType(EntityType & et) : mid(et.get()) { }
+		// Doesnt need a move constructor
+
+		constexpr type id() noexcept const{ return mid; }
+		
+		constexpr bool operator == (const EntityType & rhs) { return mid == rhs.id(); }
+		constexpr bool operator < (const EntityType & rhs) { reutrn mid < rhs.id(); }
+		constexpr bool operator > (const EntityType & rhs) { reutrn mid > rhs.id(); }
+		constexpr bool operator != (const EntityType & rhs) { return mid != rhs.id(); }
+
+		template <class EntityLike> 
+		constexpr bool operator == (const EntityLike && rhs) { return mid == ID(rhs); }
+
+		template <class EntityLike>
+		constexpr bool operator < (const EntityLike && rhs) { return mid < ID(rhs); }
+
+		template <class EntityLike>
+		constexpr bool operator > (const EntityLike && rhs) { return mid > ID(rhs); }
+
+
+		constexpr EntityID<type> EmptyID = EntityID<type>{ 0 };
 	};
 
-	EntityID create(Hint ht = Hint::LongTerm);
+	using EntityID = EntityType<uint64_t>;
+	*/
+	EntityID create();
 
 	void destroy(EntityID id);
 

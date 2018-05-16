@@ -15,7 +15,9 @@ namespace Physics {
 	struct SingleAxesForce {
 		EntityID id;
 		float amount;
-	};
+	}; 
+
+	
 
 	using SingleAxisForces = std::vector<float>;
 	using Forces = std::vector<Force>;
