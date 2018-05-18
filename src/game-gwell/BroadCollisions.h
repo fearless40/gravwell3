@@ -1,6 +1,7 @@
 #pragma once
 #include "../util/Temp.hpp"
 #include "Entity.h"
+#include "Coord.h"
 
 namespace BroadCollisions {
 	struct CInfo {
@@ -10,11 +11,12 @@ namespace BroadCollisions {
 	};
 
 	struct Collision {
+		Collision(EntityID _id1, EntityID _id2) : id1(_id1), id2(_id2) {}
 		EntityID id1;
 		EntityID id2;
 	};
 
-	using Collisions = std::vector<Collisions>;
+	using Collisions = std::vector<Collision>;
 	using CInfos = std::vector<CInfo>;
 
 	Temp<CInfos> getWriter();

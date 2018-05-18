@@ -21,12 +21,19 @@ public:
 
 	Temp(Item & it) : item(it) {}
 
+	Temp(Temp< const Item, Tag> & t) : item(t.item) {}
+
+
 	operator Item & () const {
 		return get();
 	}
 
-	
-	
 private:
 	Item & item;
-}; 
+};
+
+template <class Item, class Tag = NoTag> 
+Temp<const Item, Tag> makeTempConst(Item & item) {
+	const Item & it = item;
+	return Temp<const Item, Tag>(it);
+}

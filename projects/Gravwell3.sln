@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Gravwell3", "Gravwell3.vcxproj", "{27C6AEED-69E1-498D-8887-A5747BAA605E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "..\tests\tests.vcxproj", "{A0E6B307-355C-43D1-9793-8B230EBF2D21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{27C6AEED-69E1-498D-8887-A5747BAA605E}.Release|x64.Build.0 = Release|x64
 		{27C6AEED-69E1-498D-8887-A5747BAA605E}.Release|x86.ActiveCfg = Release|Win32
 		{27C6AEED-69E1-498D-8887-A5747BAA605E}.Release|x86.Build.0 = Release|Win32
+		{A0E6B307-355C-43D1-9793-8B230EBF2D21}.Debug|x64.ActiveCfg = Debug|x64
+		{A0E6B307-355C-43D1-9793-8B230EBF2D21}.Debug|x64.Build.0 = Debug|x64
+		{A0E6B307-355C-43D1-9793-8B230EBF2D21}.Debug|x86.ActiveCfg = Debug|Win32
+		{A0E6B307-355C-43D1-9793-8B230EBF2D21}.Debug|x86.Build.0 = Debug|Win32
+		{A0E6B307-355C-43D1-9793-8B230EBF2D21}.Release|x64.ActiveCfg = Release|x64
+		{A0E6B307-355C-43D1-9793-8B230EBF2D21}.Release|x64.Build.0 = Release|x64
+		{A0E6B307-355C-43D1-9793-8B230EBF2D21}.Release|x86.ActiveCfg = Release|Win32
+		{A0E6B307-355C-43D1-9793-8B230EBF2D21}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

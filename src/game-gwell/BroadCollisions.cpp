@@ -7,9 +7,12 @@
 
 namespace BroadCollisions {
 	struct partialabb {
+		partialabb(Game::Coord w, Game::Coord h) : width(w), height(h) {}
 		Game::Coord width, height;
 	};
 	struct fullabb {
+		fullabb(Game::Coord tx1, Game::Coord ty1, Game::Coord tx2, Game::Coord ty2) :
+			x1(tx1), y1(ty1), x2(tx2), y2(ty2) {}
 		Game::Coord x1, y1, x2, y2;
 	};
 

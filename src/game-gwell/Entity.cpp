@@ -12,7 +12,7 @@ namespace Entity {
 	std::vector<EntityToString> mEntityStringMap;
 	std::vector<std::string> mStrings;
 
-	EntityID create(Hint ht) {
+	EntityID create() {
 		return ++mNextID;
 	}
 

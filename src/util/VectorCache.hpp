@@ -12,7 +12,7 @@ public:
 	}
 	
 	VectorCache(VectorCache & ) = delete;
-	VectorCahce(VectorCache && ) = delete;
+	VectorCache(VectorCache && ) = delete;
 	VectorCache & operator = (VectorCache &) = delete;
 
 
@@ -22,15 +22,15 @@ public:
 #endif 
 
 		if (freelist.size() > 0) {
-			auto value = freelist.last();
+			auto value = freelist.back();
 			freelist.pop_back();
 			return vectors[value];
 		}
 		else
 		{
 			vectors.emplace_back();
-			vectors.last().reserve(SizeOfVectors);
-			return vectors.last();
+			vectors.back().reserve(SizeOfVectors);
+			return vectors.back();
 		}
 	}
 

@@ -1,13 +1,10 @@
 
 #pragma once
 
-
+#include "Coord.h"
 
 
 namespace Game {
-	using Coord = __int64;
-	using dCoord = double;
-
 
 
 	void onUpdate();

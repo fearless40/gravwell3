@@ -10,6 +10,7 @@ namespace Physics {
 
 
 	using fVector = std::vector<float>;
+	using idToMass = std::unordered_map<EntityID, float>;
 
 	struct PerFrame {
 		
@@ -30,7 +31,7 @@ namespace Physics {
 			
 		}
 
-		void addForce(EntityID id, float xF, float yF) {
+		void addForce(EntityID id, float xF, float yF, idToMass const & idtomass) {
 			if (ids.count(id) == 0) {
 				xForce.push_back(xF);
 				yForce.push_back(yF);
@@ -38,7 +39,7 @@ namespace Physics {
 				xAcc.push_back(0.f);
 				yAcc.push_back(0.f);
 
-				if (auto imass = game.mass.find(id); imass != game.mass.end()) {
+				if (auto imass = idtomass.find(id); imass != idtomass.end()) {
 					mass.push_back(imass->second);
 				}
 				else {
@@ -54,7 +55,7 @@ namespace Physics {
 	};
 
 	struct PerGame {
-		std::unordered_map<EntityID, float> mass;
+		idToMass mass;
 		std::unordered_map<EntityID, unsigned int> entityMap;
 
 		Entity::Vector ids;
@@ -108,7 +109,7 @@ namespace Physics {
 
 	void setWriter(Forces & f) {
 		for (auto & x : f) {
-			frame.addForce(x.id, x.x, x.y);
+			frame.addForce(x.id, x.x, x.y, game.mass);
 		}
 	}
 
@@ -155,7 +156,7 @@ namespace Physics {
 	}
 
 	void update_positions() {
-		auto entries = Position::get(Temp( game.ids )).get();
+		auto entries = Position::get(makeTempConst( game.ids )).get();
 		for (unsigned i = 0; i < entries.size(); ++i) {
 			float xPos = entries[i].x.asFloat();
 			float yPos = entries[i].y.asFloat();

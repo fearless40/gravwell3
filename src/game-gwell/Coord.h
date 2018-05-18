@@ -1,4 +1,4 @@
-
+#pragma once
 #include <cstdlib>
 
 namespace Game {
@@ -9,6 +9,13 @@ namespace Game {
 		using int_type = __int64;
 		using dec_type = unsigned char;
 
+		Coord(int int_value) {
+			value = make_value(int_value, 0);
+		}
+
+		explicit Coord(int_type int_value) {
+			value = make_value(int_value, 0);
+		}
 		
 		explicit Coord(int_type int_value, dec_type dec_value) {
 			value = make_value(int_value, dec_value);
@@ -37,6 +44,13 @@ namespace Game {
 			return *this;
 		}
 
+		
+		constexpr bool operator < (const Coord & rhs)  const noexcept { return value < rhs.value; }
+		constexpr bool operator > (const Coord & rhs)  const noexcept { return value > rhs.value; }
+		constexpr bool operator == (const Coord & rhs) const noexcept { return value == rhs.value; }
+		constexpr bool operator != (const Coord & rhs) const noexcept { return value != rhs.value; }
+		constexpr bool operator >= (const Coord & rhs) const noexcept { return value >= rhs.value; }
+		constexpr bool operator <= (const Coord & rhs) const noexcept { return value <= rhs.value; }
 		//Other operators explicitly excluded. There is not point to have multiplication and division. 
 
 		int_type asInt() {
