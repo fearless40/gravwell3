@@ -1,9 +1,9 @@
 #pragma once
 
-namespace DX::D3D11 {
-	class Render {
+namespace Graphics::D3D11 {
+	class Context {
 	public:
-		Render(ComPtr<ID3D11DeviceContext>	DeviceContext);
+		Context(ComPtr<ID3D11DeviceContext>	DeviceContext);
 
 		void setViewPort(float width, float height, 
 			float MinDepth = 0.0f, float MaxDepth = 1.0f, 

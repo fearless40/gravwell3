@@ -1,18 +1,18 @@
 #include "../../stdafx.h"
 #include <d3d11.h>
 #include "../Shared.h"
-#include "Render.h"
+#include "Context.h"
 
 
-namespace DX::D3D11 {
+namespace Graphics::D3D11 {
 
-	Render::Render(ComPtr<ID3D11DeviceContext>	DeviceContext) :
+	Context::Context(ComPtr<ID3D11DeviceContext>	DeviceContext) :
 		mDeviceContext(DeviceContext)
 	{
 
 	}
 
-	void Render::setViewPort(float width, float height, float MinDepth, float MaxDepth, float TopLeftX, float TopLeftY) {
+	void Context::setViewPort(float width, float height, float MinDepth, float MaxDepth, float TopLeftX, float TopLeftY) {
 		D3D11_VIEWPORT viewport;
 
 		// Setup the viewport for rendering.

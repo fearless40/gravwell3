@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Adam\Vector\Vector2.h>
-#include <Adam\Rect\RectT.h>
+#include "..\util\Math\Vector2.h"
+#include "..\util\Math\RectT.h"
 #include "..\util\InvasiveRefCount.h"
 #include "..\util\RefCountPointer.h"
 #include <boost\container\flat_map.hpp>

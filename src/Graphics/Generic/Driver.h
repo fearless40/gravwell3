@@ -1,4 +1,6 @@
-namespace VideoDriver {
+#pragma once
+
+namespace Graphics::Generic {
 	
 	enum class VideoOutputs {
 		Primary,
@@ -22,4 +24,16 @@ namespace VideoDriver {
 		bool useVsync = false;
 		bool useFullscreen = false;
 	};
+
+	enum class BufferBinding
+	{
+		Default,
+		Immutable,
+		Dynamic,
+		Staging
+	};
 }
+
+#include "Buffer.h"
+#include "Buffer1D.h"
+#include "Buffer2D.h"

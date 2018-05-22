@@ -11,13 +11,13 @@
 #define DEBUGD3D11_RUNTIME
 
 
-namespace DX::D3D11 {
+namespace Graphics::D3D11 {
 
 	Driver::Driver(ComPtr<IDXGISwapChain> swap,
 		ComPtr<ID3D11Device> device, 
 		ComPtr<ID3D11DeviceContext> context, 
-		const VideoDriver::DisplayCreation creation,
-		const VideoDriver::DisplayMode mode) :
+		const Graphics::Generic::DisplayCreation creation,
+		const Graphics::Generic::DisplayMode mode) :
 		mSwapChain(swap), mDevice(device), mRender(context), mCreation(creation), mMode(mode) {
 
 	}
@@ -195,7 +195,42 @@ namespace DX::D3D11 {
 		}
 	}
 
-	std::unique_ptr<Driver> Driver::CreateDevice(HWND hwnd, const VideoDriver::DisplayCreation creation, const VideoDriver::DisplayMode mode)
+	ComPtr<ID3D11Buffer> Driver::createBuffer(void * mem, unsigned int memSize,
+		D3D11_USAGE bufferMemoryType,
+		unsigned int bindFlags,
+		unsigned int CPUAccessFlags)
+	{
+		ID3D11Buffer * tempbuf = nullptr;
+		D3D11_BUFFER_DESC vertexBufferDesc;
+		D3D11_SUBRESOURCE_DATA vertexData;
+
+		// Set up the description of the generic buffer.
+		vertexBufferDesc.Usage = bufferMemoryType;
+		vertexBufferDesc.ByteWidth = memSize;
+		vertexBufferDesc.BindFlags = bindFlags;
+		vertexBufferDesc.CPUAccessFlags = CPUAccessFlags;
+		vertexBufferDesc.MiscFlags = 0;
+		vertexBufferDesc.StructureByteStride = 0;
+
+		// Give the subresource structure a pointer to the vertex data.
+		vertexData.pSysMem = mem;
+		vertexData.SysMemPitch = 0;
+		vertexData.SysMemSlicePitch = 0;
+
+		// Now create the vertex buffer.
+		auto result = mDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &tempbuf);
+		if (FAILED(result))
+		{
+			return nullptr;
+		}
+
+		return { tempbuf };
+	};
+	
+
+	std::unique_ptr<Driver> Driver::CreateDevice(HWND hwnd, 
+		const Graphics::Generic::DisplayCreation creation, 
+		const Graphics::Generic::DisplayMode mode)
 	{
 		HRESULT result;
 		DXGI_SWAP_CHAIN_DESC swapChainDesc;
@@ -269,6 +304,7 @@ namespace DX::D3D11 {
 		uint32_t creationFlags = D3D11_CREATE_DEVICE_DEBUG;
 #else
 		uint32_t creationFlags = 0;
+
 #endif
 
 		// Create the swap chain, Direct3D device, and Direct3D device context.
@@ -279,6 +315,6 @@ namespace DX::D3D11 {
 			throw;
 		}
 
-		return std::make_unique<Driver>(mSwapChain, mDevice, mDeviceContext, mode);
+		return std::make_unique<Driver>(mSwapChain, mDevice, mDeviceContext, creation, mode);
 	}
 }
