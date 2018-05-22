@@ -8,9 +8,6 @@
     <Filter Include="main">
       <UniqueIdentifier>{cc3547de-7afa-4791-a276-e6d2bb1158be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="d3d11">
-      <UniqueIdentifier>{4cb06a8d-d3bf-4f52-907d-dff68c7d066c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="engine">
       <UniqueIdentifier>{fceb6e19-8d3f-4392-8da9-4f31a3538620}</UniqueIdentifier>
     </Filter>
@@ -41,6 +38,15 @@
     <Filter Include="media\vertexshaders">
       <UniqueIdentifier>{bef84482-e6c5-4d75-87b5-25a86a9433bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dx">
+      <UniqueIdentifier>{4cb06a8d-d3bf-4f52-907d-dff68c7d066c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dx\DXGI">
+      <UniqueIdentifier>{0ba004e4-83c6-4403-a132-2508ed19de35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dx\d3d11">
+      <UniqueIdentifier>{98fed115-050d-432d-9791-54c81293eead}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main\App.cpp">
@@ -57,45 +63,6 @@
     </ClCompile>
     <ClCompile Include="..\src\main\Window.cpp">
       <Filter>main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\BufferManager.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\BufferManagerHelpers.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\ConstantBufferArrayManager.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\ConstantBufferManager.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\D3D11.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\IndexBufferManager.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\Mesh.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\ShaderManager.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\VertexBufferManager.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\VertexShader.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\VertexShaderManager.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\VertexTypeDescription.cpp">
-      <Filter>d3d11</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\d3d11\VertexTypeManager.cpp">
-      <Filter>d3d11</Filter>
     </ClCompile>
     <ClCompile Include="..\src\engine\MicroManager.cpp">
       <Filter>engine</Filter>
@@ -188,6 +155,29 @@
     <ClCompile Include="..\src\game-gwell\Physics.cpp">
       <Filter>game-gwell</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\dx\BufferManager.cpp" />
+    <ClCompile Include="..\src\dx\BufferManagerHelpers.cpp" />
+    <ClCompile Include="..\src\dx\ConstantBuffer.cpp" />
+    <ClCompile Include="..\src\dx\ConstantBufferArrayManager.cpp" />
+    <ClCompile Include="..\src\dx\ConstantBufferManager.cpp" />
+    <ClCompile Include="..\src\dx\D3D11.cpp" />
+    <ClCompile Include="..\src\dx\IndexBufferManager.cpp" />
+    <ClCompile Include="..\src\dx\Mesh.cpp" />
+    <ClCompile Include="..\src\dx\ShaderManager.cpp" />
+    <ClCompile Include="..\src\dx\VertexBufferManager.cpp" />
+    <ClCompile Include="..\src\dx\VertexShader.cpp" />
+    <ClCompile Include="..\src\dx\VertexShaderManager.cpp" />
+    <ClCompile Include="..\src\dx\VertexTypeDescription.cpp" />
+    <ClCompile Include="..\src\dx\VertexTypeManager.cpp" />
+    <ClCompile Include="..\src\dx\DXGI\dxgi.cpp">
+      <Filter>dx\DXGI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\dx\D3D11\Driver.cpp">
+      <Filter>dx\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\dx\D3D11\Render.cpp">
+      <Filter>dx\d3d11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\App.h">
@@ -207,54 +197,6 @@
     </ClInclude>
     <ClInclude Include="..\src\main\Window.h">
       <Filter>main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\BufferManager.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\BufferManagerHelpers.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\ConstantBufferArray.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\ConstantBufferArrayManager.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\ConstantBufferManager.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\D3D11.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\D3DPointer.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\Handles.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\IndexBufferManager.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\Mesh.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\ShaderManager.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\VertexBufferManager.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\VertexShader.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\VertexShaderManager.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\VertexTypeDescription.h">
-      <Filter>d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\d3d11\VertexTypeManager.h">
-      <Filter>d3d11</Filter>
     </ClInclude>
     <ClInclude Include="..\src\engine\MicroManager.h">
       <Filter>engine</Filter>
@@ -392,6 +334,38 @@
     </ClInclude>
     <ClInclude Include="..\src\game-gwell\Physics.h">
       <Filter>game-gwell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\dx\BufferManager.h" />
+    <ClInclude Include="..\src\dx\BufferManagerHelpers.h" />
+    <ClInclude Include="..\src\dx\ConstantBuffer.h" />
+    <ClInclude Include="..\src\dx\ConstantBufferArray.h" />
+    <ClInclude Include="..\src\dx\ConstantBufferArrayManager.h" />
+    <ClInclude Include="..\src\dx\ConstantBufferManager.h" />
+    <ClInclude Include="..\src\dx\D3D11.h" />
+    <ClInclude Include="..\src\dx\D3DPointer.h" />
+    <ClInclude Include="..\src\dx\Handles.h" />
+    <ClInclude Include="..\src\dx\IndexBufferManager.h" />
+    <ClInclude Include="..\src\dx\Mesh.h" />
+    <ClInclude Include="..\src\dx\ShaderManager.h" />
+    <ClInclude Include="..\src\dx\VertexBufferManager.h" />
+    <ClInclude Include="..\src\dx\VertexShader.h" />
+    <ClInclude Include="..\src\dx\VertexShaderManager.h" />
+    <ClInclude Include="..\src\dx\VertexTypeDescription.h" />
+    <ClInclude Include="..\src\dx\VertexTypeManager.h" />
+    <ClInclude Include="..\src\dx\DXGI\VideoCard.h">
+      <Filter>dx\DXGI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\dx\DXGI\dxgi.h">
+      <Filter>dx\DXGI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\dx\DXGI\Factory.h">
+      <Filter>dx\DXGI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\dx\D3D11\Driver.h">
+      <Filter>dx\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\dx\D3D11\Render.h">
+      <Filter>dx\d3d11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
