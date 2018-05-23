@@ -170,6 +170,9 @@
     <ClCompile Include="..\src\Graphics\D3D11\Driver.cpp">
       <Filter>Graphics\d3d11</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Graphics\D3D11\Vertexs.cpp">
+      <Filter>Graphics\d3d11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\App.h">
@@ -367,6 +370,12 @@
       <Filter>Graphics\d3d11</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Graphics\D3D11\GenericToD3D.h">
+      <Filter>Graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Graphics\Generic\Vertexs.h">
+      <Filter>Graphics\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Graphics\D3D11\Vertexs.h">
       <Filter>Graphics\d3d11</Filter>
     </ClInclude>
   </ItemGroup>

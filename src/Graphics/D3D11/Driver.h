@@ -51,7 +51,7 @@ namespace Graphics::D3D11 {
 			Graphics::D3D::Conversion::BufferBindingToCPUAccess(binding));
 		}
 
-
+		ID3D11Device * get() const noexcept { return mDevice.Get(); }
 
 	private:
 		void setupRenderTargetView(); // Call First

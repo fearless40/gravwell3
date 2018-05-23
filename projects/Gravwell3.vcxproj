@@ -29,6 +29,7 @@
     <ClCompile Include="..\src\game-gwell\Position.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Context.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Driver.cpp" />
+    <ClCompile Include="..\src\Graphics\D3D11\Vertexs.cpp" />
     <ClCompile Include="..\src\Graphics\DXGI\dxgi.cpp" />
     <ClCompile Include="..\src\main\App.cpp" />
     <ClCompile Include="..\src\main\D3D11App.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="..\src\Graphics\D3D11\Context.h" />
     <ClInclude Include="..\src\Graphics\D3D11\Driver.h" />
     <ClInclude Include="..\src\Graphics\D3D11\GenericToD3D.h" />
+    <ClInclude Include="..\src\Graphics\D3D11\Vertexs.h" />
     <ClInclude Include="..\src\Graphics\DXGI\dxgi.h" />
     <ClInclude Include="..\src\Graphics\DXGI\Factory.h" />
     <ClInclude Include="..\src\Graphics\DXGI\VideoCard.h" />
@@ -81,6 +83,7 @@
     <ClInclude Include="..\src\Graphics\Generic\Buffer1D.h" />
     <ClInclude Include="..\src\Graphics\Generic\Buffer2D.h" />
     <ClInclude Include="..\src\Graphics\Generic\Driver.h" />
+    <ClInclude Include="..\src\Graphics\Generic\Vertexs.h" />
     <ClInclude Include="..\src\main\App.h" />
     <ClInclude Include="..\src\main\D3D11App.h" />
     <ClInclude Include="..\src\main\D3DWindow.h" />
