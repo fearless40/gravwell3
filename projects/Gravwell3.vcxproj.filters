@@ -173,6 +173,12 @@
     <ClCompile Include="..\src\Graphics\D3D11\Vertexs.cpp">
       <Filter>Graphics\d3d11</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Graphics\D3D11\ShaderCompiler.cpp">
+      <Filter>Graphics\d3d11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\procedural\Geometry.cpp">
+      <Filter>procedural</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\App.h">
@@ -377,6 +383,18 @@
     </ClInclude>
     <ClInclude Include="..\src\Graphics\D3D11\Vertexs.h">
       <Filter>Graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Graphics\D3D11\ShaderCompiler.h">
+      <Filter>Graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\procedural\Bezier.h">
+      <Filter>procedural</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\procedural\Geometry.h">
+      <Filter>procedural</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\procedural\TeapotData.hpp">
+      <Filter>procedural</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

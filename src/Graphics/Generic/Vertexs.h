@@ -2,32 +2,65 @@
 
 #include <DirectXMath.h>
 
-namespace Graphics::Generic::Vertex {
-	enum class Names
+namespace Graphics::Generic 
+{ 
+	namespace VertexTypes
 	{
-		Pos = 0,
-		Pos_Color = 1,
-		Pos_UV = 2,
-		Pos_Normal_UV = 3,
-	};
+		enum class Names
+		{
+			Pos = 0,
+			Pos_Color = 1,
+			Pos_UV = 2,
+			Pos_Normal_UV = 3,
+		};
 
-	struct Position {
-		DirectX::XMFLOAT4 position;
-	};
+		struct Position {
+			DirectX::XMFLOAT4 position;
+		};
 
-	struct PositionColor {
-		DirectX::XMFLOAT4 position;
-		DirectX::XMFLOAT4 color;
-	};
+		struct PositionColor {
+			DirectX::XMFLOAT4 position;
+			DirectX::XMFLOAT4 color;
+		};
 
-	struct PositionUV {
-		DirectX::XMFLOAT4 position;
-		DirectX::XMFLOAT2 uv;
-	};
+		struct PositionUV {
+			DirectX::XMFLOAT4 position;
+			DirectX::XMFLOAT2 uv;
+		};
 
-	struct PositionNormalUV {
-		DirectX::XMFLOAT4 position;
-		DirectX::XMFLOAT4 normal;
-		DirectX::XMFLOAT2 uv;
+		struct PositionNormalUV {
+			PositionNormalUV() = default;
+
+			PositionNormalUV(const PositionNormalUV&) = default;
+			PositionNormalUV& operator=(const PositionNormalUV&) = default;
+
+			PositionNormalUV(PositionNormalUV&&) = default;
+			PositionNormalUV& operator=(PositionNormalUV&&) = default;
+
+			PositionNormalUV(DirectX::XMFLOAT3 const& position, DirectX::XMFLOAT3 const& normal, DirectX::XMFLOAT2 const& textureCoordinate)
+				: position(position),
+				normal(normal),
+				textureCoordinate(textureCoordinate)
+			{ }
+
+			PositionNormalUV(DirectX::FXMVECTOR position, DirectX::FXMVECTOR normal, DirectX::FXMVECTOR textureCoordinate)
+			{
+				XMStoreFloat3(&this->position, position);
+				XMStoreFloat3(&this->normal, normal);
+				XMStoreFloat2(&this->textureCoordinate, textureCoordinate);
+			}
+
+			DirectX::XMFLOAT3 position;
+			DirectX::XMFLOAT3 normal;
+			DirectX::XMFLOAT2 textureCoordinate;
+
+		};
+	}
+
+	template <typename Base, typename VertexType> 
+	struct VertexDescription {
+		using vertex_type = VertexType;
+		using base_type = Base;
+		constexpr auto stride() { return sizeof(VertexType); }
 	};
 }

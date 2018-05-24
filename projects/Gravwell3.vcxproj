@@ -29,6 +29,7 @@
     <ClCompile Include="..\src\game-gwell\Position.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Context.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Driver.cpp" />
+    <ClCompile Include="..\src\Graphics\D3D11\ShaderCompiler.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Vertexs.cpp" />
     <ClCompile Include="..\src\Graphics\DXGI\dxgi.cpp" />
     <ClCompile Include="..\src\main\App.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="..\src\main\Gravwell 3.cpp" />
     <ClCompile Include="..\src\main\Window.cpp" />
     <ClCompile Include="..\src\procedural\BoxGenerator.cpp" />
+    <ClCompile Include="..\src\procedural\Geometry.cpp" />
     <ClCompile Include="..\src\procedural\MakeBox.cpp" />
     <ClCompile Include="..\src\procedural\MeshGeneratorHelper.cpp" />
     <ClCompile Include="..\src\procedural\PlaneGenerator.cpp" />
@@ -75,6 +77,7 @@
     <ClInclude Include="..\src\Graphics\D3D11\Context.h" />
     <ClInclude Include="..\src\Graphics\D3D11\Driver.h" />
     <ClInclude Include="..\src\Graphics\D3D11\GenericToD3D.h" />
+    <ClInclude Include="..\src\Graphics\D3D11\ShaderCompiler.h" />
     <ClInclude Include="..\src\Graphics\D3D11\Vertexs.h" />
     <ClInclude Include="..\src\Graphics\DXGI\dxgi.h" />
     <ClInclude Include="..\src\Graphics\DXGI\Factory.h" />
@@ -91,11 +94,14 @@
     <ClInclude Include="..\src\main\Resource.h" />
     <ClInclude Include="..\src\main\targetver.h" />
     <ClInclude Include="..\src\main\Window.h" />
+    <ClInclude Include="..\src\procedural\Bezier.h" />
     <ClInclude Include="..\src\procedural\BoxGenerator.h" />
+    <ClInclude Include="..\src\procedural\Geometry.h" />
     <ClInclude Include="..\src\procedural\MeshGeneratorHelper.h" />
     <ClInclude Include="..\src\procedural\PlaneGenerator.h" />
     <ClInclude Include="..\src\procedural\Procedural.h" />
     <ClInclude Include="..\src\procedural\SphereGenerator.h" />
+    <ClInclude Include="..\src\procedural\TeapotData.hpp" />
     <ClInclude Include="..\src\render\Camera.h" />
     <ClInclude Include="..\src\render\Material.h" />
     <ClInclude Include="..\src\render\MeshBuilder.h" />

@@ -5,6 +5,7 @@
 #include "Context.h"
 #include "GenericToD3D.h"
 #include "Buffer.h"
+#include "ShaderCompiler.h"
 
 
 namespace Graphics::D3D11 {
@@ -52,6 +53,21 @@ namespace Graphics::D3D11 {
 		}
 
 		ID3D11Device * get() const noexcept { return mDevice.Get(); }
+
+		template< typename VertexDescription >
+		void registerVertexDescription(VertexDescription & vd) {
+			if constexpr (VertexDescription::requires_compilation::value) {
+				auto shader = ShaderCompiler::compile(vd.layoutstring());
+				auto inputarr = vd.layoutarray();
+				mDevice->CreateInputLayout(inputarr.data(), inputarr.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &vd);
+			}
+			else constexpr {
+				auto shader = vd.compiledshader();
+				auto inputarr = vd.layoutarray();
+				mDevice->CreateInputLayout(inputarr.data(), inputarr.size(), shader.data(), shader.size(), &vd);
+			}
+			
+		}
 
 	private:
 		void setupRenderTargetView(); // Call First
