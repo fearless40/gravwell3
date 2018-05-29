@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Generic/Color.h"
+
 namespace Graphics::D3D11 {
 	class Context {
 	public:
@@ -19,20 +21,21 @@ namespace Graphics::D3D11 {
 
 		void clearRenderTarget() {
 			float color[4] = { 0.0f,0.0f,0.0f,1.0f };
-
-			// Clear the back buffer.
 			mDeviceContext->ClearRenderTargetView(mTargetView.Get(), color);
+		}
+
+		void clearRenderTarget(const Graphics::Generic::RGBA & color) {
+			mDeviceContext->ClearRenderTargetView(mTargetView.Get(), color.data());
 		}
 
 		void clearDepthStencilTarget() {
 			mDeviceContext->ClearDepthStencilView(mStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 		}
 
-		
-
 		ID3D11DeviceContext * get() { return mDeviceContext.Get(); }
 
 		ID3D11DeviceContext * operator -> () { return mDeviceContext.Get(); }
+
 	private:
 		ComPtr<ID3D11DepthStencilView>  mStencilView = nullptr;
 		ComPtr<ID3D11RenderTargetView>	mTargetView = nullptr;

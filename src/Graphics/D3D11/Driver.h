@@ -16,11 +16,9 @@ namespace Graphics::D3D11 {
 		Driver(ComPtr<IDXGISwapChain> swap, 
 			ComPtr<ID3D11Device> device,
 			ComPtr<ID3D11DeviceContext> context,
-			const Graphics::Generic::DisplayCreation creation,
 			const Graphics::Generic::DisplayMode mode);
 
 		static std::unique_ptr<Driver> CreateDevice(HWND hwnd, 
-			const Graphics::Generic::DisplayCreation creation, 
 			const Graphics::Generic::DisplayMode mode);
 		
 		void setupDefaults();
@@ -81,8 +79,7 @@ namespace Graphics::D3D11 {
 			unsigned int CPUAccessFlags);
 		
 		Graphics::Generic::DisplayMode		mMode;
-		Graphics::Generic::DisplayCreation	mCreation;
-
+		
 		ComPtr<IDXGISwapChain>			mSwapChain			= nullptr;
 		ComPtr<ID3D11Device>			mDevice				= nullptr;
 		ComPtr<ID3D11RenderTargetView>	mRenderTargetView	= nullptr;

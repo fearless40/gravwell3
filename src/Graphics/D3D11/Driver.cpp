@@ -16,9 +16,8 @@ namespace Graphics::D3D11 {
 	Driver::Driver(ComPtr<IDXGISwapChain> swap,
 		ComPtr<ID3D11Device> device, 
 		ComPtr<ID3D11DeviceContext> context, 
-		const Graphics::Generic::DisplayCreation creation,
 		const Graphics::Generic::DisplayMode mode) :
-		mSwapChain(swap), mDevice(device), mRender(context), mCreation(creation), mMode(mode) {
+		mSwapChain(swap), mDevice(device), mRender(context), mMode(mode) {
 
 	}
 
@@ -183,7 +182,7 @@ namespace Graphics::D3D11 {
 
 	void Driver::present() {
 		// Present the back buffer to the screen since rendering is complete.
-		if (mCreation.useVsync)
+		if (mMode.useVsync)
 		{
 			// Lock to screen refresh rate.
 			mSwapChain->Present(1, 0);
@@ -229,7 +228,6 @@ namespace Graphics::D3D11 {
 	
 
 	std::unique_ptr<Driver> Driver::CreateDevice(HWND hwnd, 
-		const Graphics::Generic::DisplayCreation creation, 
 		const Graphics::Generic::DisplayMode mode)
 	{
 		HRESULT result;
@@ -255,7 +253,7 @@ namespace Graphics::D3D11 {
 
 
 		// Set the refresh rate of the back buffer.
-		if (creation.useVsync)
+		if (mode.useVsync)
 		{
 			swapChainDesc.BufferDesc.RefreshRate.Numerator = mode.refreshrate.numerator;
 			swapChainDesc.BufferDesc.RefreshRate.Denominator = mode.refreshrate.denominator;
@@ -277,7 +275,7 @@ namespace Graphics::D3D11 {
 		swapChainDesc.SampleDesc.Quality = 0;
 
 		// Set to full screen or windowed mode.
-		if (creation.useFullscreen)
+		if (mode.useFullscreen)
 		{
 			swapChainDesc.Windowed = false;
 		}
@@ -315,6 +313,6 @@ namespace Graphics::D3D11 {
 			throw;
 		}
 
-		return std::make_unique<Driver>(mSwapChain, mDevice, mDeviceContext, creation, mode);
+		return std::make_unique<Driver>(mSwapChain, mDevice, mDeviceContext, mode);
 	}
 }

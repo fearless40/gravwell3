@@ -17,9 +17,6 @@
     <Filter Include="cull">
       <UniqueIdentifier>{2a8267e1-9d42-44d6-821d-53bac38f1c09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="procedural">
-      <UniqueIdentifier>{8b22fbcc-4b02-4a74-b70f-38546e50c727}</UniqueIdentifier>
-    </Filter>
     <Filter Include="tests">
       <UniqueIdentifier>{93ec7440-fced-4f4c-b993-43141012da1c}</UniqueIdentifier>
     </Filter>
@@ -52,6 +49,9 @@
     </Filter>
     <Filter Include="Graphics\Generic">
       <UniqueIdentifier>{1db0be2f-df7b-4bb0-994e-84a76304bf72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{8b22fbcc-4b02-4a74-b70f-38546e50c727}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,27 +94,6 @@
     <ClCompile Include="..\src\render\Camera.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\render\Material.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\render\MeshBuilder.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\render\MeshCPU.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\render\MeshManager.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\render\Model.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\render\ModelBuilder.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\render\ModelManager.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\render\RenderableInstance.cpp">
       <Filter>render</Filter>
     </ClCompile>
@@ -126,21 +105,6 @@
     </ClCompile>
     <ClCompile Include="..\src\tests\MicroManagerTest.cpp">
       <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\procedural\BoxGenerator.cpp">
-      <Filter>procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\procedural\MakeBox.cpp">
-      <Filter>procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\procedural\MeshGeneratorHelper.cpp">
-      <Filter>procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\procedural\PlaneGenerator.cpp">
-      <Filter>procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\procedural\SphereGenerator.cpp">
-      <Filter>procedural</Filter>
     </ClCompile>
     <ClCompile Include="..\src\stdafx.cpp" />
     <ClCompile Include="..\src\game-gwell\LinearMotion.cpp">
@@ -177,7 +141,7 @@
       <Filter>Graphics\d3d11</Filter>
     </ClCompile>
     <ClCompile Include="..\src\procedural\Geometry.cpp">
-      <Filter>procedural</Filter>
+      <Filter>Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,27 +214,6 @@
     <ClInclude Include="..\src\render\Camera.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\render\Material.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render\MeshBuilder.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render\MeshCPU.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render\MeshManager.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render\Model.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render\ModelBuilder.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render\ModelManager.h">
-      <Filter>render</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\render\Render.h">
       <Filter>render</Filter>
     </ClInclude>
@@ -285,21 +228,6 @@
     </ClInclude>
     <ClInclude Include="..\src\tests\MicroMangerTest.h">
       <Filter>tests</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\procedural\BoxGenerator.h">
-      <Filter>procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\procedural\MeshGeneratorHelper.h">
-      <Filter>procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\procedural\PlaneGenerator.h">
-      <Filter>procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\procedural\Procedural.h">
-      <Filter>procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\procedural\SphereGenerator.h">
-      <Filter>procedural</Filter>
     </ClInclude>
     <ClInclude Include="..\src\stdafx.h" />
     <ClInclude Include="..\src\main\targetver.h" />
@@ -388,13 +316,13 @@
       <Filter>Graphics\d3d11</Filter>
     </ClInclude>
     <ClInclude Include="..\src\procedural\Bezier.h">
-      <Filter>procedural</Filter>
+      <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\src\procedural\Geometry.h">
-      <Filter>procedural</Filter>
+      <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\src\procedural\TeapotData.hpp">
-      <Filter>procedural</Filter>
+      <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

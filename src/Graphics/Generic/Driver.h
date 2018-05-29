@@ -18,11 +18,9 @@ namespace Graphics::Generic {
 			unsigned int numerator = 0;
 			unsigned int denominator = 0;
 		} refreshrate;
-	};
-
-	struct DisplayCreation {
 		bool useVsync = false;
 		bool useFullscreen = false;
+
 	};
 
 	enum class BufferBinding
@@ -32,6 +30,56 @@ namespace Graphics::Generic {
 		Dynamic,
 		Staging
 	};
+
+
+	template <class Base>
+	class Driver : public Base 
+	{
+	private:
+		constexpr auto base() { return static_cast<Base*>(this); }
+	public:
+		template<typename DriverSpecific>
+		static std::unique_ptr<Driver> CreateDevice(DriverSpecific hwnd,
+			const Graphics::Generic::DisplayMode mode)
+		{
+			return Base::CreateDevice(hwnd, mode);
+		}
+
+		void setupDefaults() {
+			base()->setupDefaults();
+		}
+
+		void resize(unsigned int width, unsigned int height) {
+			base()->resize(width,height);
+		}
+		
+		void present() {
+			base()->present();
+		}
+
+		// Creation Functions
+		template <typename T>
+		auto createConstantBuffer(const Graphics::Generic::Buffer<T> & buf) {
+			return base()->createConstantBuffer(buf);
+		}
+
+		template <typename T>
+		auto createVertexBuffer(const Graphics::Generic::Buffer<T> & buf, Graphics::Generic::BufferBinding binding) {
+			return base()->createVertexBuffer(buf, binding);
+		}
+
+		template <typename T>
+		auto createIndexBuffer(const Graphics::Generic::Buffer<T> & buf, Graphics::Generic::BufferBinding binding) {
+			return base()->createIndexBuffer(buf, binding);
+		}
+
+		template< typename VertexDescription >
+		void registerVertexDescription(VertexDescription & vd) {
+			base()->registerVertexDescription(vd);
+		}
+	};
+
+
 }
 
 #include "Buffer.h"

@@ -7,7 +7,7 @@ class D3D11App : public AppGame<D3D11App>
 private:
 	struct InternalData;
 	
-	InternalData * pimpl;
+	std::unique_ptr<InternalData> mImpl;
 
 
 public:

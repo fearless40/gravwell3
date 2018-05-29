@@ -14,7 +14,7 @@
 
 
 using namespace DirectX;
-namespace Procedrual {
+namespace Geometry {
 namespace
 {
 	const float SQRT2 = 1.41421356237309504880f;

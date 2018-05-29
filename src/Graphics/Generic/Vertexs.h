@@ -57,10 +57,10 @@ namespace Graphics::Generic
 		};
 	}
 
-	template <typename Base, typename VertexType> 
+	template <typename Base> 
 	struct VertexDescription {
-		using vertex_type = VertexType;
+		using vertex_type = typename Base::vertex_type;
 		using base_type = Base;
-		constexpr auto stride() { return sizeof(VertexType); }
+		auto asBase() { return static_cast<Base &>(*this); }
 	};
 }

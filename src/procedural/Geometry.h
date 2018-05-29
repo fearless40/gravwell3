@@ -10,7 +10,7 @@
 
 #include "../Graphics/Generic/Vertexs.h"
 
-namespace Procedrual
+namespace Geometry
 {
 	using VertexPositionNormalTexture = Graphics::Generic::VertexTypes::PositionNormalUV;
 	typedef std::vector<VertexPositionNormalTexture> VertexCollection;

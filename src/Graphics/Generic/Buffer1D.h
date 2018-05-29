@@ -11,7 +11,33 @@ namespace Graphics::Generic {
 
 	public:
 		using type = T;
+		using vector_type = std::vector<T>;
+
 		constexpr static std::size_t ElementSize = sizeof(T);
+
+		Buffer1D() = default;
+		Buffer1D(const Buffer1D &) = default;
+		Buffer1D(Buffer1D &&) = default;
+		Buffer1D(vector_type && vt) : mData(std::move(vt)) {}
+		Buffer1D(const vector_type & vt) : mData(vt) {}
+		
+		auto operator = (const Buffer1D &) = default;
+		auto operator = (Buffer1D &&) = default;
+
+		template<typename Range>
+		Buffer1D(const Range & r) : mData(std::begin(r), std::end(r)) {}
+
+		auto operator = (vector_type && vt) {
+			mData = std::move(vt);
+			return *this;
+		}
+
+		auto operator = (const vector_type & vt) {
+			mData.assign(std::begin(vt), std::end(vt));
+			return *this;
+		}
+
+
 
 		auto begin()					{ return mData.begin(); }
 		auto end()						{ return mData.end(); }

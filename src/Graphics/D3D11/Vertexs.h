@@ -71,7 +71,7 @@ namespace Graphics::D3D11 {
 	}
 
 	template <typename VertexType>
-	class VertexDescription : public Graphics::Generic::VertexDescription<VertexDescription<VertexType>, VertexType>
+	class VertexDescription 
 	{
 	private:
 		static ComPtr<ID3D11InputLayout> mLayout;
@@ -79,11 +79,12 @@ namespace Graphics::D3D11 {
 
 	public:
 		
-		using vertex_type = typename Graphics::Generic::VertexDescription<VertexDescription, VertexType>::vertex_type;
-		using base_type = typename  Graphics::Generic::VertexDescription<VertexDescription, VertexType>::base_type;
-		
+		using vertex_type = VertexType;
+
 		// Set to false if you already compiled the layout string (std::false_type)
 		using requires_compilation = typename vti::requires_compilation;
+
+		constexpr auto stride() { return sizeof(VertexType); }
 
 		ID3D11InputLayout * get() { return mLayout.Get(); }
 		auto releaseAndGetAddressOf() { return mLayout.ReleaseAndGetAddressOf(); }
@@ -104,7 +105,4 @@ namespace Graphics::D3D11 {
 	template <typename VertexType>
 	ComPtr<ID3D11InputLayout> VertexDescription<VertexType>::mLayout;
 
-
-
-	
 }
