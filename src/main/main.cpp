@@ -2,8 +2,9 @@
 //
 
 #include "../stdafx.h"
-#include "Gravwell 3.h"
-#include "D3D11App.h"
+#include "resource.h"
+//#include "D3D11App.h"
+#include "App.h"
 
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
@@ -14,7 +15,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	D3D11App app(hInstance);
+	auto app = App::CreateApp(hInstance, lpCmdLine);
+	app->run();
+	//D3D11App app(hInstance);
 
 	return app.run();
 

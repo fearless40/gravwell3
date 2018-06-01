@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-namespace sfme::timer
+namespace Util
 {
 
 	using namespace std::chrono_literals;

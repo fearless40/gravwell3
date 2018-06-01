@@ -64,9 +64,6 @@
     <ClCompile Include="..\src\main\D3DWindow.cpp">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\main\Gravwell 3.cpp">
-      <Filter>main</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\main\Window.cpp">
       <Filter>main</Filter>
     </ClCompile>
@@ -143,6 +140,12 @@
     <ClCompile Include="..\src\procedural\Geometry.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\main\main.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\CmdLineParser.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\App.h">
@@ -152,9 +155,6 @@
       <Filter>main</Filter>
     </ClInclude>
     <ClInclude Include="..\src\main\D3DWindow.h">
-      <Filter>main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\main\Gravwell 3.h">
       <Filter>main</Filter>
     </ClInclude>
     <ClInclude Include="..\src\main\Resource.h">
@@ -323,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="..\src\procedural\TeapotData.hpp">
       <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\CmdLineParser.h">
+      <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

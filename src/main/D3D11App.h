@@ -1,8 +1,10 @@
 #pragma once
 #include "App.h"
+#include "Window.h"
+#include "TimeStep.h"
 
 
-class D3D11App : public AppGame<D3D11App>
+/*class D3D11App : public AppGame<D3D11App>
 {
 private:
 	struct InternalData;
@@ -17,5 +19,20 @@ public:
 	bool initalize();
 
 	bool Frame();
-};
+};*/
 
+class WindowsGame : public App<WindowsGame>, Window {
+public:
+	WindowsGame(HINSTANCE hInstance, Util::CommandLineParameters clp);
+
+	void run();
+	void shutdown();
+
+private:
+
+	void next_frame(); 
+
+	HINSTANCE mInst;
+	HACCEL	  mAccelTable;
+	Util::TimeStep timer;
+};
