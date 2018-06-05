@@ -55,12 +55,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\main\App.cpp">
-      <Filter>main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\main\D3D11App.cpp">
-      <Filter>main</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\main\D3DWindow.cpp">
       <Filter>main</Filter>
     </ClCompile>
@@ -146,14 +140,14 @@
     <ClCompile Include="..\src\util\CmdLineParser.cpp">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\engine\Engine.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main\WindowsGame.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\main\App.h">
-      <Filter>main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\main\D3D11App.h">
-      <Filter>main</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\main\D3DWindow.h">
       <Filter>main</Filter>
     </ClInclude>
@@ -326,6 +320,15 @@
     </ClInclude>
     <ClInclude Include="..\src\util\CmdLineParser.h">
       <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\Event.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\Engine.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\main\WindowsGame.h">
+      <Filter>main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

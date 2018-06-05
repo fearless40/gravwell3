@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\engine\Engine.cpp" />
     <ClCompile Include="..\src\engine\MicroManager.cpp" />
     <ClCompile Include="..\src\game-gwell\BroadCollisions.cpp" />
     <ClCompile Include="..\src\game-gwell\Entity.cpp" />
@@ -32,8 +33,7 @@
     <ClCompile Include="..\src\Graphics\D3D11\ShaderCompiler.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Vertexs.cpp" />
     <ClCompile Include="..\src\Graphics\DXGI\dxgi.cpp" />
-    <ClCompile Include="..\src\main\App.cpp" />
-    <ClCompile Include="..\src\main\D3D11App.cpp" />
+    <ClCompile Include="..\src\main\WindowsGame.cpp" />
     <ClCompile Include="..\src\main\D3DWindow.cpp" />
     <ClCompile Include="..\src\main\main.cpp" />
     <ClCompile Include="..\src\main\Window.cpp" />
@@ -53,6 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\cull\Cull2DBoxVsSphereWithOffset.h" />
+    <ClInclude Include="..\src\engine\Engine.h" />
+    <ClInclude Include="..\src\engine\Event.h" />
     <ClInclude Include="..\src\engine\MicroManager.h" />
     <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
     <ClInclude Include="..\src\game-gwell\Coord.h" />
@@ -76,8 +78,7 @@
     <ClInclude Include="..\src\Graphics\Generic\Buffer2D.h" />
     <ClInclude Include="..\src\Graphics\Generic\Driver.h" />
     <ClInclude Include="..\src\Graphics\Generic\Vertexs.h" />
-    <ClInclude Include="..\src\main\App.h" />
-    <ClInclude Include="..\src\main\D3D11App.h" />
+    <ClInclude Include="..\src\main\WindowsGame.h" />
     <ClInclude Include="..\src\main\D3DWindow.h" />
     <ClInclude Include="..\src\main\Resource.h" />
     <ClInclude Include="..\src\main\targetver.h" />
@@ -164,7 +165,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{27C6AEED-69E1-498D-8887-A5747BAA605E}</ProjectGuid>
     <RootNamespace>Gravwell3</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

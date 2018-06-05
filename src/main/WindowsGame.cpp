@@ -1,8 +1,10 @@
 #include "../stdafx.h"
 #include "Resource.h"
-#include "App.h"
-#include "D3D11App.h"
+#include "../util/CmdLineParser.h"
 #include "Window.h"
+#include "WindowsGame.h"
+
+
 
 WindowsGame::WindowsGame(HINSTANCE hInstance, Util::CommandLineParameters clp) : mInst( hInstance ) {
 	Window::RegisterWindowClasses(mInst, IDI_GRAVWELL3, IDI_SMALL, L"D3D Window", L"D3DWindow");
@@ -21,7 +23,7 @@ void WindowsGame::run() {
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+			if (!TranslateAccelerator(msg.hwnd, mAccelTable, &msg))
 			{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
@@ -57,50 +59,10 @@ void WindowsGame::next_frame()
 
 }
 
+void WindowsGame::next_game_step(float step) {
 
-struct D3D11App::InternalData {
-	RefCountPointer<D3DWindow> main;
-	TestClass * test;
-};
-
-
-D3D11App::D3D11App(HINSTANCE hinst) : AppGame(hinst, IDI_GRAVWELL3), mImpl(new D3D11App::InternalData)
-{
-	
 }
 
+void WindowsGame::next_render_step(float step) {
 
-D3D11App::~D3D11App(void)
-{
 }
-
-
-
-bool D3D11App::initalize() 
-{
-
-	D3DWindow::RegisterWindowClass(hInst, IDI_GRAVWELL3, IDI_SMALL);
-	mImpl->main = new D3DWindow();
-	mImpl->main->initalize(false,false);
-	mImpl->main->show();
-		
-	D3D11 & d3d = mImpl->main->getD3D();
-
-	mImpl->test = new TestClass( d3d );
-
-	auto rect = mImpl->main->getClientPos();
-
-	if( mImpl->test->initalize( rect.width(), rect.height() ) )
-		return true;
-
-	return false;
-}
-
-
-bool D3D11App::Frame() 
-{
-	
-	return mImpl->test->frame();
-	
-}
-
