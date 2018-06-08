@@ -68,3 +68,7 @@ void WindowsGame::next_game_step(float step) {
 void WindowsGame::next_render_step(float step) {
 	Events::Event<Engine::NextRenderFrame>::Fire({ step });
 }
+
+void WindowsGame::onSize(stdBounds newSize) {
+
+}

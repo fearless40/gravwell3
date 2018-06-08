@@ -25,7 +25,7 @@ namespace Graphics::D3D11 {
 		}
 
 		void clearRenderTarget(const Graphics::Generic::RGBA & color) {
-			mDeviceContext->ClearRenderTargetView(mTargetView.Get(), color.data());
+			mDeviceContext->ClearRenderTargetView(mTargetView.Get(), color.cdata());
 		}
 
 		void clearDepthStencilTarget() {

@@ -55,14 +55,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\main\D3DWindow.cpp">
-      <Filter>main</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\main\Window.cpp">
       <Filter>main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\engine\MicroManager.cpp">
-      <Filter>engine</Filter>
     </ClCompile>
     <ClCompile Include="..\src\game-gwell\LargeObjectManager.cpp">
       <Filter>game-gwell</Filter>
@@ -84,18 +78,6 @@
     </ClCompile>
     <ClCompile Include="..\src\render\Camera.cpp">
       <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\render\RenderableInstance.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\render\RenderQue.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\tests\LowLevelTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\tests\MicroManagerTest.cpp">
-      <Filter>tests</Filter>
     </ClCompile>
     <ClCompile Include="..\src\stdafx.cpp" />
     <ClCompile Include="..\src\game-gwell\LinearMotion.cpp">
@@ -148,17 +130,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\main\D3DWindow.h">
-      <Filter>main</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\main\Resource.h">
       <Filter>main</Filter>
     </ClInclude>
     <ClInclude Include="..\src\main\Window.h">
       <Filter>main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\engine\MicroManager.h">
-      <Filter>engine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\game-gwell\LargeObjectManager.h">
       <Filter>game-gwell</Filter>
@@ -210,18 +186,6 @@
     </ClInclude>
     <ClInclude Include="..\src\render\Render.h">
       <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render\RenderableInstance.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render\RenderQue.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\tests\LowLevelTest.h">
-      <Filter>tests</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\tests\MicroMangerTest.h">
-      <Filter>tests</Filter>
     </ClInclude>
     <ClInclude Include="..\src\stdafx.h" />
     <ClInclude Include="..\src\main\targetver.h" />

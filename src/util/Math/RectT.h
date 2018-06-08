@@ -30,14 +30,18 @@ public:
 	union { value right;	value	x2;	};
 	union { value bottom;	value	y2;	};
 	
-	RectT()																			{}
+	RectT()																				{}
 	RectT(value l, value t, value r, value b) : left(l), top(t), 
 		right(r), bottom (b)															{}
 	RectT(const point & center, value width, value height) : x(center.x - width /2),
 		y(center.y - height / 2), x2(center.x + width /2), y2(center.y + height / 2)	{}
-	RectT(rect & r) : x(r.x), y(r.y), x2(r.x2), y2(r.y2)								{} 
+	RectT(const rect & r) : x(r.x), y(r.y), x2(r.x2), y2(r.y2)							{} 
 	~RectT()																			{}
 
+	RectT(RectT &&) = default;
+
+	RectT & operator = (const RectT & r) = default;
+	RectT & operator = (RectT && r) = default;
 
 	rect & set(value l, value t, value r, value b)
 	{

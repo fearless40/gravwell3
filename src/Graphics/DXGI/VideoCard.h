@@ -1,3 +1,5 @@
+#pragma once
+
 #include "dxgi.h"
 #include <vector>
 #include <memory>
@@ -11,7 +13,7 @@ namespace DX::DXGI {
 
 		struct Displays {
 			ComPtr<IDXGIOutput1> screen;
-			std::unique_ptr<DXGI_MODE_DESC> modes[];
+			std::unique_ptr<DXGI_MODE_DESC[]> modes;
 		};
 
 		std::vector<Displays> mDisplays;

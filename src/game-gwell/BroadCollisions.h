@@ -1,7 +1,6 @@
 #pragma once
 #include "../util/Temp.hpp"
-#include "Entity.h"
-#include "Coord.h"
+
 
 namespace BroadCollisions {
 	struct CInfo {

@@ -48,7 +48,8 @@ namespace Position {
 	}
 
 	Temp<Positions> getEmpty() {
-		return { nextVector() };
+		auto pos = nextVector();
+		return Temp<Positions>{ pos };
 	}
 
 	Temp<Positions> getAll() {

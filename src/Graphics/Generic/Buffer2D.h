@@ -63,8 +63,9 @@ namespace Graphics::Generic {
 			}
 		}
 
+		
 		const void * getMemory() const noexcept {
-			return static_cast<void*>mData.data();
+			return static_cast<void*>(mData.data());
 		}
 	};
 

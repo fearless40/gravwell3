@@ -38,7 +38,7 @@ Window::RectI Window::getClientPos() const
 {
 	RECT r;
 	GetClientRect( getHWND(), &r );
-	return RectI( r.left, r.top, r.right, r.bottom );
+	return { r.left, r.top, r.right, r.bottom };
 }
 
 void Window::setParent( WindowPtr parent )
@@ -239,7 +239,7 @@ Window::WindowPtr Window::createWindow( std::wstring WindowsClass, RectI bounds 
 
 Window::RectI Window::fromRECT( const RECT & r )
 {
-	return RectI( r.left, r.top, r.right, r.bottom );
+	return { r.left, r.top, r.right, r.bottom };
 }
 
 std::wstring Window::RegisterWindowClasses(HINSTANCE hInst, int AppResourceID, int IconResourceID, std::wstring wTitle, std::wstring wClass)
@@ -317,7 +317,7 @@ int CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		}
 		return win->WindowProc(message, wParam, lParam);
 	case WM_SIZE:
-        win->onSize(RectI(0,0, LOWORD(lParam), HIWORD(lParam)));	
+		win->onSize(RectI{ 0,0, LOWORD(lParam), HIWORD(lParam) });
 		break;
 
 	case WM_PAINT:

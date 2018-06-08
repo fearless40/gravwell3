@@ -138,10 +138,10 @@ public: // Static Functions
 	static void SetClassPointer(Window * wPtr);
 	static Window * GetClassPointer(HWND wHandle);
 	static int CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-	static std::wstring Window::RegisterWindowClasses(HINSTANCE hInst, int AppResourceID,int IconResourceID, std::wstring wTitle, std::wstring wClass);
+	static std::wstring RegisterWindowClasses(HINSTANCE hInst, int AppResourceID,int IconResourceID, std::wstring wTitle, std::wstring wClass);
 	
 	// Override to create a new window
-	static WindowPtr createWindow( std::wstring WindowsClass, RectI bounds = RectI(0,0,0,0), DWORD style = 0, DWORD ExtendedStyle = 0, const std::wstring title = L"", WindowPtr parent = nullptr, HINSTANCE hinst = 0, HMENU hmenu = 0); 
+	static WindowPtr createWindow(std::wstring WindowsClass, RectI bounds = RectI{ 0,0,0,0 }, DWORD style = 0, DWORD ExtendedStyle = 0, const std::wstring title = L"", WindowPtr parent = nullptr, HINSTANCE hinst = 0, HMENU hmenu = 0);
 	
 
 	/*template <class WindowType>

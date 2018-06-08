@@ -17,6 +17,8 @@ private:
 	void next_game_step(float since_last_frame);
 	void next_render_step(float since_last_frame);
 
+	void onSize(stdBounds newSize) override;
+
 	HINSTANCE mInst;
 	HACCEL	  mAccelTable;
 	Util::TimeStep timer;

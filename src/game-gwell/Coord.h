@@ -78,11 +78,11 @@ namespace Game {
 		int_type value = 0;
 	};
 
-	Coord operator + (Coord lhs, const Coord & rhs) {
+	static Coord operator + (Coord lhs, const Coord & rhs) {
 		return lhs += rhs;
 	}
 
-	Coord operator - (Coord lhs, const Coord & rhs) {
+	static Coord operator - (Coord lhs, const Coord & rhs) {
 		return lhs -= rhs;
 	}
 }

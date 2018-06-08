@@ -1,5 +1,8 @@
+#pragma once
+
 #include "../Shared.h"
 #include <DXGI1_2.h>
+
 
 namespace DX::DXGI {
 

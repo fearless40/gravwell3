@@ -16,7 +16,7 @@ namespace Geometry
 	typedef std::vector<VertexPositionNormalTexture> VertexCollection;
 	typedef std::vector<uint16_t> IndexCollection;
 
-	void ComputeBox(VertexCollection& vertices, IndexCollection& indices, const XMFLOAT3& size, bool rhcoords, bool invertn);
+	void ComputeBox(VertexCollection& vertices, IndexCollection& indices, const DirectX::XMFLOAT3& size, bool rhcoords, bool invertn);
 	void ComputeSphere(VertexCollection& vertices, IndexCollection& indices, float diameter, size_t tessellation, bool rhcoords, bool invertn);
 	void ComputeGeoSphere(VertexCollection& vertices, IndexCollection& indices, float diameter, size_t tessellation, bool rhcoords);
 	void ComputeCylinder(VertexCollection& vertices, IndexCollection& indices, float height, float diameter, size_t tessellation, bool rhcoords);

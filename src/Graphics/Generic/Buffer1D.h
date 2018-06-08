@@ -21,8 +21,8 @@ namespace Graphics::Generic {
 		Buffer1D(vector_type && vt) : mData(std::move(vt)) {}
 		Buffer1D(const vector_type & vt) : mData(vt) {}
 		
-		auto operator = (const Buffer1D &) = default;
-		auto operator = (Buffer1D &&) = default;
+		Buffer1D & operator = (const Buffer1D &) = default;
+		Buffer1D & operator = (Buffer1D &&) = default;
 
 		template<typename Range>
 		Buffer1D(const Range & r) : mData(std::begin(r), std::end(r)) {}
@@ -59,7 +59,7 @@ namespace Graphics::Generic {
 		}
 
 		const void * getMemory() const noexcept{
-			return static_cast<void*>mData.data();
+			return static_cast<void*>(mData.data());
 		}
 	};
 }

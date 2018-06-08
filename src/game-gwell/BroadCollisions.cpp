@@ -1,4 +1,7 @@
 #include "../stdafx.h"
+
+#include "Entity.h"
+#include "Coord.h"
 #include "BroadCollisions.h"
 #include "Position.h"
 #include <algorithm>

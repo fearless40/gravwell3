@@ -59,7 +59,7 @@ namespace Graphics::D3D11 {
 				auto inputarr = vd.layoutarray();
 				mDevice->CreateInputLayout(inputarr.data(), inputarr.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &vd);
 			}
-			else constexpr {
+			else {
 				auto shader = vd.compiledshader();
 				auto inputarr = vd.layoutarray();
 				mDevice->CreateInputLayout(inputarr.data(), inputarr.size(), shader.data(), shader.size(), &vd);

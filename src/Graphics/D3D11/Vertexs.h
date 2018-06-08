@@ -19,7 +19,7 @@ namespace Graphics::D3D11 {
 		template<> 	struct VertexTypeInfo<Graphics::Generic::VertexTypes::Position> 
 		{
 			using requires_compilation = std::true_type;
-			constexpr static char * element_string = "float4 main( float4 position : Position ) : SV_Position { return position; }";
+			constexpr static char element_string[] = "float4 main( float4 position : Position ) : SV_Position { return position; }";
 			constexpr static D3D11_INPUT_ELEMENT_DESC element_desc[] = {
 				{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			};
@@ -31,7 +31,7 @@ namespace Graphics::D3D11 {
 		template<> 	struct VertexTypeInfo<Graphics::Generic::VertexTypes::PositionColor>
 		{
 			using requires_compilation = std::true_type;
-			constexpr static char * element_string = "float4 main( float4 position : Position, float4 color : Color ) : SV_Position { return position; }";
+			constexpr static char element_string[] = "float4 main( float4 position : Position, float4 color : Color ) : SV_Position { return position; }";
 			constexpr static D3D11_INPUT_ELEMENT_DESC element_desc[] = {
 				{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
@@ -44,7 +44,7 @@ namespace Graphics::D3D11 {
 		template<> 	struct VertexTypeInfo<Graphics::Generic::VertexTypes::PositionUV>
 		{
 			using requires_compilation = std::true_type;
-			constexpr static char * element_string = "float4 main( float4 position : Position, float2 uv : TexCoord ) : SV_Position { return position; }";
+			constexpr static char element_string[] = "float4 main( float4 position : Position, float2 uv : TexCoord ) : SV_Position { return position; }";
 			constexpr static D3D11_INPUT_ELEMENT_DESC element_desc[] = {
 				{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
@@ -57,7 +57,7 @@ namespace Graphics::D3D11 {
 		template<> 	struct VertexTypeInfo<Graphics::Generic::VertexTypes::PositionNormalUV>
 		{
 			using requires_compilation = std::true_type;
-			constexpr static char * element_string = "float4 main( float4 position : Position, float4 normal : Normal, float2 uv : TexCoord ) : SV_Position { return position; }";
+			constexpr static char element_string[] = "float4 main( float4 position : Position, float4 normal : Normal, float2 uv : TexCoord ) : SV_Position { return position; }";
 			constexpr static D3D11_INPUT_ELEMENT_DESC element_desc[] = {
 				{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },

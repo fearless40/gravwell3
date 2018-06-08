@@ -1,8 +1,21 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../src/game-gwell/Coord.h"
+
+
+namespace Microsoft {
+	namespace VisualStudio {
+		namespace CppUnitTestFramework {
+			template<> inline std::wstring ToString<long long>(const long long& t) { RETURN_WIDE_STRING(t); }
+		}
+	}
+}
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Game;
+
+
+
 namespace tests
 {		
 	TEST_CLASS(GameCoord)

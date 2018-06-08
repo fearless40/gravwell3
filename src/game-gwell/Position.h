@@ -10,12 +10,12 @@ namespace Position {
 		EntityID id;
 	};
 
-	bool operator < (const Pos & lhs, const Pos & rhs) { return lhs.id < rhs.id; }
-	bool operator == (const Pos & lhs, const Pos & rhs) { return lhs.id == rhs.id; }
-	bool operator <(const EntityID lhs, const Pos & rhs) { 	return lhs < rhs.id; }
-	bool operator <(const Pos & lhs, const EntityID rhs) { 	return lhs.id < rhs; }
-	bool operator == (const EntityID lhs, const Pos & rhs) { return lhs == rhs.id; 	}
-	bool operator == (const Pos & lhs, const EntityID rhs) { return lhs.id == rhs; }
+	static bool operator < (const Pos & lhs, const Pos & rhs) { return lhs.id < rhs.id; }
+	static bool operator == (const Pos & lhs, const Pos & rhs) { return lhs.id == rhs.id; }
+	static bool operator <(const EntityID lhs, const Pos & rhs) { 	return lhs < rhs.id; }
+	static bool operator <(const Pos & lhs, const EntityID rhs) { 	return lhs.id < rhs; }
+	static bool operator == (const EntityID lhs, const Pos & rhs) { return lhs == rhs.id; 	}
+	static bool operator == (const Pos & lhs, const EntityID rhs) { return lhs.id == rhs; }
 
 	using Positions = std::vector<Pos>;
 	
@@ -29,5 +29,5 @@ namespace Position {
 
 	Temp<const Entity::Vector> getChanged();
 
-	void frameEnd() {}
+	static void frameEnd() {}
 }

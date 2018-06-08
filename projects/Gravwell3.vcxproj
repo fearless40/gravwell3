@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\engine\Engine.cpp" />
-    <ClCompile Include="..\src\engine\MicroManager.cpp" />
     <ClCompile Include="..\src\game-gwell\BroadCollisions.cpp" />
     <ClCompile Include="..\src\game-gwell\Entity.cpp" />
     <ClCompile Include="..\src\game-gwell\Game.cpp" />
@@ -34,16 +33,11 @@
     <ClCompile Include="..\src\Graphics\D3D11\Vertexs.cpp" />
     <ClCompile Include="..\src\Graphics\DXGI\dxgi.cpp" />
     <ClCompile Include="..\src\main\WindowsGame.cpp" />
-    <ClCompile Include="..\src\main\D3DWindow.cpp" />
     <ClCompile Include="..\src\main\main.cpp" />
     <ClCompile Include="..\src\main\Window.cpp" />
     <ClCompile Include="..\src\procedural\Geometry.cpp" />
     <ClCompile Include="..\src\render\Camera.cpp" />
-    <ClCompile Include="..\src\render\RenderableInstance.cpp" />
-    <ClCompile Include="..\src\render\RenderQue.cpp" />
     <ClCompile Include="..\src\stdafx.cpp" />
-    <ClCompile Include="..\src\tests\LowLevelTest.cpp" />
-    <ClCompile Include="..\src\tests\MicroManagerTest.cpp" />
     <ClCompile Include="..\src\util\CmdLineParser.cpp" />
     <ClCompile Include="..\src\util\GenericHandle.cpp" />
     <ClCompile Include="..\src\util\Job.cpp" />
@@ -56,7 +50,6 @@
     <ClInclude Include="..\src\engine\Engine.h" />
     <ClInclude Include="..\src\engine\Event.h" />
     <ClInclude Include="..\src\engine\GameEvent.h" />
-    <ClInclude Include="..\src\engine\MicroManager.h" />
     <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
     <ClInclude Include="..\src\game-gwell\Coord.h" />
     <ClInclude Include="..\src\game-gwell\Entity.h" />
@@ -80,7 +73,6 @@
     <ClInclude Include="..\src\Graphics\Generic\Driver.h" />
     <ClInclude Include="..\src\Graphics\Generic\Vertexs.h" />
     <ClInclude Include="..\src\main\WindowsGame.h" />
-    <ClInclude Include="..\src\main\D3DWindow.h" />
     <ClInclude Include="..\src\main\Resource.h" />
     <ClInclude Include="..\src\main\targetver.h" />
     <ClInclude Include="..\src\main\Window.h" />
@@ -89,11 +81,7 @@
     <ClInclude Include="..\src\procedural\TeapotData.hpp" />
     <ClInclude Include="..\src\render\Camera.h" />
     <ClInclude Include="..\src\render\Render.h" />
-    <ClInclude Include="..\src\render\RenderableInstance.h" />
-    <ClInclude Include="..\src\render\RenderQue.h" />
     <ClInclude Include="..\src\stdafx.h" />
-    <ClInclude Include="..\src\tests\LowLevelTest.h" />
-    <ClInclude Include="..\src\tests\MicroMangerTest.h" />
     <ClInclude Include="..\src\util\CmdLineParser.h" />
     <ClInclude Include="..\src\util\CriticalSection.h" />
     <ClInclude Include="..\src\util\FreeListVector.h" />
@@ -253,7 +241,8 @@
       <FloatingPointModel>Strict</FloatingPointModel>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

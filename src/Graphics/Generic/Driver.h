@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Buffer.h"
+#include "Buffer1D.h"
+#include "Buffer2D.h"
+
 namespace Graphics::Generic {
 	
 	enum class VideoOutputs {
@@ -82,6 +86,3 @@ namespace Graphics::Generic {
 
 }
 
-#include "Buffer.h"
-#include "Buffer1D.h"
-#include "Buffer2D.h"

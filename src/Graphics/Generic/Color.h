@@ -48,10 +48,10 @@ namespace Graphics::Generic
 		constexpr float blue()	const noexcept { return colors[color_layout::blue]; }
 		constexpr float alpha()	const noexcept { return colors[color_layout::alpha]; }
 
-		constexpr red(float v)	noexcept { colors[color_layout::red] = v; }
-		constexpr green(float v)noexcept { colors[color_layout::green] = v; }
-		constexpr blue(float v)	noexcept { colors[color_layout::blue] = v; }
-		constexpr alpha(float v)noexcept { colors[color_layout::alpha] = v; }
+		constexpr void red(float v)	noexcept { colors[color_layout::red] = v; }
+		constexpr void green(float v)noexcept { colors[color_layout::green] = v; }
+		constexpr void blue(float v)	noexcept { colors[color_layout::blue] = v; }
+		constexpr void alpha(float v)noexcept { colors[color_layout::alpha] = v; }
 
 
 		Color() {
@@ -73,10 +73,10 @@ namespace Graphics::Generic
 
 	
 
-	template<typename ColorInput, typename ColorTypeOutput>
-	Color<ColorTypeOutput> convert(const ColorInut & ci) {
+/*	template<typename ColorInput, typename PreferredColorType>
+	Color<PreferredColorType> convert(const ColorInut & ci) {
 		return { ci };
-	}
+	}*/
 
 	using RGBA = Color<ColorLayout::RGBA>;
 
