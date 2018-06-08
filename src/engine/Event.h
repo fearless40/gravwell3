@@ -26,7 +26,7 @@ namespace Events {
 			// Do nothing for now
 		}
 
-		static Remove(const Token tk) {
+		static void Remove(const Token tk) {
 			mRecievers.erase(mRecievers.begin() + tk.value);
 		}
 
@@ -35,5 +35,5 @@ namespace Events {
 	};
 
 	template<class T>
-	std::vector<Message<T>::callback> Message<T>::mRecievers;
+	std::vector<typename Event<T>::callback> Event<T>::mRecievers;
 }

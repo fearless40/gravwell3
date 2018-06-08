@@ -1,11 +1,11 @@
 #pragma once
-#include <spdlog/spdlog.h>
+//#include <spdlog/spdlog.h>
 #include "../util/CmdLineParser.h"
 
 
 namespace Engine {
 	
-	namespace Events {
+	namespace events {
 		struct RequestShutDown{};
 		struct ShutDownNow {};
 		struct SleepNow{};
@@ -14,7 +14,7 @@ namespace Engine {
 
 	Util::CommandLineParameters Initalize(std::wstring_view cmdLine);
 	void Shutdown();
-	std::shared_ptr<spdlog::logger> GetDefaultLog();
+	//std::shared_ptr<spdlog::logger> GetDefaultLog();
 	
 }
 

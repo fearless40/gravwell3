@@ -4,21 +4,22 @@
 
 
 namespace Engine {
-	std::shared_ptr<spdlog::logger> mLogger;
+	//std::shared_ptr<spdlog::logger> mLogger;
 	
 	Util::CommandLineParameters Initalize(std::wstring_view cmdLine) {
 		auto clp = Util::ParseCommandLine(cmdLine);
-		mLogger = spdlog::create<spdlog::stdout_color_st>("default_log");
+		//mLogger = spdlog::create<spdlog::stdout_color_st>("default_log");
 
 		//Create the events that we need
-		Events::Event<ShutDownNow>::Listen([]() { ShutDown() });
+		Events::Event<Engine::events::ShutDownNow>::Listen([](auto x) { Engine::Shutdown(); });
+		return clp;
 	}
 	
 	void Shutdown() {
 		// Do nothing for now
 	}
 
-	std::shared_ptr<spdlog::logger> GetDefaultLog() {
+	/*std::shared_ptr<spdlog::logger> GetDefaultLog() {
 		return mLogger;
-	}
+	}*/
 }

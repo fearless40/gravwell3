@@ -3,6 +3,8 @@
 #include "../util/CmdLineParser.h"
 #include "Window.h"
 #include "WindowsGame.h"
+#include "../engine/GameEvent.h"
+#include "../engine/Event.h"
 
 
 
@@ -60,9 +62,9 @@ void WindowsGame::next_frame()
 }
 
 void WindowsGame::next_game_step(float step) {
-
+	Events::Event<Engine::NextLogicFrame>::Fire({ step });
 }
 
 void WindowsGame::next_render_step(float step) {
-
+	Events::Event<Engine::NextRenderFrame>::Fire({ step });
 }

@@ -9,9 +9,12 @@
 //--------------------------------------------------------------------------------------
 
 #include "../stdafx.h"
+#include <map>
+#include <algorithm>
 #include "Geometry.h"
 #include "Bezier.h"
-
+#undef max
+#undef min
 
 using namespace DirectX;
 namespace Geometry {

@@ -1,6 +1,6 @@
 #include "../stdafx.h"
 #include "Window.h"
-#include <boost\bind.hpp>
+//#include <boost\bind.hpp>
 
 
 

@@ -55,6 +55,7 @@
     <ClInclude Include="..\src\cull\Cull2DBoxVsSphereWithOffset.h" />
     <ClInclude Include="..\src\engine\Engine.h" />
     <ClInclude Include="..\src\engine\Event.h" />
+    <ClInclude Include="..\src\engine\GameEvent.h" />
     <ClInclude Include="..\src\engine\MicroManager.h" />
     <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
     <ClInclude Include="..\src\game-gwell\Coord.h" />

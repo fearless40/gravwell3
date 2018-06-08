@@ -1,11 +1,4 @@
 #include "../stdafx.h"
-#include <DirectXMath.h>
-#include "../d3d11/Handles.h"
-#include "D3D11.h"
-#include "LargeObjectManager.h"
-#include "../d3d11/ConstantBufferArrayManager.h"
-#include "../engine/MicroManager.h"
-
 
 using namespace DirectX;
 

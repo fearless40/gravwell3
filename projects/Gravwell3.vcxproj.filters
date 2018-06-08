@@ -330,6 +330,9 @@
     <ClInclude Include="..\src\main\WindowsGame.h">
       <Filter>main</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\engine\GameEvent.h">
+      <Filter>engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

@@ -4,7 +4,8 @@
 #include "..\util\Math\RectT.h"
 #include "..\util\InvasiveRefCount.h"
 #include "..\util\RefCountPointer.h"
-#include <boost\container\flat_map.hpp>
+#include <unordered_map>
+//#include <boost\container\flat_map.hpp>
 
 // Stripped down window class for use in a game engine. 
 
@@ -12,7 +13,7 @@ class Window : public RefCount
 {
 public: //Type defs
 	typedef RefCountPointer<Window>  WindowPtr;
-	typedef boost::container::flat_map< HWND, WindowPtr > ChildList;
+	typedef std::unordered_map< HWND, WindowPtr > ChildList;
 
 	typedef ST::Vector2T<int> stdPoint;
 	typedef ST::RectT<int, stdPoint> stdBounds;

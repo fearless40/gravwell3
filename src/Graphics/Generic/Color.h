@@ -4,17 +4,17 @@ namespace Graphics::Generic
 {
 	namespace ColorLayout {
 		struct RGBA {
-			constexpr unsigned int red = 0;
-			constexpr unsigned int green = 1;
-			constexpr unsigned int blue = 2;
-			constexpr unsigned int alpha = 3
+			static constexpr unsigned int red = 0;
+			static constexpr unsigned int green = 1;
+			static constexpr unsigned int blue = 2;
+			static constexpr unsigned int alpha = 3;
 		};
 
 		struct BGRA {
-			constexpr unsigned int red = 2;
-			constexpr unsigned int green = 1;
-			constexpr unsigned int blue = 0;
-			constexpr unsigned int alpha = 3
+			static constexpr unsigned int red = 2;
+			static constexpr unsigned int green = 1;
+			static constexpr unsigned int blue = 0;
+			static constexpr unsigned int alpha = 3;
 		};
 	};
 	
@@ -22,7 +22,7 @@ namespace Graphics::Generic
 		struct Color {
 			float colors[4];
 
-			float * data() const noexcept { return &data; }
+			const float * cdata() const noexcept { return colors; }
 		};
 	}
 
