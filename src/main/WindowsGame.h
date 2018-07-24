@@ -22,4 +22,5 @@ private:
 	HINSTANCE mInst;
 	HACCEL	  mAccelTable;
 	Util::TimeStep timer;
+	bool mRunning;
 };

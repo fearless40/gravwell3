@@ -19,8 +19,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	auto parsedcommandline = Engine::Initalize(std::wstring_view { lpCmdLine });
-	
-
+	WindowsGame game{ hInstance, parsedcommandline };
+	game.run();
+	Engine::Shutdown();
 }
 
 

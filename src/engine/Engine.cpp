@@ -11,12 +11,12 @@ namespace Engine {
 		//mLogger = spdlog::create<spdlog::stdout_color_st>("default_log");
 
 		//Create the events that we need
-		Events::Event<Engine::events::ShutDownNow>::Listen([](auto x) { Engine::Shutdown(); });
+		//Events::Event<Engine::events::ShutDownNow>::Listen([](auto x) { Engine::Shutdown(); });
 		return clp;
 	}
 	
 	void Shutdown() {
-		// Do nothing for now
+		Events::Event<Engine::events::ShutDownNow>::Fire({});
 	}
 
 	/*std::shared_ptr<spdlog::logger> GetDefaultLog() {

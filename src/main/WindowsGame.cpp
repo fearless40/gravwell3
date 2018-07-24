@@ -17,11 +17,11 @@ WindowsGame::WindowsGame(HINSTANCE hInstance, Util::CommandLineParameters clp) :
 
 void WindowsGame::run() {
 	MSG msg;
-	bool running = true;
+	mRunning = true;
 	
 	timer.start();
 
-	while (running)
+	while (mRunning)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
@@ -33,7 +33,7 @@ void WindowsGame::run() {
 
 			if (msg.message == WM_QUIT)
 			{
-				running = false;
+				mRunning = false;
 				break;
 			}
 		}
@@ -45,7 +45,7 @@ void WindowsGame::run() {
 }
 
 void WindowsGame::shutdown() {
-
+	mRunning = false;
 }
 
 void WindowsGame::next_frame() 

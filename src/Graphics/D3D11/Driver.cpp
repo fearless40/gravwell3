@@ -227,7 +227,7 @@ namespace Graphics::D3D11 {
 	};
 	
 
-	std::unique_ptr<Driver> Driver::CreateDevice(HWND hwnd, 
+	std::unique_ptr<Graphics::Generic::Driver<Driver>> Driver::CreateDevice(HWND hwnd, 
 		const Graphics::Generic::DisplayMode mode)
 	{
 		HRESULT result;
@@ -313,6 +313,6 @@ namespace Graphics::D3D11 {
 			throw;
 		}
 
-		return std::make_unique<Driver>(mSwapChain, mDevice, mDeviceContext, mode);
+		return std::make_unique<Graphics::Generic::Driver<Driver>>(mSwapChain, mDevice, mDeviceContext, mode);
 	}
 }
