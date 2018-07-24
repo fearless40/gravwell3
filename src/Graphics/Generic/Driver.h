@@ -3,6 +3,7 @@
 #include "Buffer.h"
 #include "Buffer1D.h"
 #include "Buffer2D.h"
+#include "IndexBuffer.h"
 
 namespace Graphics::Generic {
 	
@@ -73,8 +74,8 @@ namespace Graphics::Generic {
 		}
 
 		template <typename T>
-		auto createIndexBuffer(const Graphics::Generic::Buffer<T> & buf, Graphics::Generic::BufferBinding binding) {
-			return base()->createIndexBuffer(buf, binding);
+		auto createIndexBuffer(const Graphics::Generic::Buffer<T> & buf, Graphics::Generic::BufferBinding binding, IndexBuffer::Format fmt = IndexBuffer::Format::UINT_16) {
+			return IndexBuffer{ base()->createIndexBuffer(buf, binding), fmt };
 		}
 
 		template< typename VertexDescription >

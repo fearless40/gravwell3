@@ -297,6 +297,9 @@
     <ClInclude Include="..\src\engine\GameEvent.h">
       <Filter>engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Graphics\Generic\IndexBuffer.h">
+      <Filter>Graphics\Generic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">
