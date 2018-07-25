@@ -2,17 +2,12 @@
 
 namespace Graphics::Generic {
 
-	namespace IndexBuffer {
-		enum class Format {
-			UINT_16,
-			UINT_32
-		};
-	}
+	
 
 	template<typename InternalBuffer>
 	class IndexBuffer {
 		InternalBuffer mBuf;
-		IndexBuffer::Format mFmt = IndexBuffer::Format::UINT_16;
+		DXGI_FORMAT mFmt = DXGI_FORMAT_R16_UINT;
 	
 	public:
 		IndexBuffer(InternalBuffer && buf) : mBuf(std::forward(buf)) {	}
@@ -20,6 +15,6 @@ namespace Graphics::Generic {
 		IndexBuffer(InternalBuffer && buf, IndexBuffer::Format fmt) : mBuf(std::forward(buf)), mFmt(fmt) {}
 
 		InternalBuffer & buffer() { return mBuf; }
-		IndexBuffer::Format format() { return mFmt; }
+		DXGI_FORMAT format() { return mFmt; }
 	};
 }

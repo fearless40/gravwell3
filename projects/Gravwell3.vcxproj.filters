@@ -297,8 +297,11 @@
     <ClInclude Include="..\src\engine\GameEvent.h">
       <Filter>engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\engine\Graphics.h">
+      <Filter>engine</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\Graphics\Generic\IndexBuffer.h">
-      <Filter>Graphics\Generic</Filter>
+      <Filter>Graphics\d3d11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

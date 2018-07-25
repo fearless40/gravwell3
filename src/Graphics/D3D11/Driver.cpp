@@ -313,6 +313,6 @@ namespace Graphics::D3D11 {
 			throw;
 		}
 
-		return std::make_unique<Graphics::Generic::Driver<Driver>>(mSwapChain, mDevice, mDeviceContext, mode);
+		return std::make_unique<Driver>(mSwapChain, mDevice, mDeviceContext, mode);
 	}
 }

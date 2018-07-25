@@ -2,6 +2,7 @@
 
 #include "../Generic/Driver.h"
 
+
 namespace Graphics::D3D::Conversion {
 constexpr D3D11_USAGE BufferBinding(Graphics::Generic::BufferBinding bb) {
 	switch (bb)
@@ -31,4 +32,12 @@ constexpr unsigned int BufferBindingToCPUAccess(Graphics::Generic::BufferBinding
 		return 0;
 	}
 }
+
+constexpr DXGI_FORMAT IndexFormat(Graphics::Generic::IndexBufferFormat fmt) {
+	switch(fmt) {
+	case Graphics::Generic::IndexBufferFormat::UINT_16:
+		return DXGI_FORMAT_R16_UINT;
+	case Graphics::Generic::IndexBufferFormat::UINT_32:
+		return DXGI_FORMAT_R32_UINT;
+	}
 }

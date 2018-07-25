@@ -23,4 +23,5 @@ private:
 	HACCEL	  mAccelTable;
 	Util::TimeStep timer;
 	bool mRunning;
+	
 };

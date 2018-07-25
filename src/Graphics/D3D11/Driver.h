@@ -18,7 +18,7 @@ namespace Graphics::D3D11 {
 			ComPtr<ID3D11DeviceContext> context,
 			const Graphics::Generic::DisplayMode mode);
 
-		static std::unique_ptr<Graphics::Generic::Driver<Driver>> CreateDevice(HWND hwnd, 
+		static std::unique_ptr<Driver> CreateDevice(HWND hwnd, 
 			const Graphics::Generic::DisplayMode mode);
 		
 		void setupDefaults();
@@ -43,11 +43,12 @@ namespace Graphics::D3D11 {
 		}
 
 		template <typename T>
-		Buffer createIndexBuffer(const Graphics::Generic::Buffer<T> & buf, Graphics::Generic::BufferBinding binding) {
-		return createBuffer(buf.getMemory(), buf.getSize(),
-			D3D11_BIND_INDEX_BUFFER,
-			Graphics::D3D::Conversion::BufferBinding(binding),
-			Graphics::D3D::Conversion::BufferBindingToCPUAccess(binding));
+		IndexBuffer createIndexBuffer(const Graphics::Generic::Buffer<T> & buf, Graphics::Generic::BufferBinding binding, Graphics::Generic::IndexBuffer::Format fmt) {
+			return IndexBuffer{ createBuffer(buf.getMemory(), buf.getSize(),
+				D3D11_BIND_INDEX_BUFFER,
+				Graphics::D3D::Conversion::BufferBinding(binding),
+				Graphics::D3D::Conversion::BufferBindingToCPUAccess(binding)), 
+				IndexFormat(fmt) };
 		}
 
 		ID3D11Device * get() const noexcept { return mDevice.Get(); }

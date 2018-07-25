@@ -36,6 +36,18 @@ namespace Graphics::Generic {
 		Staging
 	};
 
+	enum class IndexBufferFormat {
+			UINT_16,
+			UINT_32
+	};
+	
+	enum class Topology {
+		PointList,
+		LineList,
+		LineStrip,
+		TriangleList,
+		TriangleStrip
+	};
 
 	template <class Base>
 	class Driver : public Base 

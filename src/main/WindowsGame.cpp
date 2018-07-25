@@ -5,8 +5,9 @@
 #include "WindowsGame.h"
 #include "../engine/GameEvent.h"
 #include "../engine/Event.h"
+#include "../Graphics/D3D11/Driver.h"
 
-
+std::unique_ptr<Graphics::D3D11::Driver> graphics_driver{ nullptr };
 
 WindowsGame::WindowsGame(HINSTANCE hInstance, Util::CommandLineParameters clp) : mInst( hInstance ) {
 	Window::RegisterWindowClasses(mInst, IDI_GRAVWELL3, IDI_SMALL, L"D3D Window", L"D3DWindow");
@@ -18,6 +19,7 @@ WindowsGame::WindowsGame(HINSTANCE hInstance, Util::CommandLineParameters clp) :
 void WindowsGame::run() {
 	MSG msg;
 	mRunning = true;
+	graphics_driver = Graphics::D3D11::Driver::CreateDevice(getHWND(), { 0,0,{0,0},false,false });
 	
 	timer.start();
 

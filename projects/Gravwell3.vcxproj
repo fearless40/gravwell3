@@ -50,6 +50,7 @@
     <ClInclude Include="..\src\engine\Engine.h" />
     <ClInclude Include="..\src\engine\Event.h" />
     <ClInclude Include="..\src\engine\GameEvent.h" />
+    <ClInclude Include="..\src\engine\Graphics.h" />
     <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
     <ClInclude Include="..\src\game-gwell\Coord.h" />
     <ClInclude Include="..\src\game-gwell\Entity.h" />
