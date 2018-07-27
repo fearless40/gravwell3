@@ -73,6 +73,7 @@
     <ClInclude Include="..\src\Graphics\Generic\Buffer2D.h" />
     <ClInclude Include="..\src\Graphics\Generic\Driver.h" />
     <ClInclude Include="..\src\Graphics\Generic\IndexBuffer.h" />
+    <ClInclude Include="..\src\Graphics\Generic\Model.h" />
     <ClInclude Include="..\src\Graphics\Generic\Vertexs.h" />
     <ClInclude Include="..\src\main\WindowsGame.h" />
     <ClInclude Include="..\src\main\Resource.h" />
