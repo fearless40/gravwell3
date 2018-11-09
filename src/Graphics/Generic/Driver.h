@@ -49,7 +49,7 @@ namespace Graphics::Generic {
 		TriangleStrip
 	};
 
-	template <class Base>
+	/*template <class Base>
 	class Driver : public Base 
 	{
 	private:
@@ -95,7 +95,7 @@ namespace Graphics::Generic {
 			base()->registerVertexDescription(vd);
 		}
 	};
-
+	*/
 
 }
 

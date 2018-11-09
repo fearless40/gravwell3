@@ -227,7 +227,7 @@ namespace Graphics::D3D11 {
 	};
 	
 
-	std::unique_ptr<Graphics::Generic::Driver<Driver>> Driver::CreateDevice(HWND hwnd, 
+	std::unique_ptr<Graphics::D3D11::Driver> Driver::CreateDevice(HWND hwnd,
 		const Graphics::Generic::DisplayMode mode)
 	{
 		HRESULT result;
