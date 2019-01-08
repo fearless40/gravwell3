@@ -128,6 +128,9 @@
     <ClCompile Include="..\src\main\WindowsGame.cpp">
       <Filter>main</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Graphics\D3D11\RenderQue.cpp">
+      <Filter>Graphics\d3d11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\Resource.h">
@@ -305,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Graphics\Generic\Model.h">
       <Filter>Graphics\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Graphics\D3D11\RenderQue.h">
+      <Filter>Graphics\d3d11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

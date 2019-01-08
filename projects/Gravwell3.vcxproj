@@ -29,6 +29,7 @@
     <ClCompile Include="..\src\game-gwell\Position.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Context.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Driver.cpp" />
+    <ClCompile Include="..\src\Graphics\D3D11\RenderQue.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\ShaderCompiler.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Vertexs.cpp" />
     <ClCompile Include="..\src\Graphics\DXGI\dxgi.cpp" />
@@ -63,6 +64,7 @@
     <ClInclude Include="..\src\Graphics\D3D11\Context.h" />
     <ClInclude Include="..\src\Graphics\D3D11\Driver.h" />
     <ClInclude Include="..\src\Graphics\D3D11\GenericToD3D.h" />
+    <ClInclude Include="..\src\Graphics\D3D11\RenderQue.h" />
     <ClInclude Include="..\src\Graphics\D3D11\ShaderCompiler.h" />
     <ClInclude Include="..\src\Graphics\D3D11\Vertexs.h" />
     <ClInclude Include="..\src\Graphics\DXGI\dxgi.h" />
@@ -245,7 +247,7 @@
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

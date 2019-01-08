@@ -25,4 +25,11 @@
 #include <DirectXMath.h>
 #include <vector>
 #include <functional>
+
+#include <winrt/base.h>
+
+#include <d3d11.h>
+
+template<typename T> using comptr = winrt::com_ptr<T>;
+
 // TODO: reference additional headers your program requires here

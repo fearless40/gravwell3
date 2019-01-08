@@ -1,38 +1,36 @@
 #pragma once
 
 
-enum class RenderQueBinds {
-	VertexShader,
-	PixelShader,
-	GeometryShader
-};
-
 class RenderQue {
 public:
-	void draw(Model, Texture, Shaders, Matrix);
 
-	void drawInstanced(Model, Texture, Shaders, std::span<Matrix>);
+	template <typename Textures>
+	void setTexture(Textures const & textures);
 
-	void writeBuffer(Buffer, gsl::span<unsigned char>);
-	void writeBufferAndSet(Buffer, gsl::span<unsigned char>, RenderQueBinds place, unsigned int position = 0);
-	void bindBuffer(Buffer, RenderQueBinds place, unsigned int position = 0);
+	template< typename Models >
+	void draw(Models & model, Matrix const & matrix);
 
-	void bindRenderState(RenderState);
+	template <typename Model, typename MatrixRange>
+	void drawInstanced(Model const & model, MatrixRange const & mRange);
 
-	void optimize(); 
-	void clear();
+	template< typename Shaders>
+	void setShaders(Shaders const & shaders);
 
-	setReservedConstantBuffer(RenderQueBinds place, unsigned int nbr = 2);
 
-private:
-	std::set<Texture &> textures;
-	std::set<Model &> models;
-	std::set<Shaders &> shaders;
+	template <typename Matrix>
+	void setProjection(Matrix const & matrix);
+
+	template <typename Matrix>
+	void setViewMatrix(Matrix const & matrix);
 
 	
+	void setPerFrameData(void * data, std::size_t size);
 
-	struct instruction {
+	void setSingleEntityData(void * data, std::size_t size);
 
-	};
+	//void optimize();
+	//void clear();
+
+	//void render();
 
 };

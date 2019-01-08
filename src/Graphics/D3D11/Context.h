@@ -3,6 +3,12 @@
 #include "../Generic/Color.h"
 
 namespace Graphics::D3D11 {
+	struct VertexShaderPipelineTraits {
+		using setConstantBuffer = Context::VSsetConstantBuffer;
+
+	};
+	
+	
 	class Context {
 	public:
 		Context(ComPtr<ID3D11DeviceContext>	DeviceContext);
@@ -30,6 +36,14 @@ namespace Graphics::D3D11 {
 
 		void clearDepthStencilTarget() {
 			mDeviceContext->ClearDepthStencilView(mStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+		}
+
+		void writeConstantBuffer(D3D11::Buffer & buf, void * mem, std::size_t size) {
+			mDeviceContext->UpdateSubresource(buf.get(), 0, nullptr, mem, size, 0);
+		}
+
+		void VSsetConstantBuffer(D3D11::Buffer & buf, uint32_t startslot, uint32_t numbbuffers) {
+			mDeviceContext->VSSetConstantBuffers(startslot, numbbuffers, buf.get());
 		}
 
 		ID3D11DeviceContext * get() { return mDeviceContext.Get(); }

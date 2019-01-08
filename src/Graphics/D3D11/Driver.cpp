@@ -13,25 +13,25 @@
 
 namespace Graphics::D3D11 {
 
-	Driver::Driver(ComPtr<IDXGISwapChain> swap,
-		ComPtr<ID3D11Device> device, 
-		ComPtr<ID3D11DeviceContext> context, 
+	Driver::Driver(comptr<IDXGISwapChain> swap,
+		comptr<ID3D11Device> device, 
+		comptr<ID3D11DeviceContext> context, 
 		const Graphics::Generic::DisplayMode mode) :
-		mSwapChain(swap), mDevice(device), mRender(context), mMode(mode) {
+		mSwapChain{ swap }, mDevice{ device }, mRender{ context }, mMode{ mode } {
 
 	}
 
 	void Driver::setupRenderTargetView() {
 		// Get the pointer to the back buffer.
-		ComPtr<ID3D11Texture2D> backbuffer;
-		HRESULT result = mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backbuffer);
+		comptr<ID3D11Texture2D> backbuffer;
+		HRESULT result = mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), backbuffer.put_void());
 		if (FAILED(result))
 		{
 			return;
 		}
 
 		// Create the render target view with the back buffer pointer.
-		result = mDevice->CreateRenderTargetView(backbuffer.Get(), NULL, &mRenderTargetView);
+		result = mDevice->CreateRenderTargetView(backbuffer.get(), NULL, mRenderTargetView.put());
 		if (FAILED(result))
 		{
 			return;
@@ -58,7 +58,7 @@ namespace Graphics::D3D11 {
 		depthBufferDesc.MiscFlags = 0;
 
 		// Create the texture for the depth buffer using the filled out description.
-		HRESULT result = mDevice->CreateTexture2D(&depthBufferDesc, NULL, &mDepthStencilBuffer);
+		HRESULT result = mDevice->CreateTexture2D(&depthBufferDesc, NULL, mDepthStencilBuffer.put());
 		if (FAILED(result))
 		{
 			return;
@@ -95,14 +95,14 @@ namespace Graphics::D3D11 {
 		depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 		// Create the depth stencil state.
-		HRESULT result = mDevice->CreateDepthStencilState(&depthStencilDesc, mDepthStencilState.GetAddressOf());
+		HRESULT result = mDevice->CreateDepthStencilState(&depthStencilDesc, mDepthStencilState.put());
 		if (FAILED(result))
 		{
 			return;
 		}
 
 		// Set the depth stencil state.
-		mRender->OMSetDepthStencilState(mDepthStencilState.Get(), 1);
+		mRender->OMSetDepthStencilState(mDepthStencilState.get(), 1);
 
 		// Initailze the depth stencil view.
 		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
@@ -113,14 +113,15 @@ namespace Graphics::D3D11 {
 		depthStencilViewDesc.Texture2D.MipSlice = 0;
 
 		// Create the depth stencil view.
-		result = mDevice->CreateDepthStencilView(mDepthStencilBuffer.Get(), &depthStencilViewDesc, &mDepthStencilView);
+		result = mDevice->CreateDepthStencilView(mDepthStencilBuffer.get(), &depthStencilViewDesc, mDepthStencilView.put());
 		if (FAILED(result))
 		{
 			return;
 		}
 
 		// Bind the render target view and depth stencil buffer to the output render pipeline.
-		mRender.setDepthAndRenderTargetViews(mRenderTargetView, mDepthStencilView);
+		mRender->OMSetRenderTargets(1, mRenderTargetView.put(), mDepthStencilView.get());
+		//mRender setDepthAndRenderTargetViews(mRenderTargetView, mDepthStencilView);
 	}
 
 	void Driver::setupRasterDescription() {
@@ -139,17 +140,32 @@ namespace Graphics::D3D11 {
 		rasterDesc.SlopeScaledDepthBias = 0.0f;
 
 		// Create the rasterizer state from the description we just filled out.
-		HRESULT result = mDevice->CreateRasterizerState(&rasterDesc, &mRasterState);
+		HRESULT result = mDevice->CreateRasterizerState(&rasterDesc, mRasterState.put());
 		if (FAILED(result))
 		{
 			return;
 		}
 
 		// Now set the rasterizer state.
-		mRender->RSSetState(mRasterState.Get());
+		mRender->RSSetState(mRasterState.get());
+
+		setDefaultViewport();
+	}
+
+	void Driver::setDefaultViewport() {
+		// Create the viewport.
+		D3D11_VIEWPORT viewport;
+
+		// Setup the viewport for rendering.
+		viewport.Width = static_cast<float>(mMode.width);
+		viewport.Height = static_cast<float>(mMode.height);
+		viewport.MinDepth = 0.f;
+		viewport.MaxDepth = 1.f;
+		viewport.TopLeftX = 0.f;
+		viewport.TopLeftY = 0.f;
 
 		// Create the viewport.
-		mRender.setViewPort((float)mMode.width, (float)mMode.height);
+		mRender->RSSetViewports(1, &viewport);
 	}
 
 	void Driver::setupDefaults() {
@@ -165,18 +181,17 @@ namespace Graphics::D3D11 {
 
 		// Preserve the existing buffer count and format.
 		// Automatically choose the width and height to match the client rect for HWNDs.
-		HRESULT hr = mSwapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
-
-		if (FAILED(hr)) {
-			return;
-		}
+		winrt::check_hresult( mSwapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0) );
 
 		// Get buffer and create a render-target-view.
 		setupRenderTargetView();
 
-		mRender->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), NULL);
+		mRender->OMSetRenderTargets(1, mRenderTargetView.put(), NULL);
 
-		mRender.setViewPort((float)width, (float)height);
+		mMode.width = width;
+		mMode.height = height;
+
+		setDefaultViewport();
 
 	}
 
@@ -194,12 +209,12 @@ namespace Graphics::D3D11 {
 		}
 	}
 
-	ComPtr<ID3D11Buffer> Driver::createBuffer(void * mem, unsigned int memSize,
+	ConstantBuffer Driver::createBuffer(void * mem, unsigned int memSize,
 		D3D11_USAGE bufferMemoryType,
 		unsigned int bindFlags,
 		unsigned int CPUAccessFlags)
 	{
-		ID3D11Buffer * tempbuf = nullptr;
+		ConstantBuffer tempbuf{ nullptr };
 		D3D11_BUFFER_DESC vertexBufferDesc;
 		D3D11_SUBRESOURCE_DATA vertexData;
 
@@ -217,13 +232,13 @@ namespace Graphics::D3D11 {
 		vertexData.SysMemSlicePitch = 0;
 
 		// Now create the vertex buffer.
-		auto result = mDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &tempbuf);
+		auto result = mDevice->CreateBuffer(&vertexBufferDesc, &vertexData, tempbuf.put());
 		if (FAILED(result))
 		{
 			return nullptr;
 		}
 
-		return { tempbuf };
+		return  tempbuf;
 	};
 	
 
@@ -233,9 +248,9 @@ namespace Graphics::D3D11 {
 		HRESULT result;
 		DXGI_SWAP_CHAIN_DESC swapChainDesc;
 		D3D_FEATURE_LEVEL featureLevel;
-		ComPtr<IDXGISwapChain>			mSwapChain = nullptr;
-		ComPtr<ID3D11Device>			mDevice = nullptr;
-		ComPtr<ID3D11DeviceContext>		mDeviceContext = nullptr;
+		comptr<IDXGISwapChain>			mSwapChain = nullptr;
+		comptr<ID3D11Device>			mDevice = nullptr;
+		comptr<ID3D11DeviceContext>		mDeviceContext = nullptr;
 
 
 		// Initialize the swap chain description.
@@ -306,12 +321,11 @@ namespace Graphics::D3D11 {
 #endif
 
 		// Create the swap chain, Direct3D device, and Direct3D device context.
-		result = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, creationFlags, &featureLevel, 1,
-			D3D11_SDK_VERSION, &swapChainDesc, &mSwapChain, &mDevice, NULL, &mDeviceContext);
-		if (FAILED(result))
-		{
-			throw;
-		}
+		winrt::check_hresult(
+			D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, creationFlags, &featureLevel, 1,
+				D3D11_SDK_VERSION, &swapChainDesc, mSwapChain.put(), mDevice.put(), NULL, mDeviceContext.put())
+		);
+		
 
 		return std::make_unique<Driver>(mSwapChain, mDevice, mDeviceContext, mode);
 	}
