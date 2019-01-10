@@ -16,6 +16,17 @@ namespace Graphics::D3D11 {
 		
 		void InitalizeQue();
 
-	
+		void setWorldView(DirectX::XMFLOAT4X4 matrix);
+		void setProjection(DirectX::XMFLOAT4X4 matrix);
+		void setTimeElapsed(float time, float time2);
+
+		void setGobalLight(DirectX::XMFLOAT4 position, DirectX::XMFLOAT4 colors);
+
+
+		void BeginRender();
+
+		void RenderModel(Model & md, FLOAT4 position, FLOAT4 rotation);
+
+		void EndRender();
 	};
 }
