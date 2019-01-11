@@ -41,13 +41,7 @@ namespace Graphics::Generic {
 			UINT_32
 	};
 	
-	enum class Topology {
-		PointList,
-		LineList,
-		LineStrip,
-		TriangleList,
-		TriangleStrip
-	};
+	
 
 	template <class DriverBase>
 	class Driver : public DriverBase 

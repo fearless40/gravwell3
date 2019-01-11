@@ -7,12 +7,12 @@
 
 namespace DX::DXGI {
 	class VideoCard {
-		ComPtr<IDXGIAdapter>	mAdapter;
+		comptr<IDXGIAdapter>	mAdapter;
 		DXGI_ADAPTER_DESC		mDesc;
 		bool					mIsPrimary = false;
 
 		struct Displays {
-			ComPtr<IDXGIOutput1> screen;
+			comptr<IDXGIOutput1> screen;
 			std::unique_ptr<DXGI_MODE_DESC[]> modes;
 		};
 
@@ -20,7 +20,7 @@ namespace DX::DXGI {
 
 	public:
 		VideoCard() = delete;
-		VideoCard(ComPtr<IDXGIAdapter> adapter, bool PrimaryAdapter = false) : mAdapter(adapter) {
+		VideoCard(comptr<IDXGIAdapter> adapter, bool PrimaryAdapter = false) : mAdapter(adapter) {
 			adapter->GetDesc(&mDesc);
 			GetScreensAttachedToAdapter();
 		}
@@ -46,10 +46,9 @@ namespace DX::DXGI {
 	private:
 		void GetScreensAttachedToAdapter() {
 			unsigned int i = 0;
-			ComPtr<IDXGIOutput>		output;
-			while (mAdapter->EnumOutputs(0, &output) != DXGI_ERROR_NOT_FOUND) {
-				ComPtr<IDXGIOutput1> output1;
-				output.As(&output1);
+			comptr<IDXGIOutput>		output;
+			while (mAdapter->EnumOutputs(0, output.put()) != DXGI_ERROR_NOT_FOUND) {
+				comptr<IDXGIOutput1> output1 = output.try_as<IDXGIOutput1>();
 
 				Displays ai;
 				ai.screen = output1;

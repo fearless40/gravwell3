@@ -101,9 +101,6 @@
     <ClCompile Include="..\src\Graphics\DXGI\dxgi.cpp">
       <Filter>Graphics\DXGI</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Graphics\D3D11\Context.cpp">
-      <Filter>Graphics\d3d11</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Graphics\D3D11\Driver.cpp">
       <Filter>Graphics\d3d11</Filter>
     </ClCompile>
@@ -128,7 +125,7 @@
     <ClCompile Include="..\src\main\WindowsGame.cpp">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Graphics\D3D11\RenderQue.cpp">
+    <ClCompile Include="..\src\Graphics\D3D11\Render.cpp">
       <Filter>Graphics\d3d11</Filter>
     </ClCompile>
   </ItemGroup>
@@ -255,12 +252,6 @@
     <ClInclude Include="..\src\Graphics\DXGI\VideoCard.h">
       <Filter>Graphics\DXGI</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Graphics\D3D11\Buffer.h">
-      <Filter>Graphics\d3d11</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Graphics\D3D11\Context.h">
-      <Filter>Graphics\d3d11</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Graphics\D3D11\Driver.h">
       <Filter>Graphics\d3d11</Filter>
     </ClInclude>
@@ -303,14 +294,20 @@
     <ClInclude Include="..\src\engine\Graphics.h">
       <Filter>engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Graphics\Generic\IndexBuffer.h">
+    <ClInclude Include="..\src\Graphics\D3D11\Render.h">
       <Filter>Graphics\d3d11</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Graphics\Generic\Model.h">
+    <ClInclude Include="..\src\Graphics\Generic\Color.h">
       <Filter>Graphics\Generic</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Graphics\D3D11\RenderQue.h">
+    <ClInclude Include="..\src\Graphics\D3D11\Types.h">
       <Filter>Graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Graphics\Generic\Mesh.h">
+      <Filter>Graphics\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Graphics\Generic\Topology.h">
+      <Filter>Graphics\Generic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,12 +6,13 @@
 //#include "Context.h"
 //#include "GenericToD3D.h"
 #include "Buffer.h"
-//#include "ShaderCompiler.h"
+#include "ShaderCompiler.h"
 
 
 
 namespace Graphics::D3D11 {
 	class Driver;
+	class Render;
 
 	using ConstantBuffer = comptr<ID3D11Buffer>;
 	//using IndexBuffer = Graphics::Generic::IndexBuffer<Graphics::D3D11::Buffer>;
@@ -80,7 +81,7 @@ namespace Graphics::D3D11 {
 			}
 		}
 
-	private:
+	protected:
 
 		void setDefaultViewport();
 		void setupRenderTargetView(); // Call First
@@ -104,6 +105,8 @@ namespace Graphics::D3D11 {
 		comptr<ID3D11RasterizerState>	mRasterState{ nullptr };
 		comptr<ID3D11DeviceContext>		mRender{ nullptr };
 		
+
+		friend class Graphics::D3D11::Render;
 	};
 	 
 

@@ -12,4 +12,6 @@ namespace Graphics::D3D11
 		auto d = Driver::CreateDevice(0, {});
 		d->registerVertexDescription(vpos);
 	}
+
+
 }

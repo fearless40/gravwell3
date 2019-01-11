@@ -5,21 +5,21 @@ namespace DX::DXGI {
 	
 	
 	class DXGI {
-		ComPtr<IDXGIFactory> factory = nullptr;
+		comptr<IDXGIFactory> factory = nullptr;
 
 	public:
 		DXGI() {
 			HRESULT result;
-			result = CreateDXGIFactory(__uuidof(IDXGIFactory), &factory);
+			result = CreateDXGIFactory(__uuidof(IDXGIFactory), factory.put_void());
 		};
 
 		std::vector<VideoCard> GetVideoCards() {
 			std::vector<VideoCard> videocards;
 			HRESULT result;
-			ComPtr<IDXGIAdapter> videocard;
+			comptr<IDXGIAdapter> videocard;
 			unsigned int index = 0;
 
-			while (factory->EnumAdapters(index, &videocard) == S_OK) {
+			while (factory->EnumAdapters(index, videocard.put()) == S_OK) {
 				videocards.emplace_back(videocard, index == 0 ? true : false);
 				++index;
 			}

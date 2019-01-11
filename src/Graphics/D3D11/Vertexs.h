@@ -74,7 +74,7 @@ namespace Graphics::D3D11 {
 	class VertexDescription 
 	{
 	private:
-		static ComPtr<ID3D11InputLayout> mLayout;
+		static comptr<ID3D11InputLayout> mLayout;
 		using vti = detail::VertexTypeInfo<VertexType>;
 
 	public:
@@ -84,11 +84,12 @@ namespace Graphics::D3D11 {
 		// Set to false if you already compiled the layout string (std::false_type)
 		using requires_compilation = typename vti::requires_compilation;
 
-		constexpr auto stride() { return sizeof(VertexType); }
+		static constexpr auto stride() { return sizeof(VertexType); }
 
-		ID3D11InputLayout * get() { return mLayout.Get(); }
-		auto releaseAndGetAddressOf() { return mLayout.ReleaseAndGetAddressOf(); }
-		auto operator & () { return mLayout.ReleaseAndGetAddressOf(); }
+		static ID3D11InputLayout * getInputLayout();
+		ID3D11InputLayout * get() { return mLayout.get(); }
+		//auto releaseAndGetAddressOf() { return mLayout.ReleaseAndGetAddressOf(); }
+		auto operator & () { mLayout = nullptr;  return mLayout.put(); }
 		operator ID3D11InputLayout * () { return get(); }
 		
 		// If you don't require compilation then you can ignore the next function in your class
@@ -103,6 +104,10 @@ namespace Graphics::D3D11 {
 	};
 
 	template <typename VertexType>
-	ComPtr<ID3D11InputLayout> VertexDescription<VertexType>::mLayout;
+	comptr<ID3D11InputLayout> VertexDescription<VertexType>::mLayout;
 
+	template<typename T>
+	ID3D11InputLayout * VertexDescription<T>::getInputLayout() {
+		return VertexDescription<T>::mLayout.get();
+	}
 }
