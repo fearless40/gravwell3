@@ -9,6 +9,7 @@ namespace Engine {
 		struct RequestShutDown{};
 		struct ShutDownNow {};
 		struct SleepNow{};
+		struct LoadData{};
 	}
 
 
@@ -16,6 +17,14 @@ namespace Engine {
 	void Shutdown();
 	//std::shared_ptr<spdlog::logger> GetDefaultLog();
 	
+	template <typename RenderT>
+	void SetRender(RenderT & t) {
+		render = t;
+	}
+
+	template<typename RenderT>
+	static RenderT render;
+
 }
 
 

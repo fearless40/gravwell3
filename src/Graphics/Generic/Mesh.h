@@ -1,7 +1,7 @@
 namespace Graphics::Generic {
 	
 
-	template<typename VertexBufferT, typename IndexBufferT, typename VertexTypeT, typename TopologyT> 
+	template<typename VertexBufferT, typename IndexBufferT, typename VertexTypeT, typename TopologyT, typename IndexSize> 
 	struct Mesh {
 		VertexBufferT	vertexBuffer;
 		IndexBufferT	indexBuffer; 

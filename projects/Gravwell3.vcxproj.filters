@@ -309,6 +309,9 @@
     <ClInclude Include="..\src\Graphics\Generic\Topology.h">
       <Filter>Graphics\Generic</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Graphics\Generic\IndexSizes.h">
+      <Filter>Graphics\Generic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

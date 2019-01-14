@@ -6,7 +6,7 @@ namespace Events {
 	public:
 		using callback = std::function< void(const Msg &)>;
 
-		struct Token {
+		class Token {
 			std::size_t value;
 		};
 

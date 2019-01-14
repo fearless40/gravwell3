@@ -209,7 +209,7 @@ namespace Graphics::D3D11 {
 		}
 	}
 
-	ConstantBuffer Driver::createBuffer(void * mem, unsigned int memSize,
+	ConstantBuffer Driver::createBuffer(void * mem, std::size_t memSize,
 		D3D11_USAGE bufferMemoryType,
 		unsigned int bindFlags,
 		unsigned int CPUAccessFlags)

@@ -8,4 +8,6 @@ namespace Engine {
 		float elapsedTimeMS;
 		NextRenderFrame(float tm) : elapsedTimeMS(tm) {}
 	};
+
+
 }

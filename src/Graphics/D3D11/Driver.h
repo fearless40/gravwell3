@@ -89,7 +89,7 @@ namespace Graphics::D3D11 {
 		void setupDepthStencil();
 		void setupRasterDescription(); //Call 3rd
 
-		ConstantBuffer createBuffer(void * mem, unsigned int memSize,
+		ConstantBuffer createBuffer(void * mem, std::size_t memSize,
 			D3D11_USAGE bufferMemoryType,
 			unsigned int bindFlags,
 			unsigned int CPUAccessFlags);

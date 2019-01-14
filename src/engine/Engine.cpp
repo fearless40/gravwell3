@@ -5,6 +5,11 @@
 
 namespace Engine {
 	//std::shared_ptr<spdlog::logger> mLogger;
+
+	void LoadData(events::LoadData const &) {
+		
+	}
+
 	
 	Util::CommandLineParameters Initalize(std::wstring_view cmdLine) {
 		auto clp = Util::ParseCommandLine(cmdLine);
@@ -13,6 +18,8 @@ namespace Engine {
 		//Create the events that we need
 		//Events::Event<Engine::events::ShutDownNow>::Listen([](auto x) { Engine::Shutdown(); });
 		return clp;
+
+		Events::Event<events::LoadData>::Listen(&Engine::LoadData);
 	}
 	
 	void Shutdown() {
@@ -22,4 +29,6 @@ namespace Engine {
 	/*std::shared_ptr<spdlog::logger> GetDefaultLog() {
 		return mLogger;
 	}*/
+
+
 }

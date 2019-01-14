@@ -44,10 +44,11 @@ namespace Graphics::D3D11 {
 		void meshBind(MeshType const & md) {
 			using vt = VertexDescription<MeshType::VertexTypeT>;
 			//For now just set the topology will bench mark it
-			// Todo: bench mark changing the topology per rednered item
+			// Todo: bench mark changing the topology per item
 			mRender->IASetPrimitiveTopology(Topology(md));
 			mRender->IASetInputLayout(vt::getInputLayout());
 			mRender->IASetVertexBuffers(0, 1, md.vertexBuffer.put_void(), vt::stride(), nullptr);
+			mRender->IASetIndexBuffer(md.indexBuffer.put_void(), IndexSize(md));
 			mIndecies_start = md.index_start;
 			mIndecies_count = md.index_count;
 		}
