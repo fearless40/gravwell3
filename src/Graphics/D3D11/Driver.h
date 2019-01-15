@@ -81,6 +81,8 @@ namespace Graphics::D3D11 {
 			}
 		}
 
+		Render getRender();
+
 	protected:
 
 		void setDefaultViewport();

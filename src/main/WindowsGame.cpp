@@ -6,8 +6,18 @@
 #include "../engine/GameEvent.h"
 #include "../engine/Event.h"
 #include "../Graphics/D3D11/Driver.h"
+#include "Globals.h"
+#include "../Graphics/D3D11/Render.h"
+
+
+Graphics::D3D11::Render * global_render{ nullptr };
 
 std::unique_ptr<Graphics::D3D11::Driver> graphics_driver{ nullptr };
+
+Graphics::D3D11::Render & GetRender() {
+	return *global_render;
+}
+
 
 WindowsGame::WindowsGame(HINSTANCE hInstance, Util::CommandLineParameters clp) : mInst( hInstance ) {
 	Window::RegisterWindowClasses(mInst, IDI_GRAVWELL3, IDI_SMALL, L"D3D Window", L"D3DWindow");
@@ -20,6 +30,8 @@ void WindowsGame::run() {
 	MSG msg;
 	mRunning = true;
 	graphics_driver = Graphics::D3D11::Driver::CreateDevice(getHWND(), { 0,0,{0,0},false,false });
+	Graphics::D3D11::Render render{ graphics_driver->getRender() };
+	global_render = &render;
 	
 	timer.start();
 

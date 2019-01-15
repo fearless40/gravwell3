@@ -128,6 +128,9 @@
     <ClCompile Include="..\src\Graphics\D3D11\Render.cpp">
       <Filter>Graphics\d3d11</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\tests\RenderTest.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\Resource.h">
@@ -291,9 +294,6 @@
     <ClInclude Include="..\src\engine\GameEvent.h">
       <Filter>engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\engine\Graphics.h">
-      <Filter>engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Graphics\D3D11\Render.h">
       <Filter>Graphics\d3d11</Filter>
     </ClInclude>
@@ -312,6 +312,7 @@
     <ClInclude Include="..\src\Graphics\Generic\IndexSizes.h">
       <Filter>Graphics\Generic</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Globals.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

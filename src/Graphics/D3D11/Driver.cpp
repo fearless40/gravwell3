@@ -2,6 +2,7 @@
 #include <d3d11.h>
 #include "../DXGI/dxgi.h"
 #include "Driver.h"
+#include "Render.h"
 
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d11.lib")
@@ -240,6 +241,10 @@ namespace Graphics::D3D11 {
 
 		return  tempbuf;
 	};
+
+	Render Driver::getRender() {
+		return Render{ this, mRender };
+	}
 	
 
 	std::unique_ptr<Graphics::D3D11::Driver> Driver::CreateDevice(HWND hwnd,
