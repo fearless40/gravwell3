@@ -313,6 +313,12 @@
       <Filter>Graphics\Generic</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Globals.h" />
+    <ClInclude Include="..\src\Graphics\D3D11\BufferTraits.h">
+      <Filter>Graphics\d3d11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Graphics\Generic\BufferTraits.h">
+      <Filter>Graphics\Generic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

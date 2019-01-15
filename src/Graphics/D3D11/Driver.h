@@ -7,7 +7,7 @@
 //#include "GenericToD3D.h"
 #include "Buffer.h"
 #include "ShaderCompiler.h"
-
+#include "BufferTraits.h"
 
 
 namespace Graphics::D3D11 {
@@ -15,11 +15,10 @@ namespace Graphics::D3D11 {
 	class Render;
 
 	using ConstantBuffer = comptr<ID3D11Buffer>;
-	//using IndexBuffer = Graphics::Generic::IndexBuffer<Graphics::D3D11::Buffer>;
-	//using VertexBuffer = Graphics::Generic::VertexBuffer<Graphics::D3D11::Buffer>;
-	
-	
-	
+	using IndexBuffer = comptr<ID3D11Buffer>;
+	using VertexBuffer = comptr<ID3D11Buffer>;
+
+
 	class Driver {
 
 	public:
@@ -44,27 +43,26 @@ namespace Graphics::D3D11 {
 				D3D11_CPU_ACCESS_WRITE);
 		}
 
-
-
-
-		/*
-		template <typename T>
-		Buffer createVertexBuffer(const Graphics::Generic::Buffer<T> & buf, Graphics::Generic::BufferBinding binding) {
-			return createBuffer(buf.getMemory(), buf.getSize(),
+		template<typename BufferTraitsT>
+		VertexBuffer createVertexBuffer(void * memory, std::size_t size) {
+			using BT = Graphics::D3D11::BufferTraits::BufferTraits< BufferTraitsT>;
+			return createBuffer(memory, size,
+				BT::Binding,
 				D3D11_BIND_VERTEX_BUFFER,
-				Graphics::D3D::Conversion::BufferBinding(binding),
-				Graphics::D3D::Conversion::BufferBindingToCPUAccess(binding));
+				BT::CPU);
+		}
+		
+		template <typename BufferTraitsT>
+		IndexBuffer createIndexBuffer(void * memory, std::size_t size) {
+			using BT = Graphics::D3D11::BufferTraits::BufferTraits< BufferTraitsT>;
+			return createBuffer(memory, size,
+				BT::Binding,
+				D3D11_BIND_INDEX_BUFFER,
+				BT::CPU);
 		}
 
-		template <typename T>
-		DriverTraits::IndexBuffer createIndexBuffer(const Graphics::Generic::Buffer<T> & buf, Graphics::Generic::BufferBinding binding, Graphics::Generic::IndexBuffer::Format fmt) {
-			return IndexBuffer{ createBuffer(buf.getMemory(), buf.getSize(),
-				D3D11_BIND_INDEX_BUFFER,
-				Graphics::D3D::Conversion::BufferBinding(binding),
-				Graphics::D3D::Conversion::BufferBindingToCPUAccess(binding)),
-				IndexFormat(fmt) };
-		}
-		*/
+		
+
 		ID3D11Device * get() const noexcept { return mDevice.get(); }
 
 		template< typename VertexDescription >

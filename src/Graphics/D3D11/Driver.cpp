@@ -174,6 +174,7 @@ namespace Graphics::D3D11 {
 		setupDepthBuffer(); // Call 2nd
 		setupDepthStencil();
 		setupRasterDescription(); //Call 3rd
+	
 	}
 
 	void Driver::resize(unsigned int width, unsigned int height) {

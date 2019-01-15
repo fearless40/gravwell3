@@ -28,13 +28,7 @@ namespace Graphics::Generic {
 
 	};
 
-	enum class BufferBinding
-	{
-		Default,
-		Immutable,
-		Dynamic,
-		Staging
-	};
+
 
 	enum class IndexBufferFormat {
 			UINT_16,
@@ -42,6 +36,7 @@ namespace Graphics::Generic {
 	};
 	
 	
+
 
 	template <class DriverBase>
 	class Driver : public DriverBase 

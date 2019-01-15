@@ -4,6 +4,7 @@
 #include "Vertexs.h"
 
 namespace Graphics::D3D11 {
+	class Driver;
 	class Render {
 	private:
 		struct GlobalLight {

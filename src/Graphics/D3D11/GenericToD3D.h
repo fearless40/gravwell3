@@ -1,9 +1,10 @@
 #pragma once
 
 #include "../Generic/Driver.h"
+#include <d3d11.h>
 
 
-namespace Graphics::D3D::Conversion {
+namespace Graphics::D3D11::Conversion {
 constexpr D3D11_USAGE BufferBinding(Graphics::Generic::BufferBinding bb) {
 	switch (bb)
 	{

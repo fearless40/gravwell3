@@ -60,6 +60,7 @@
     <ClInclude Include="..\src\game-gwell\Physics.h" />
     <ClInclude Include="..\src\game-gwell\Position.h" />
     <ClInclude Include="..\src\Globals.h" />
+    <ClInclude Include="..\src\Graphics\D3D11\BufferTraits.h" />
     <ClInclude Include="..\src\Graphics\D3D11\Driver.h" />
     <ClInclude Include="..\src\Graphics\D3D11\GenericToD3D.h" />
     <ClInclude Include="..\src\Graphics\D3D11\Render.h" />
@@ -72,6 +73,7 @@
     <ClInclude Include="..\src\Graphics\Generic\Buffer.h" />
     <ClInclude Include="..\src\Graphics\Generic\Buffer1D.h" />
     <ClInclude Include="..\src\Graphics\Generic\Buffer2D.h" />
+    <ClInclude Include="..\src\Graphics\Generic\BufferTraits.h" />
     <ClInclude Include="..\src\Graphics\Generic\Color.h" />
     <ClInclude Include="..\src\Graphics\Generic\Driver.h" />
     <ClInclude Include="..\src\Graphics\Generic\IndexSizes.h" />
