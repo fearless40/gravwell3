@@ -319,6 +319,15 @@
     <ClInclude Include="..\src\Graphics\Generic\BufferTraits.h">
       <Filter>Graphics\Generic</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\engine\ID.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\Visuals.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\MathTypes.h">
+      <Filter>engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">
