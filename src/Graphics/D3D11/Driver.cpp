@@ -243,8 +243,8 @@ namespace Graphics::D3D11 {
 		return  tempbuf;
 	};
 
-	Render Driver::getRender() {
-		return Render{ this, mRender };
+	std::unique_ptr<Render> Driver::getRender() {
+		return std::make_unique<Render>( this, mRender );
 	}
 	
 

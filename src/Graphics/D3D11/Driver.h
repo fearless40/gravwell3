@@ -17,7 +17,7 @@ namespace Graphics::D3D11 {
 	using ConstantBuffer = comptr<ID3D11Buffer>;
 	using IndexBuffer = comptr<ID3D11Buffer>;
 	using VertexBuffer = comptr<ID3D11Buffer>;
-
+	using RawMemory = gsl::span<const std::byte>;
 
 	class Driver {
 
@@ -36,26 +36,27 @@ namespace Graphics::D3D11 {
 		void present();
 
 		// Creation Functions
-		ConstantBuffer createConstantBuffer(void * memory, std::size_t size) {
-			return createBuffer(memory, size,
+		ConstantBuffer createConstantBuffer(RawMemory memory) {
+			return createBuffer(
+				static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes(),
 				D3D11_USAGE_DYNAMIC,
 				D3D11_BIND_CONSTANT_BUFFER,
 				D3D11_CPU_ACCESS_WRITE);
 		}
 
 		template<typename BufferTraitsT>
-		VertexBuffer createVertexBuffer(void * memory, std::size_t size) {
+		VertexBuffer createVertexBuffer(RawMemory memory) {
 			using BT = Graphics::D3D11::BufferTraits::BufferTraits< BufferTraitsT>;
-			return createBuffer(memory, size,
+			return createBuffer(static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes()
 				BT::Binding,
 				D3D11_BIND_VERTEX_BUFFER,
 				BT::CPU);
 		}
 		
 		template <typename BufferTraitsT>
-		IndexBuffer createIndexBuffer(void * memory, std::size_t size) {
+		IndexBuffer createIndexBuffer(RawMemory memory) {
 			using BT = Graphics::D3D11::BufferTraits::BufferTraits< BufferTraitsT>;
-			return createBuffer(memory, size,
+			return createBuffer(static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes()
 				BT::Binding,
 				D3D11_BIND_INDEX_BUFFER,
 				BT::CPU);
@@ -79,7 +80,7 @@ namespace Graphics::D3D11 {
 			}
 		}
 
-		Render getRender();
+		std::unique_ptr<Render> getRender();
 
 	protected:
 

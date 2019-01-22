@@ -131,6 +131,9 @@
     <ClCompile Include="..\src\tests\RenderTest.cpp">
       <Filter>tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Graphics\D3D11\Visuals.cpp">
+      <Filter>Graphics\d3d11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\Resource.h">
@@ -326,6 +329,12 @@
       <Filter>engine</Filter>
     </ClInclude>
     <ClInclude Include="..\src\engine\MathTypes.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\Mesh.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\Material.h">
       <Filter>engine</Filter>
     </ClInclude>
   </ItemGroup>

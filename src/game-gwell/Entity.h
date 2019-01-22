@@ -21,9 +21,9 @@ namespace EntityUtil {
 			if (std::binary_search(start, end, its[pos])) {
 				//We need to swap out all the values
 				std::swap(its[pos], its[last]);
+				(std::swap(is[pos], is[last]), ...);
 				--pos;  // Recheck pos again (as we just swapped it out) 
 				--last; // Don't check last again
-				(std::swap(is[pos], is[last]), ...);
 			}
 		}
 

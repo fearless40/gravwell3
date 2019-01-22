@@ -31,6 +31,7 @@
     <ClCompile Include="..\src\Graphics\D3D11\Render.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\ShaderCompiler.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Vertexs.cpp" />
+    <ClCompile Include="..\src\Graphics\D3D11\Visuals.cpp" />
     <ClCompile Include="..\src\Graphics\DXGI\dxgi.cpp" />
     <ClCompile Include="..\src\main\WindowsGame.cpp" />
     <ClCompile Include="..\src\main\main.cpp" />
@@ -52,7 +53,9 @@
     <ClInclude Include="..\src\engine\Event.h" />
     <ClInclude Include="..\src\engine\GameEvent.h" />
     <ClInclude Include="..\src\engine\ID.h" />
+    <ClInclude Include="..\src\engine\Material.h" />
     <ClInclude Include="..\src\engine\MathTypes.h" />
+    <ClInclude Include="..\src\engine\Mesh.h" />
     <ClInclude Include="..\src\engine\Visuals.h" />
     <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
     <ClInclude Include="..\src\game-gwell\Coord.h" />
