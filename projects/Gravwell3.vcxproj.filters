@@ -337,6 +337,9 @@
     <ClInclude Include="..\src\engine\Material.h">
       <Filter>engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\util\MultiIterator.hpp">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

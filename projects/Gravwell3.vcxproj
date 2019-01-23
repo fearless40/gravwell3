@@ -110,6 +110,7 @@
     <ClInclude Include="..\src\util\Math\Vector2.h" />
     <ClInclude Include="..\src\util\Math\Vector3.h" />
     <ClInclude Include="..\src\util\MinTypeSize.hpp" />
+    <ClInclude Include="..\src\util\MultiIterator.hpp" />
     <ClInclude Include="..\src\util\RefCountPointer.h" />
     <ClInclude Include="..\src\util\TagArray.h" />
     <ClInclude Include="..\src\util\Temp.hpp" />

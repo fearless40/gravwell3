@@ -2,6 +2,7 @@
 
 #include "../Generic/Color.h"
 #include "Vertexs.h"
+#include "Types.h"
 
 namespace Graphics::D3D11 {
 	class Driver;
@@ -43,7 +44,7 @@ namespace Graphics::D3D11 {
 		void clear(Graphics::Generic::RGBA color);
 		template<typename MeshType>
 		void meshBind(MeshType const & md) {
-			using vt = VertexDescription<MeshType::VertexTypeT>;
+			using vt = VertexDescription<typename MeshType::vertex_type>;
 			//For now just set the topology will bench mark it
 			// Todo: bench mark changing the topology per item
 			mRender->IASetPrimitiveTopology(Topology(md));

@@ -34,37 +34,41 @@ namespace Engine {
 
 	}
 
-	template <class TypeTag, unsigned int ByteSize = 4> 
+	template <class TypeTag, typename UnderLyingType> 
 	struct ID {
-		details::GetSizeType<ByteSize>::type value;
+		using value_type = UnderLyingType;
+		
+		UnderLyingType value;
 
 		struct hash {
-			std::size_t operator() (const type & k) const {
-				return std::hash<type::Value_Type>()(k.value);
+			std::size_t operator() (const value_type & k) const {
+				return std::hash<value_type>()(k.value);
 			}
 		};
 
-		bool operator == (const type & k) const {
+		value_type get() const { return value; }
+
+		bool operator == (const ID & k) const {
 			return value == k.value;
 		}
 
-		bool operator != (const type & k) const {
+		bool operator != (const ID & k) const {
 			return value != k.value;
 		}
 
-		bool operator < (const type & k) const {
+		bool operator < (const ID & k) const {
 			return value < k.value;
 		}
 
-		bool operator > (const type & k) const {
+		bool operator > (const ID & k) const {
 			return value > k.value;
 		}
 
-		bool operator <= (const type & k) const {
+		bool operator <= (const ID & k) const {
 			return value <= k.value;
 		}
 
-		bool operator >= (const type & k) const {
+		bool operator >= (const ID & k) const {
 			return value >= k.value;
 		}
 	};

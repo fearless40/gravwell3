@@ -1,3 +1,5 @@
+#pragma once
+
 namespace Graphics::Generic {
 	
 
@@ -10,7 +12,7 @@ namespace Graphics::Generic {
 
 		using vertex_type = VertexTypeT;
 		using index_definition = IndexSize;
-		using index_type = index_definition::type;
+		using index_type = typename index_definition::type;
 	};
 
 	template<typename VertexBufferT, typename IndexBufferT, typename VertexTypeT, typename TopologyT>

@@ -47,7 +47,7 @@ namespace Graphics::D3D11 {
 		template<typename BufferTraitsT>
 		VertexBuffer createVertexBuffer(RawMemory memory) {
 			using BT = Graphics::D3D11::BufferTraits::BufferTraits< BufferTraitsT>;
-			return createBuffer(static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes()
+			return createBuffer(static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes(),
 				BT::Binding,
 				D3D11_BIND_VERTEX_BUFFER,
 				BT::CPU);
@@ -56,7 +56,7 @@ namespace Graphics::D3D11 {
 		template <typename BufferTraitsT>
 		IndexBuffer createIndexBuffer(RawMemory memory) {
 			using BT = Graphics::D3D11::BufferTraits::BufferTraits< BufferTraitsT>;
-			return createBuffer(static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes()
+			return createBuffer(static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes(),
 				BT::Binding,
 				D3D11_BIND_INDEX_BUFFER,
 				BT::CPU);

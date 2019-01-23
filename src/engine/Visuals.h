@@ -5,6 +5,7 @@
 #include "MathTypes.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "../util/MultiIterator.hpp"
 
 
 namespace Engine::Visuals {
@@ -14,17 +15,23 @@ namespace Engine::Visuals {
 	struct ParticleSystem {};
 	struct MeshAtlas {};
 
-	using Visual = ID<Basic, 8>;
+	using Visual = ID<Basic, std::uint64_t>;
 
-	template<typename VisualType>
+	template<typename VisualIDType>
 	struct VisualStates {
-		std::unique_ptr<VisualType> visual_data;
+		std::unique_ptr<VisualIDType> visual_data;
 		std::unique_ptr<Engine::Matrix> matrix_data;
 		std::size_t visual_count;
+		Engine::Matrix	view;
+
+		using iterator = Util::MultiIterator<VisualIDType, Engine::Matrix>;
+
+		auto begin() { return iterator{0, visual_data.get(), matrix_data.get()}; }
+		auto end() { return iterator::EndIterator{ visual_count }; }
 	};
 
 	
-	void RenderBasicID(gsl::span<Visual> vId, gsl::span<Engine::Matrix> matrixs);
+	void RenderBasicID(VisualStates<Visual> && data);
 	
 
 	Visual	Create(Engine::MeshView mesh, Engine::Material mat);
@@ -43,7 +50,6 @@ namespace Engine::Visuals {
 	
 	template <>
 	void Render<Visual>(VisualStates<Visual> && state) {
-		impl::RenderBasicID({ state.visual_data.get(), state.visual_count },
-			{ state.matrix_data.get(), state.visual_count });
+		RenderBasicID(std::forward< VisualStates<Visual> >(state));
 	}
 }

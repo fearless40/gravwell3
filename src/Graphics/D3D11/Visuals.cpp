@@ -56,13 +56,14 @@ namespace Engine::Visuals {
 
 	}
 
-	void RenderBasicID(gsl::span<Visual> vId, gsl::span<Engine::Matrix> matrixs) {
+	void RenderBasicID(VisualStates<Visual> && data) {
 		// Skip the sorting for now
+		Engine::fMatrix view = DirectX::XMLoadFloat4x4(&data.view);
 		detail::render->begin(0, 0);
 		detail::render->clear();
-		for (int i{ 0 }; i < vId.size(); ++i) {
-			detail::render->meshBind(detail::vMeshes[vId[i].value].mesh);
-			detail::render->drawMesh(matrixs[i]);
+		for (auto [visualID, matrix] : data) {
+			detail::render->meshBind(detail::vMeshes[visualID->get()].mesh);
+			detail::render->drawMesh(*matrix);
 		}
 		detail::render->end();
 	}
