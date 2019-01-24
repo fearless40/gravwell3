@@ -10,12 +10,43 @@
 
 namespace Engine::Visuals {
 	
-	struct Basic {};
+	namespace Basic {
+		struct basic_tag {};
+		using Visual = ID<basic_tag, std::uint64_t>;
+
+		struct VisualItemState {
+			Engine::Matrix world;
+			Visual id;
+		};
+
+		struct VisualState{
+			std::vector<VisualItemState> states;
+			Engine::Matrix view;
+		};
+
+		using input = VisualState;
+		//using output = Visual;
+
+		Visual Create(Engine::MeshView mesh, Engine::Material mat);
+		void Render(input && state);
+
+		/*
+		Visual CopyMesh(Visual src, Engine::Material mat);
+		Visual CopyMaterial(Visual src, Engine::MeshView mesh);
+		void	Remove(Visual src);
+		void	SetTag(Visual src, uint32_t tag);
+		void	SetName(Visual src, std::string name);
+		*/
+	}
+	
 	struct Custom {};
 	struct ParticleSystem {};
 	struct MeshAtlas {};
 
-	using Visual = ID<Basic, std::uint64_t>;
+	/*using Visual = ID<Basic, std::uint64_t>;
+
+
+	
 
 	template<typename VisualIDType>
 	struct VisualStates {
@@ -35,21 +66,16 @@ namespace Engine::Visuals {
 	
 
 	Visual	Create(Engine::MeshView mesh, Engine::Material mat);
-
-	/*Visual	CopyMesh(Visual src, Engine::Material mat);
-	Visual	CopyMaterial(Visual src, Engine::MeshView mesh);
-	void	Remove(Visual src);
-	void	SetTag(Visual src, uint32_t tag);
-	void	SetName(Visual src, std::string name);
 	*/
+	
 	//Render is a async function call 
 	// Everything within Render is synchronous
-	template <typename VisualType>
+	/*template <typename VisualType>
 	void Render(VisualStates<VisualType> && state) {} //No body for unknown VisualTypes
 
 	
 	template <>
 	void Render<Visual>(VisualStates<Visual> && state) {
 		RenderBasicID(std::forward< VisualStates<Visual> >(state));
-	}
+	}*/
 }

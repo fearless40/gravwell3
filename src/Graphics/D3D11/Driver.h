@@ -12,7 +12,6 @@
 
 namespace Graphics::D3D11 {
 	class Driver;
-	class Render;
 
 	using ConstantBuffer = comptr<ID3D11Buffer>;
 	using IndexBuffer = comptr<ID3D11Buffer>;
@@ -80,7 +79,7 @@ namespace Graphics::D3D11 {
 			}
 		}
 
-		std::unique_ptr<Render> getRender();
+		//std::unique_ptr<Render> getRender();
 
 	protected:
 
@@ -107,7 +106,7 @@ namespace Graphics::D3D11 {
 		comptr<ID3D11DeviceContext>		mRender{ nullptr };
 		
 
-		friend class Graphics::D3D11::Render;
+		//friend class Graphics::D3D11::Render;
 	};
 	 
 

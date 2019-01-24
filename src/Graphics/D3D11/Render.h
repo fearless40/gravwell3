@@ -6,56 +6,126 @@
 
 namespace Graphics::D3D11 {
 	class Driver;
-	class Render {
-	private:
-		struct GlobalLight {
-			DirectX::XMFLOAT4	position;
-			DirectX::XMFLOAT4	color;
+
+	namespace util {
+
+		template <class T, class Tuple>
+		struct Index;
+
+		template <class T, class... Types>
+		struct Index<T, std::tuple<T, Types...>> {
+			static const std::size_t value = 0;
 		};
 
-		comptr<ID3D11DeviceContext> mRender{ nullptr };
-		Driver				*		mDevice{ nullptr };
-		comptr<ID3D11Buffer>		mPerGame{ nullptr };
-		comptr<ID3D11Buffer>		mPerFrame{ nullptr };
-		comptr<ID3D11Buffer>		mPerItem{ nullptr };
-		comptr<ID3D11Buffer>		mUser{ nullptr };
+		template <class T, class U, class... Types>
+		struct Index<T, std::tuple<U, Types...>> {
+			static const std::size_t value = 1 + Index<T, std::tuple<Types...>>::value;
+		};
+	}
 
-
-		bool						mUpdatePerGame{ true };
-
-		DirectX::XMFLOAT4X4			mProjection;
-		GlobalLight					mGlobalLight;
-
-		// Storage of data
-		uint32_t					mIndecies_start;
-		uint32_t					mIndecies_count;
+	template <typename ... BufferTypes>
+	class Render {
 	
 	public:
-		Render(Driver * device, comptr<ID3D11DeviceContext> context);
+		comptr<ID3D11DeviceContext> mRender{ nullptr };
+		Driver				*		mDevice{ nullptr };
+	
+	private:
+		std::array< comptr<ID3D11Buffer>, sizeof...(BufferTypes)> cbBuffers;
 		
-		void InitalizeQue();
+		template<typename BufferType>
+		constexpr int get_cb_index() const {
+			using types_t = std::tuple<BufferTypes...>;
+			return util::Index<BufferType, types_t>::value;
+		}
 
-		void setProjection(DirectX::XMFLOAT4X4 matrix);
-		void setGobalLight(DirectX::XMFLOAT4 position, DirectX::XMFLOAT4 colors);
 
 
-		void begin(float TimeSinceLastFrame, float TimeSinceStart);
-		void clear();
-		void clear(Graphics::Generic::RGBA color);
-		template<typename MeshType>
-		void meshBind(MeshType const & md) {
+	public:
+		template<typename BufferType>
+		ID3D11Buffer * getCbBuffer() {
+			return cbBuffers[get_cb_index<BufferType>()].get();
+		}
+
+		template<typename BufferType>
+		constexpr comptr<ID3D11Buffer> & getCbBufferComptr() {
+			return cbBuffers[get_cb_index<BufferType>()];
+		}
+
+
+		template<typename BufferValues>
+		void createCB(BufferValues bf) {
+			getCbBufferComptr<BufferValues>() = mDevice->createConstantBuffer({ &bf, sizeof(BufferValues) });
+		}
+		
+		Render() {}
+
+		Render(Driver * device, comptr<ID3D11DeviceContext> context) :
+			mDevice{ device },
+			mRender{ context }
+		{}
+
+		inline void writeBuffer(ID3D11Resource * resource, void const * data, std::size_t size) {
+				D3D11_MAPPED_SUBRESOURCE rawPtr;
+				mRender->Map(resource, 0, D3D11_MAP_WRITE_DISCARD, 0, &rawPtr);
+				memcpy(rawPtr.pData, data, size);
+				mRender->Unmap(resource, 0);
+		}
+
+		template <typename T>
+		void writeBuffer(ID3D11Resource * resource, T const & item) {
+			writeBuffer(resource, static_cast<void const*>(&item), sizeof(T));
+		}
+
+		
+		void clear() {
+			float color[4] = { 0.0f,0.0f,0.0f,0.0f };
+
+			// Clear the back buffer.
+			mRender->ClearRenderTargetView(mDevice->mRenderTargetView.get(), color);
+
+			// Clear the depth buffer.
+			mRender->ClearDepthStencilView(mDevice->mDepthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+		}
+
+		void clear(Graphics::Generic::RGBA color) {
+			// Clear the back buffer.
+			mRender->ClearRenderTargetView(mDevice->mRenderTargetView.get(), color.cdata());
+
+			// Clear the depth buffer.
+			mRender->ClearDepthStencilView(mDevice->mDepthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+		}
+
+		template <typename MeshTraits> 
+		void meshSetupIA() {
 			using vt = VertexDescription<typename MeshType::vertex_type>;
-			//For now just set the topology will bench mark it
-			// Todo: bench mark changing the topology per item
 			mRender->IASetPrimitiveTopology(Topology(md));
 			mRender->IASetInputLayout(vt::getInputLayout());
+		}
+
+		template<typename MeshType>
+		void meshBindAndRender(MeshType const & md) {
+			using vt = VertexDescription<typename MeshType::vertex_type>;
 			mRender->IASetVertexBuffers(0, 1, md.vertexBuffer.put_void(), vt::stride(), nullptr);
-			mRender->IASetIndexBuffer(md.indexBuffer.put_void(), IndexSize(md));
-			mIndecies_start = md.index_start;
-			mIndecies_count = md.index_count;
+			mRender->IASetIndexBuffer(md.indexBuffer.put_void(), IndexSize<MeshType>() );
+			meshRender(md.index_count, md.index_start);
 		}
 		//void materialBind(Material & mat);
-		void drawMesh(DirectX::XMFLOAT4X4 worldview);
-		void end(bool autoPresent = true);
+
+		template< typename VertexType, typename IndexType >
+		void meshBind(VertexBuffer & vb, IndexBuffer & ib) {
+			using vt = VertexDescription<Vertex>;
+			mRender->IASetVertexBuffers(0, 1, vb.put_void(), vt::stride(), nullptr);
+			mRender->IASetIndexBuffer(ib.put_void(), IndexSize<IndexType>());
+		}
+
+		void meshRender(std::size_t count, std::size_t start = 0) {
+			mRender->DrawIndexed(count, start, 0);
+		}
+
+		void present() {
+			mDevice->present();
+		}
 	};
 }
