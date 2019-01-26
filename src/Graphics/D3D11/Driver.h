@@ -79,9 +79,20 @@ namespace Graphics::D3D11 {
 			}
 		}
 
-		//std::unique_ptr<Render> getRender();
+		ID3D11RenderTargetView * getRenderTargetView() const noexcept {
+			return mRenderTargetView.get();
+		}
 
-	protected:
+		ID3D11DepthStencilView * getDepthStencil() const noexcept {
+			return mDepthStencilView.get();
+		}
+
+		ID3D11DeviceContext * getContext() const noexcept {
+			return mRender.get();
+		}
+
+
+	private:
 
 		void setDefaultViewport();
 		void setupRenderTargetView(); // Call First
