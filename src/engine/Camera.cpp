@@ -68,6 +68,14 @@ DirectX::XMFLOAT4X4 & Camera::getProjData( DirectX::XMFLOAT4X4 * value )
 	return *value;
 }
 
+DirectX::XMFLOAT4X4 Camera::getProjData()
+{
+	DirectX::XMFLOAT4X4 value;
+	DirectX::XMStoreFloat4x4(&value, DirectX::XMMatrixTranspose(mpd->mProjMatrix));
+	return value;
+}
+
+
 DirectX::XMFLOAT4X4 & Camera::getViewProjData( DirectX::XMFLOAT4X4 * value )
 {
 	calcViewProj();

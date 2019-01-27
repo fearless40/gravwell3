@@ -16,7 +16,7 @@ namespace Graphics::D3D11 {
 	using ConstantBuffer = comptr<ID3D11Buffer>;
 	using IndexBuffer = comptr<ID3D11Buffer>;
 	using VertexBuffer = comptr<ID3D11Buffer>;
-	using RawMemory = gsl::span<const std::byte>;
+	
 
 	class Driver {
 
@@ -34,34 +34,9 @@ namespace Graphics::D3D11 {
 		void resize(unsigned int width, unsigned int height);
 		void present();
 
-		// Creation Functions
-		ConstantBuffer createConstantBuffer(RawMemory memory) {
-			return createBuffer(
-				static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes(),
-				D3D11_USAGE_DYNAMIC,
-				D3D11_BIND_CONSTANT_BUFFER,
-				D3D11_CPU_ACCESS_WRITE);
-		}
+		float getWidth() { return mMode.width; }
+		float getHeight() { return mMode.height; }
 
-		template<typename BufferTraitsT>
-		VertexBuffer createVertexBuffer(RawMemory memory) {
-			using BT = Graphics::D3D11::BufferTraits::BufferTraits< BufferTraitsT>;
-			return createBuffer(static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes(),
-				BT::Binding,
-				D3D11_BIND_VERTEX_BUFFER,
-				BT::CPU);
-		}
-		
-		template <typename BufferTraitsT>
-		IndexBuffer createIndexBuffer(RawMemory memory) {
-			using BT = Graphics::D3D11::BufferTraits::BufferTraits< BufferTraitsT>;
-			return createBuffer(static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes(),
-				BT::Binding,
-				D3D11_BIND_INDEX_BUFFER,
-				BT::CPU);
-		}
-
-		
 
 		ID3D11Device * get() const noexcept { return mDevice.get(); }
 
@@ -91,6 +66,11 @@ namespace Graphics::D3D11 {
 			return mRender.get();
 		}
 
+		comptr<ID3D11DeviceContext> getContext_comptr() const noexcept {
+			return mRender;
+		}
+
+
 
 	private:
 
@@ -100,10 +80,7 @@ namespace Graphics::D3D11 {
 		void setupDepthStencil();
 		void setupRasterDescription(); //Call 3rd
 
-		ConstantBuffer createBuffer(void * mem, std::size_t memSize,
-			D3D11_USAGE bufferMemoryType,
-			unsigned int bindFlags,
-			unsigned int CPUAccessFlags);
+		
 
 		Graphics::Generic::DisplayMode		mMode;
 

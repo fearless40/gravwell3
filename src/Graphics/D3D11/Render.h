@@ -7,7 +7,7 @@
 
 namespace Graphics::D3D11 {
 	class Driver;
-
+	using RawMemory = gsl::span<const std::byte>;
 	class Render {
 	
 	public:
@@ -16,23 +16,60 @@ namespace Graphics::D3D11 {
 	
 		Render() {}
 
-		Render(Driver * device, comptr<ID3D11DeviceContext> context) :
+		Render(Driver * device) :
 			mDevice{ device },
-			mRender{ context }
+			mRender{ device->getContext_comptr() }
 		{}
 
-		template <typename BufferBagType, typename ... ValueTypes>
-		void initalizeConstantBufferBag(BufferBagType & bag, ValueTypes ... values) {
-			(bag.get_comptr<ValueTypes> = nullptr) ...;
-			(bag.get_comptr<ValueTypes> = nullptr = mDevice->createConstantBuffer({ &values, sizeof(ValueTypes) })) ...;
-			
+		void setDevice(Driver * device) {
+			mDevice = device;
+			mRender = nullptr;
+			mRender = device->getContext_comptr();
+		}
+
+		ConstantBuffer createBuffer(void * mem, std::size_t memSize,
+			D3D11_USAGE bufferMemoryType,
+			unsigned int bindFlags,
+			unsigned int CPUAccessFlags);
+
+		ConstantBuffer createConstantBuffer(RawMemory memory) {
+			return createBuffer(
+				static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes(),
+				D3D11_USAGE_DYNAMIC,
+				D3D11_BIND_CONSTANT_BUFFER,
+				D3D11_CPU_ACCESS_WRITE);
 		}
 
 		template<typename BufferValues>
 		ConstantBuffer createConstantBuffer(BufferValues & bf) {
 			return mDevice->createConstantBuffer({ &bf, sizeof(BufferValues) });
 		}
-		
+
+		template<typename BufferTraitsT>
+		VertexBuffer createVertexBuffer(RawMemory memory) {
+			using BT = Graphics::D3D11::BufferTraits::BufferTraits< BufferTraitsT>;
+			return createBuffer(static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes(),
+				BT::Binding,
+				D3D11_BIND_VERTEX_BUFFER,
+				BT::CPU);
+		}
+
+		template <typename BufferTraitsT>
+		IndexBuffer createIndexBuffer(RawMemory memory) {
+			using BT = Graphics::D3D11::BufferTraits::BufferTraits< BufferTraitsT>;
+			return createBuffer(static_cast<void*>(const_cast<std::byte *>(memory.data())), memory.size_bytes(),
+				BT::Binding,
+				D3D11_BIND_INDEX_BUFFER,
+				BT::CPU);
+		}
+
+
+		template <typename BufferBagType, typename ... ValueTypes>
+		void initalizeConstantBufferBag(BufferBagType & bag, ValueTypes ... values) {
+			(bag.get_comptr<ValueTypes> = nullptr), ...;
+			(bag.get_comptr<ValueTypes> = mDevice->createConstantBuffer({ &values, sizeof(ValueTypes) })), ...;
+			
+		}
 
 		inline void writeBuffer(ID3D11Resource * resource, void const * data, std::size_t size) {
 				D3D11_MAPPED_SUBRESOURCE rawPtr;
@@ -90,12 +127,16 @@ namespace Graphics::D3D11 {
 			meshBind(mesh_value.vertexBuffer, mesh_value.indexBuffer, vt::stride(), IndexSize<MeshType>());
 		}
 
-		//void materialBind(Material & mat);
-
 		template< typename VertexType, typename IndexType >
 		void meshBind(VertexBuffer & vb, IndexBuffer & ib) {
 			using vt = VertexDescription<Vertex>;
 			meshBind(vb, ib, vt::stride(), IndexSize<MeshType>());
+		}
+
+		template<typename MeshType, typename BufferBagType, typename BufferType>
+		void meshBind(MeshType & const mesh, BufferBagType & bag, BufferType & const cbValue) {
+			meshBind(std::forward<MeshType>(mesh));
+			writeBuffer(std::forward<BufferBagType>(bag), std::forward<BufferType>(cbValue));
 		}
 
 		void meshRender(std::size_t count, std::size_t start = 0) {
@@ -107,12 +148,7 @@ namespace Graphics::D3D11 {
 			meshRender(mesh.index_count, mesh.index_start);
 		}
 
-		template<typename MeshType, typename BufferBagType, typename BufferType>
-		void meshBind(MeshType & const mesh, BufferBagType & bag, BufferType & const cbValue) {
-			meshBind(std::forward<MeshType>(mesh));
-			writeBuffer(std::forward<BufferBagType>(bag),
-				std::forward<BufferType>(cbValue));
-		}
+		
 
 		void present() {
 			mDevice->present();

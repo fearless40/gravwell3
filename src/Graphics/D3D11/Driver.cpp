@@ -211,43 +211,9 @@ namespace Graphics::D3D11 {
 		}
 	}
 
-	ConstantBuffer Driver::createBuffer(void * mem, std::size_t memSize,
-		D3D11_USAGE bufferMemoryType,
-		unsigned int bindFlags,
-		unsigned int CPUAccessFlags)
-	{
-		ConstantBuffer tempbuf{ nullptr };
-		D3D11_BUFFER_DESC vertexBufferDesc;
-		D3D11_SUBRESOURCE_DATA vertexData;
-
-		// Set up the description of the generic buffer.
-		vertexBufferDesc.Usage = bufferMemoryType;
-		vertexBufferDesc.ByteWidth = memSize;
-		vertexBufferDesc.BindFlags = bindFlags;
-		vertexBufferDesc.CPUAccessFlags = CPUAccessFlags;
-		vertexBufferDesc.MiscFlags = 0;
-		vertexBufferDesc.StructureByteStride = 0;
-
-		// Give the subresource structure a pointer to the vertex data.
-		vertexData.pSysMem = mem;
-		vertexData.SysMemPitch = 0;
-		vertexData.SysMemSlicePitch = 0;
-
-		// Now create the vertex buffer.
-		auto result = mDevice->CreateBuffer(&vertexBufferDesc, &vertexData, tempbuf.put());
-		if (FAILED(result))
-		{
-			return nullptr;
-		}
-
-		return  tempbuf;
-	};
-
-	std::unique_ptr<Render> Driver::getRender() {
-		return std::make_unique<Render>( this, mRender );
-	}
 	
 
+	
 	std::unique_ptr<Graphics::D3D11::Driver> Driver::CreateDevice(HWND hwnd,
 		const Graphics::Generic::DisplayMode mode)
 	{

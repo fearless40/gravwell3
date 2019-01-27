@@ -7,9 +7,12 @@
 #include "../Generic/Mesh.h"
 #include "../Generic/Topology.h"
 #include "../Generic/IndexSizes.h"
+#include "ConstantBufferBag.hpp"
+#include "../../engine/Camera.h"
 
 namespace Engine::Visuals {
 	namespace dx = Graphics::D3D11;
+	namespace math = DirectX;
 
 	namespace detail {
 
@@ -43,6 +46,7 @@ namespace Engine::Visuals {
 
 
 		std::unique_ptr<dx::Driver> driver{ nullptr };
+
 	}
 
 	namespace Basic
@@ -51,34 +55,59 @@ namespace Engine::Visuals {
 			dx::VertexBuffer	vb{ nullptr };
 			dx::IndexBuffer		ib{ nullptr };
 			uint32_t			index_count;
+
+			using vertex_type = Engine::Mesh::vertex_type;
+			using index_definition = Engine::Mesh::index_definition;
+			using index_type = typename index_definition::type;
 		};
 		
 		namespace CB {
-			struct Infreq {
+			struct InfreqVS {
 				Engine::Matrix proj;
+			};
+
+			struct InfreqPS {
+				float doNothingForNow;
 			};
 
 			struct Frame {
 				float timeElapsedSinceLastFrame;
 			};
 
-			struct Item {
+			struct ItemVS {
 				Engine::Matrix world_view;
+			};
+
+			struct ItemPS {
+				Engine::Vector4 diffuse;
 			};
 		}
 
-		struct D3DMembers {
-			comptr<ID3D11DeviceContext> mRender{ nullptr };
-			dx::Driver				*	mDevice{ nullptr };
-			comptr<ID3D11Buffer>		mPerGame{ nullptr };
-			comptr<ID3D11Buffer>		mPerFrame{ nullptr };
-			comptr<ID3D11Buffer>		mPerItem{ nullptr };
-			comptr<ID3D11Buffer>		mUser{ nullptr };
-		};
 
 		std::vector<iMesh> meshes;
-		D3DMembers d3d;
-		//std::vector<Visual::value_type> free_list;
+		dx::Render render;
+		dx::ConstantBufferBag<CB::InfreqVS, CB::Frame, CB::ItemVS> vsBuffers;
+		dx::ConstantBufferBag<CB::InfreqPS, CB::Frame, CB::ItemPS> psBuffers;
+		Camera camera;
+
+		const iMesh & getMesh(Visual id) {
+			return meshes[id.value];
+		}
+
+
+		void Init(dx::Driver * driver) {
+			render.setDevice(driver);
+			camera.setPerspective(driver->getWidth(), driver->getHeight(), 0.001f, 1000.f);
+			camera.lookAt({ 0.f,0.f,0.f });
+			camera.setPosition({ 0.f,0.f,-5.f });
+			
+			CB::InfreqVS infreqVs{ camera.getProjData() };
+			CB::Frame frame{ 0.f };
+			CB::ItemVS itemVS{ math::XMMatrixTranspose(math::XMMatrixIdentity()) };
+
+			render.initalizeConstantBufferBag(vsBuffers, infreqVs, frame, itemVS);
+		}
+
 
 		Visual	Create(Engine::MeshView meshview, Engine::Material mat) {
 			namespace BufferTraits = Graphics::Generic::BufferTraits;
@@ -92,14 +121,15 @@ namespace Engine::Visuals {
 			// Skip the sorting for now
 			Engine::fMatrix view = DirectX::XMLoadFloat4x4(&state.view);
 			
-			detail::render->clear();
-			for (auto[visualID, matrix] : data) {
-				detail::render->meshBind(detail::vMeshes[visualID->get()].mesh);
-				detail::render->drawMesh(*matrix);
+			render.clear();
+			for (auto & item : state.states) {
+				auto current_mesh = getMesh(item.id);
+				render.meshBind(current_mesh.vb,current_mesh.ib);
+				render->drawMesh(*matrix);
 			}
 			detail::render->end();
 		}
-
+		
 	}
 
 	

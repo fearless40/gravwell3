@@ -7,11 +7,37 @@
 #include "../Generic/Color.h"
 #include "Types.h"
 
-struct Monkey {};
-struct Turkey {};
-struct Horse {};
+namespace Graphics::D3D11 {
 
-void test() {
-	Graphics::D3D11::Render<Monkey, Turkey, Horse> r;
-	auto k = r.getCbBuffer<Horse>();
+	ConstantBuffer Render::createBuffer(void * mem, std::size_t memSize,
+		D3D11_USAGE bufferMemoryType,
+		unsigned int bindFlags,
+		unsigned int CPUAccessFlags)
+	{
+		ConstantBuffer tempbuf{ nullptr };
+		D3D11_BUFFER_DESC vertexBufferDesc;
+		D3D11_SUBRESOURCE_DATA vertexData;
+
+		// Set up the description of the generic buffer.
+		vertexBufferDesc.Usage = bufferMemoryType;
+		vertexBufferDesc.ByteWidth = memSize;
+		vertexBufferDesc.BindFlags = bindFlags;
+		vertexBufferDesc.CPUAccessFlags = CPUAccessFlags;
+		vertexBufferDesc.MiscFlags = 0;
+		vertexBufferDesc.StructureByteStride = 0;
+
+		// Give the subresource structure a pointer to the vertex data.
+		vertexData.pSysMem = mem;
+		vertexData.SysMemPitch = 0;
+		vertexData.SysMemSlicePitch = 0;
+
+		// Now create the vertex buffer.
+		auto result = mDevice->get()->CreateBuffer(&vertexBufferDesc, &vertexData, tempbuf.put());
+		if (FAILED(result))
+		{
+			return nullptr;
+		}
+
+		return  tempbuf;
+	};
 }

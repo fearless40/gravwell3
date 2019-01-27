@@ -35,6 +35,8 @@ public:
 
 	DirectX::XMFLOAT4X4 & getViewData( DirectX::XMFLOAT4X4 * value );
 	DirectX::XMFLOAT4X4 & getProjData( DirectX::XMFLOAT4X4 * value );
+	DirectX::XMFLOAT4X4 Camera::getProjData();
+
 	DirectX::XMFLOAT4X4 & getViewProjData( DirectX::XMFLOAT4X4 * value );
 
 protected:
