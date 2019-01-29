@@ -11,11 +11,12 @@
 
 
 namespace Graphics::D3D11 {
-	class Driver;
 
 	using ConstantBuffer = comptr<ID3D11Buffer>;
 	using IndexBuffer = comptr<ID3D11Buffer>;
 	using VertexBuffer = comptr<ID3D11Buffer>;
+	using VertexShader = comptr<ID3D11VertexShader>;
+	using PixelShader = comptr<ID3D11PixelShader>;
 	
 
 	class Driver {

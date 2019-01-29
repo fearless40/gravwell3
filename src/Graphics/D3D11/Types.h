@@ -21,13 +21,13 @@ namespace Graphics::D3D11 {
 		}
 	}
 
-	template <typename MeshTypeT> 
+	template <typename IndexType> 
 	constexpr DXGI_FORMAT IndexSize() {
-		using namespace is = Graphics::Generic::IndexSize;
-		if constexpr (std::is_same_v<is::Size16, MeshTypeT::IndexSize>) {
+		namespace is = Graphics::Generic::IndexSize;
+		if constexpr (std::is_same_v<is::Size16, IndexType>) {
 			return DXGI_FORMAT_R16_UINT;
 		}
-		else constexpr {
+		else {
 			return DXGI_FORMAT_R32_UINT;
 		}
 	}

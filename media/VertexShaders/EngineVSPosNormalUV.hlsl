@@ -6,13 +6,12 @@ cbuffer PerSession : register(b0)
 
 cbuffer PerFrame : register(b1)
 {
-	matrix view;
-	float4 time;
+	float time;
 }
 
 cbuffer PerItem  : register(b2)
 {
-	matrix world;
+	matrix world_view;
 }
 
 
@@ -27,9 +26,8 @@ VOut main(  float4 position : Position, float4 normal : Normal, float2 uv : TexC
 	VOut v;
 	float4 pos;
 
-	pos = mul( position, world );
-	v.position = mul( pos, view );
-	v.position = mul( v.position, proj );
+	pos = mul( position, world_view );
+	v.position = mul( pos, proj );
 	v.normal = normal;
 	v.uv = uv;
 

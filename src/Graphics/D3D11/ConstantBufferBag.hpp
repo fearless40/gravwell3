@@ -4,7 +4,7 @@
 
 namespace Graphics::D3D11 {
 
-	struct ID3D11Buffer;
+//	struct ID3D11Buffer;
 
 	template <typename ... BufferTypes>
 	class ConstantBufferBag {
@@ -26,15 +26,15 @@ namespace Graphics::D3D11 {
 		}
 
 		ID3D11Buffer * get(std::size_t index) const noexcept{
-			return mBuffers[index];
+			return mBuffers[index].get();
 		}
 
 		template<typename BufferType>
-		comptr<ID3D11Buffer> & get_comptr() const noexcept {
+		comptr<ID3D11Buffer> & get_comptr() noexcept {
 			return get_comptr(get_cb_index<BufferType>());
 		}
 
-		comptr<ID3D11Buffer> & get_comptr(std::size_t index) const noexcept {
+		comptr<ID3D11Buffer> & get_comptr(std::size_t index) noexcept {
 			return mBuffers[index];
 		}
 
@@ -43,7 +43,7 @@ namespace Graphics::D3D11 {
 			set_comptr(get_cb_index<BufferType>(), std::forward<ptr>(value));
 		}
 
-		void set_comptr(std::size_t index, comptr < ID3D11Buffer & value) {
+		void set_comptr(std::size_t index, comptr <ID3D11Buffer> & value) {
 			mBuffers[index] = nullptr;
 			mBuffers[index].copy_from(value)
 		}

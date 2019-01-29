@@ -13,8 +13,8 @@ namespace Graphics::D3D11::ShaderCompiler {
 		operator ID3DBlob * () const { return shader.get(); }
 		std::string_view error_string();
 		auto operator -> () { return shader.get(); }
-		gsl::span<unsigned char> asSpan() { 
-			return { (unsigned char *)(shader->GetBufferPointer()),
+		gsl::span<std::byte> asSpan() { 
+			return { (std::byte *)(shader->GetBufferPointer()),
 			(std::ptrdiff_t)shader->GetBufferSize() };
 		};
 

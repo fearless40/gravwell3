@@ -20,9 +20,6 @@
     <Filter Include="tests">
       <UniqueIdentifier>{93ec7440-fced-4f4c-b993-43141012da1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="render">
-      <UniqueIdentifier>{211684f3-2630-4e52-b3c2-c53dbb1b1790}</UniqueIdentifier>
-    </Filter>
     <Filter Include="util">
       <UniqueIdentifier>{ed9b494b-7c80-4952-b95c-3710765e5c2b}</UniqueIdentifier>
     </Filter>
@@ -75,9 +72,6 @@
     </ClCompile>
     <ClCompile Include="..\src\util\Work.cpp">
       <Filter>util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\render\Camera.cpp">
-      <Filter>render</Filter>
     </ClCompile>
     <ClCompile Include="..\src\stdafx.cpp" />
     <ClCompile Include="..\src\game-gwell\LinearMotion.cpp">
@@ -189,12 +183,6 @@
     </ClInclude>
     <ClInclude Include="..\src\util\Work.h">
       <Filter>util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render\Camera.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\render\Render.h">
-      <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="..\src\stdafx.h" />
     <ClInclude Include="..\src\main\targetver.h" />

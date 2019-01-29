@@ -10,6 +10,10 @@ namespace Graphics::D3D11 {
 	using RawMemory = gsl::span<const std::byte>;
 	class Render {
 	
+		void * toVoidPtr(RawMemory memory) {
+			return static_cast<void*>(const_cast<std::byte *>(memory.data()));
+		}
+
 	public:
 		comptr<ID3D11DeviceContext> mRender{ nullptr };
 		Driver				*		mDevice{ nullptr };
@@ -27,7 +31,7 @@ namespace Graphics::D3D11 {
 			mRender = device->getContext_comptr();
 		}
 
-		ConstantBuffer createBuffer(void * mem, std::size_t memSize,
+		comptr<ID3D11Buffer> createBuffer(void * mem, std::size_t memSize,
 			D3D11_USAGE bufferMemoryType,
 			unsigned int bindFlags,
 			unsigned int CPUAccessFlags);
@@ -63,14 +67,35 @@ namespace Graphics::D3D11 {
 				BT::CPU);
 		}
 
+		VertexShader createVSShader(RawMemory memory) {
+			VertexShader shader{ nullptr };
+			mDevice->get()->CreateVertexShader(toVoidPtr(memory), memory.size_bytes(), nullptr, shader.put());
+			return shader;
+		}
+
+		PixelShader createPSShader(RawMemory memory) {
+			PixelShader shader{ nullptr };
+			mDevice->get()->CreatePixelShader(toVoidPtr(memory), memory.size_bytes(), nullptr, shader.put());
+			return shader;
+		}
 
 		template <typename BufferBagType, typename ... ValueTypes>
 		void initalizeConstantBufferBag(BufferBagType & bag, ValueTypes ... values) {
-			(bag.get_comptr<ValueTypes> = nullptr), ...;
-			(bag.get_comptr<ValueTypes> = mDevice->createConstantBuffer({ &values, sizeof(ValueTypes) })), ...;
+			auto setNullPtr = [](auto & bag, auto type) {
+				bag.get_comptr<decltype(type)>() = nullptr;
+			};
+
+			(setNullPtr(bag, values),...);
+		
+			auto setValuePtr = [this](auto & bag, auto & value) -> void{ 
+				using value_type = typename std::decay_t<decltype(value)>;
+				RawMemory rm( (std::byte *)(void*)(&value) , sizeof(value_type) );
+				bag.get_comptr<value_type>() = this->createConstantBuffer(rm);
+			};
+			(setValuePtr(bag, values), ...);
 			
 		}
-
+		
 		inline void writeBuffer(ID3D11Resource * resource, void const * data, std::size_t size) {
 				D3D11_MAPPED_SUBRESOURCE rawPtr;
 				mRender->Map(resource, 0, D3D11_MAP_WRITE_DISCARD, 0, &rawPtr);
@@ -86,7 +111,7 @@ namespace Graphics::D3D11 {
 		template <typename BufferBagType, typename BufferType>
 		// requires std::in_type_list<CbBufferType,BufferTypes...>
 		void writeBuffer(BufferBagType & bag, BufferType const & value) {
-			writeBuffer(bag.get<BufferType>(), buf);
+			writeBuffer(bag.get<BufferType>(), value);
 		}
 
 		void clear(Graphics::Generic::RGBA color = { 0.f,0.f,0.f,0.f }) {
@@ -115,26 +140,26 @@ namespace Graphics::D3D11 {
 			mRender->PSSetConstantBuffers(0, buffers.size(), buffers.data());
 		}
 
-		void meshBind(VertexBuffer const & vb, IndexBuffer const & ib, unsigned int vbStride, DXGI_FORMAT ibStride) {
-			std::array<ID3D11Buffer *, 1> vBuffers{ vb.get() };
-			mRender->IASetVertexBuffers(0, 1, vBuffers.data(), &vbStride, nullptr);
+		void meshBind(const VertexBuffer & vb, const IndexBuffer & ib, unsigned int vbStride, DXGI_FORMAT ibStride) {
+			auto vBuffers = vb.get();
+			mRender->IASetVertexBuffers(0, 1, &vBuffers, &vbStride, nullptr);
 			mRender->IASetIndexBuffer(ib.get(), ibStride,0);
 		}
 
 		template <typename MeshType>
-		void meshBind(MeshType & const mesh_value) {
+		void meshBind(const MeshType & mesh_value) {
 			using vt = VertexDescription<typename MeshType::vertex_type>;
 			meshBind(mesh_value.vertexBuffer, mesh_value.indexBuffer, vt::stride(), IndexSize<MeshType>());
 		}
 
 		template< typename VertexType, typename IndexType >
 		void meshBind(VertexBuffer & vb, IndexBuffer & ib) {
-			using vt = VertexDescription<Vertex>;
-			meshBind(vb, ib, vt::stride(), IndexSize<MeshType>());
+			using vt = VertexDescription<VertexType>;
+			meshBind(vb, ib, vt::stride(), IndexSize<IndexType>());
 		}
 
 		template<typename MeshType, typename BufferBagType, typename BufferType>
-		void meshBind(MeshType & const mesh, BufferBagType & bag, BufferType & const cbValue) {
+		void meshBind(const MeshType & mesh, BufferBagType & bag, const BufferType & cbValue) {
 			meshBind(std::forward<MeshType>(mesh));
 			writeBuffer(std::forward<BufferBagType>(bag), std::forward<BufferType>(cbValue));
 		}
@@ -143,11 +168,18 @@ namespace Graphics::D3D11 {
 			mRender->DrawIndexed(count, start, 0);
 		}
 
-		template<typename MeshType>
-		void meshRender(MeshType & const mesh) {
+		/*template<typename MeshType>
+		void meshRender(const MeshType & mesh) {
 			meshRender(mesh.index_count, mesh.index_start);
+		}*/
+
+		void vsShaderBind(VertexShader & vs) {
+			mRender->VSSetShader(vs.get(), nullptr, 1);
 		}
 
+		void psShaderBind(PixelShader & ps) {
+			mRender->PSSetShader(ps.get(), nullptr, 1);
+		}
 		
 
 		void present() {

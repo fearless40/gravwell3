@@ -1,2 +1,2 @@
-#include "../stdafx.h"
-#include "../Globals.h"
+//#include "../stdafx.h"
+//#include "../Globals.h"

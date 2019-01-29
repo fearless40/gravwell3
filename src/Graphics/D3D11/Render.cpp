@@ -9,12 +9,12 @@
 
 namespace Graphics::D3D11 {
 
-	ConstantBuffer Render::createBuffer(void * mem, std::size_t memSize,
+	comptr<ID3D11Buffer> Render::createBuffer(void * mem, std::size_t memSize,
 		D3D11_USAGE bufferMemoryType,
 		unsigned int bindFlags,
 		unsigned int CPUAccessFlags)
 	{
-		ConstantBuffer tempbuf{ nullptr };
+		comptr<ID3D11Buffer> tempbuf{ nullptr };
 		D3D11_BUFFER_DESC vertexBufferDesc;
 		D3D11_SUBRESOURCE_DATA vertexData;
 

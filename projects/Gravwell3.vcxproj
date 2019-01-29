@@ -38,7 +38,6 @@
     <ClCompile Include="..\src\main\main.cpp" />
     <ClCompile Include="..\src\main\Window.cpp" />
     <ClCompile Include="..\src\procedural\Geometry.cpp" />
-    <ClCompile Include="..\src\render\Camera.cpp" />
     <ClCompile Include="..\src\stdafx.cpp" />
     <ClCompile Include="..\src\tests\RenderTest.cpp" />
     <ClCompile Include="..\src\util\CmdLineParser.cpp" />
@@ -95,8 +94,6 @@
     <ClInclude Include="..\src\procedural\Bezier.h" />
     <ClInclude Include="..\src\procedural\Geometry.h" />
     <ClInclude Include="..\src\procedural\TeapotData.hpp" />
-    <ClInclude Include="..\src\render\Camera.h" />
-    <ClInclude Include="..\src\render\Render.h" />
     <ClInclude Include="..\src\stdafx.h" />
     <ClInclude Include="..\src\util\CmdLineParser.h" />
     <ClInclude Include="..\src\util\CriticalSection.h" />

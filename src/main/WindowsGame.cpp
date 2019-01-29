@@ -30,8 +30,6 @@ void WindowsGame::run() {
 	MSG msg;
 	mRunning = true;
 	graphics_driver = Graphics::D3D11::Driver::CreateDevice(getHWND(), { 0,0,{0,0},false,false });
-	Graphics::D3D11::Render render{ graphics_driver->getRender() };
-	global_render = &render;
 	
 	timer.start();
 
