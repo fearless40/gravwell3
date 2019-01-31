@@ -22,5 +22,6 @@ namespace Graphics::D3D11::ShaderCompiler {
 		bool hasError;
 	};
 
-	CompiledShader compile(std::string_view shader);
+	CompiledShader compile_vertexshader(std::string_view shader);
+	CompiledShader compile_pixelshader(std::string_view shader);
 }

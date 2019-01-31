@@ -23,6 +23,9 @@ namespace Graphics::Generic
 			float colors[4];
 
 			const float * cdata() const noexcept { return colors; }
+
+			float * begin() { return colors; }
+			float * end() { return &colors[5]; }
 		};
 	}
 
@@ -55,10 +58,10 @@ namespace Graphics::Generic
 
 
 		Color() {
-			data[0] = 0.0f;
-			data[1] = 0.0f;
-			data[2] = 0.0f;
-			data[3] = 0.0f;
+			colors[0] = 0.0f;
+			colors[1] = 0.0f;
+			colors[2] = 0.0f;
+			colors[3] = 0.0f;
 		}
 
 		Color(float r, float g, float b, float a) {

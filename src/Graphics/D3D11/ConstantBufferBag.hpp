@@ -20,6 +20,8 @@ namespace Graphics::D3D11 {
 
 	public:
 
+		using size_n = std::integral_constant<int, sizeof...(BufferTypes)>;
+
 		template<typename BufferType>
 		ID3D11Buffer * get() const noexcept {
 			return get(get_cb_index<BufferType>());
@@ -45,7 +47,7 @@ namespace Graphics::D3D11 {
 
 		void set_comptr(std::size_t index, comptr <ID3D11Buffer> & value) {
 			mBuffers[index] = nullptr;
-			mBuffers[index].copy_from(value)
+			mBuffers[index].copy_from(value);
 		}
 
 		constexpr auto begin() { return mBuffers.begin(); }
@@ -56,6 +58,6 @@ namespace Graphics::D3D11 {
 				item = nullptr;
 		}
 
-		constexpr std::size_t size() { return mBuffers.size(); }
+		constexpr std::size_t size() const noexcept { return mBuffers.size(); }
 	};
 }

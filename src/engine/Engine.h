@@ -10,6 +10,7 @@ namespace Engine {
 		struct ShutDownNow {};
 		struct SleepNow{};
 		struct LoadData{};
+		struct FirstInitalize {};
 	}
 
 

@@ -55,7 +55,7 @@
     <ClInclude Include="..\src\engine\GameEvent.h" />
     <ClInclude Include="..\src\engine\ID.h" />
     <ClInclude Include="..\src\engine\Material.h" />
-    <ClInclude Include="..\src\engine\MathTypes.h" />
+    <ClInclude Include="..\src\engine\Math.h" />
     <ClInclude Include="..\src\engine\Mesh.h" />
     <ClInclude Include="..\src\engine\Visuals.h" />
     <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
@@ -68,12 +68,14 @@
     <ClInclude Include="..\src\game-gwell\Position.h" />
     <ClInclude Include="..\src\Globals.h" />
     <ClInclude Include="..\src\Graphics\D3D11\BufferTraits.h" />
+    <ClInclude Include="..\src\Graphics\D3D11\ConstantBufferBag.hpp" />
     <ClInclude Include="..\src\Graphics\D3D11\Driver.h" />
     <ClInclude Include="..\src\Graphics\D3D11\GenericToD3D.h" />
     <ClInclude Include="..\src\Graphics\D3D11\Render.h" />
     <ClInclude Include="..\src\Graphics\D3D11\ShaderCompiler.h" />
     <ClInclude Include="..\src\Graphics\D3D11\Types.h" />
     <ClInclude Include="..\src\Graphics\D3D11\Vertexs.h" />
+    <ClInclude Include="..\src\Graphics\D3D11\VisualInit.h" />
     <ClInclude Include="..\src\Graphics\DXGI\dxgi.h" />
     <ClInclude Include="..\src\Graphics\DXGI\Factory.h" />
     <ClInclude Include="..\src\Graphics\DXGI\VideoCard.h" />

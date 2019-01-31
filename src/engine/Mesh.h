@@ -18,4 +18,11 @@ namespace Engine {
 		gsl::span<const std::byte> vertex_data;
 		gsl::span<const std::byte> index_data;
 	};
+
+	template <typename Vertexs, typename Indexs> 
+	MeshView make_meshview(const Vertexs & vxs, const Indexs & ixs) {
+		gsl::span<const std::byte> vertex_view((std::byte*) vxs.data(), vxs.size() * sizeof(Vertexs::value_type));
+		gsl::span<const std::byte> index_view((std::byte*) ixs.data(), ixs.size() * sizeof(Indexs::value_type));
+		return { vertex_view, index_view };
+	}
 }

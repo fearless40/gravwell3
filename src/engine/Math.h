@@ -1,4 +1,7 @@
+#pragma once
+
 #include <DirectXMath.h>
+
 
 namespace Engine {
 	using Matrix = DirectX::XMFLOAT4X4;
@@ -9,4 +12,14 @@ namespace Engine {
 	using fMatrix = DirectX::XMMATRIX;
 	using fVector4 = DirectX::XMVECTOR;
 	using fQuat = fVector4;
+
+	namespace Math {
+		using namespace DirectX;
+
+		/*Matrix Identity() {
+			Matrix ret;
+			XMStoreFloat4x4(&ret, XMMatrixIdentity());
+			return ret;
+		}*/
+	}
 }

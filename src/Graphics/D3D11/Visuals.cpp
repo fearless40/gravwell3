@@ -11,47 +11,25 @@
 #include "ConstantBufferBag.hpp"
 #include "../../engine/Camera.h"
 #include "ShaderCompiler.h"
+#include "Vertexs.h"
 
 namespace Engine::Visuals {
 	namespace dx = Graphics::D3D11;
 	namespace math = DirectX;
 
-	namespace detail {
+	/*namespace detail {
 
 		using Mesh = Graphics::Generic::Mesh<dx::VertexBuffer, dx::IndexBuffer,
 			Engine::Mesh::vertex_type,
-			Graphics::Generic::Toplogy::TriangleList,
+			Graphics::Generic::Topology::TriangleList,
 			Engine::Mesh::index_definition>;
 
-		using SortKeyType = uint64_t;
-
-		struct visual_mesh {
-			Mesh mesh;
-		};
-
-		struct visual_texture {
-
-		};
-
-		struct visual_material {
-			Graphics::Generic::RGBA diffuse;
-			Graphics::Generic::RGBA specular;
-			float roughness;
-			float reflectiveness;
-		};
-
-		std::vector<visual_mesh> vMeshes;
-		std::vector<visual_texture> vTex;
-		std::vector<visual_material> vMats;
-
-
-
-		std::unique_ptr<dx::Driver> driver{ nullptr };
-
-	}
+	}*/
 
 	namespace Basic
 	{
+		void compile_shaders();
+
 		struct iMesh {
 			dx::VertexBuffer	vb{ nullptr };
 			dx::IndexBuffer		ib{ nullptr };
@@ -60,6 +38,7 @@ namespace Engine::Visuals {
 			using vertex_type = Engine::Mesh::vertex_type;
 			using index_definition = Engine::Mesh::index_definition;
 			using index_type = typename index_definition::type;
+			using topology_type = typename Graphics::Generic::Topology::TriangleList;
 		};
 
 		namespace CB {
@@ -68,11 +47,11 @@ namespace Engine::Visuals {
 			};
 
 			struct InfreqPS {
-				float doNothingForNow;
+				float doNothingForNow[4];
 			};
 
 			struct Frame {
-				float timeElapsedSinceLastFrame;
+				float timeElapsedSinceLastFrame[4];
 			};
 
 			struct ItemVS {
@@ -84,7 +63,10 @@ namespace Engine::Visuals {
 			};
 		}
 
-
+		using driver_vertex = dx::VertexDescription< Engine::Visuals::Basic::iMesh::vertex_type>;
+		
+		
+		driver_vertex low_level_vertex_description;
 		std::vector<iMesh> meshes;
 		dx::Render render;
 		dx::ConstantBufferBag<CB::InfreqVS, CB::Frame, CB::ItemVS> vsBuffers;
@@ -95,6 +77,7 @@ namespace Engine::Visuals {
 
 		Camera camera;
 
+
 		const iMesh & getMesh(Visual id) {
 			return meshes[id.value];
 		}
@@ -102,14 +85,20 @@ namespace Engine::Visuals {
 
 
 		void Init(dx::Driver * driver) {
+			
+			
+			driver->registerVertexDescription<driver_vertex>(low_level_vertex_description);
+
+			
 			render.setDevice(driver);
-			camera.setPerspective(driver->getWidth(), driver->getHeight(), 0.001f, 1000.f);
+			camera.setPerspectiveFOV(60,driver->getWidth()/ driver->getHeight(), 0.001f, 1000.f);
 			camera.lookAt({ 0.f,0.f,0.f });
 			camera.setPosition({ 0.f,0.f,-5.f });
 
 			CB::InfreqVS infreqVs{ camera.getProjData() };
 			CB::Frame frame{ 0.f };
 			CB::ItemVS itemVS;
+			math::XMStoreFloat4x4(&infreqVs.proj, math::XMMatrixTranspose(math::XMMatrixIdentity()));
 			math::XMStoreFloat4x4(&itemVS.world_view, math::XMMatrixTranspose(math::XMMatrixIdentity()));
 
 			render.initalizeConstantBufferBag(vsBuffers, infreqVs, frame, itemVS);
@@ -125,7 +114,7 @@ namespace Engine::Visuals {
 			namespace BufferTraits = Graphics::Generic::BufferTraits;
 			auto vb = render.createVertexBuffer<BufferTraits::Default>(meshview.vertex_data);
 			auto ib = render.createIndexBuffer<BufferTraits::Default>(meshview.index_data);
-			meshes.push_back({ vb,ib, static_cast<uint32_t>(meshview.index_data.size()) });
+			meshes.push_back({ vb,ib, static_cast<uint32_t>(meshview.index_data.size() / sizeof(iMesh::index_definition::type) )});
 			return { static_cast<uint64_t>(std::distance(meshes.begin(), std::prev(meshes.end()))) };
 		}
 
@@ -155,9 +144,9 @@ namespace Engine::Visuals {
 
 		void compile_shaders() {
 			const char * psShaderChar = R"( float4 main(float4 position : SV_POSITION, float4 normal : Normal, float2 uv : TexCoord) : SV_TARGET
-			{
-				return float4(normal.x + uv.x,normal.y + uv.y,normal.z + uv.x,1.0);
-			} )";
+{
+	return float4(normal.x+uv.x,normal.y+uv.y,normal.z+uv.x,1.0);
+} )";
 
 			const char * vsShaderChar = R"(
 
@@ -168,7 +157,7 @@ namespace Engine::Visuals {
 
 				cbuffer PerFrame : register(b1)
 				{
-					float time;
+					float4 time;
 				}
 
 				cbuffer PerItem  : register(b2)
@@ -196,8 +185,8 @@ namespace Engine::Visuals {
 					return v;
 				}		)";
 
-			auto shaderPSCompiled = dx::ShaderCompiler::compile(psShaderChar);
-			auto shaderVSCompiled = dx::ShaderCompiler::compile(vsShaderChar);
+			auto shaderPSCompiled = dx::ShaderCompiler::compile_pixelshader(psShaderChar);
+			auto shaderVSCompiled = dx::ShaderCompiler::compile_vertexshader(vsShaderChar);
 
 			psShader = render.createPSShader(shaderPSCompiled.asSpan());
 			vsShader = render.createVSShader(shaderVSCompiled.asSpan());

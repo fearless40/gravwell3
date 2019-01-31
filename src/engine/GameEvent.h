@@ -1,3 +1,5 @@
+#pragma once
+
 namespace Engine {
 	struct NextLogicFrame {
 		float elapsedTimeMS;
@@ -9,5 +11,5 @@ namespace Engine {
 		NextRenderFrame(float tm) : elapsedTimeMS(tm) {}
 	};
 
-
+	struct GameInitalizeData {};
 }

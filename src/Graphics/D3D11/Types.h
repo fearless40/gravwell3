@@ -10,13 +10,19 @@ namespace Graphics::D3D11 {
 	using MeshNUV = Graphics::Generic::Mesh<comptr<ID3D11Resource>,
 		comptr<ID3D11Resource>,
 		Graphics::Generic::VertexTypes::PositionNormalUV,
-		Graphics::Generic::Toplogy::TriangleStrip,
+		Graphics::Generic::Topology::TriangleStrip,
 		Graphics::Generic::IndexSize::Size16>;
 
 	template<typename T>
-	constexpr D3D11_PRIMITIVE_TOPOLOGY Topology(T const & ) {
-		using namespace tp = Graphics::Generic::Topology;
-		if constexpr (std::is_same_v<T::TopologyT, tp::TriangleStrip>) {
+	constexpr D3D11_PRIMITIVE_TOPOLOGY Topology() {
+		namespace tp = Graphics::Generic::Topology;
+		if constexpr (std::is_same_v<T::topology_type, tp::TriangleStrip>) {
+			return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+		}
+		else if constexpr (std::is_same_v<T::topology_type, tp::TriangleList>) {
+			return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		}
+		else {
 			return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
 		}
 	}

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Graphics::Generic::Toplogy {
+namespace Graphics::Generic::Topology {
 	struct PointList {};
 	struct LineList {};
 	struct LineStrip {};

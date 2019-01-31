@@ -121,7 +121,8 @@ namespace Graphics::D3D11 {
 		}
 
 		// Bind the render target view and depth stencil buffer to the output render pipeline.
-		mRender->OMSetRenderTargets(1, mRenderTargetView.put(), mDepthStencilView.get());
+		auto renderTargetViewPtr = mRenderTargetView.get();
+		mRender->OMSetRenderTargets(1, (ID3D11RenderTargetView * const *) &renderTargetViewPtr , mDepthStencilView.get());
 		//mRender setDepthAndRenderTargetViews(mRenderTargetView, mDepthStencilView);
 	}
 

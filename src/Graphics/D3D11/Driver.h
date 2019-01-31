@@ -44,7 +44,7 @@ namespace Graphics::D3D11 {
 		template< typename VertexDescription >
 		void registerVertexDescription(VertexDescription & vd) {
 			if constexpr (VertexDescription::requires_compilation::value) {
-				auto shader = ShaderCompiler::compile(vd.layoutstring());
+				auto shader = ShaderCompiler::compile_vertexshader(vd.layoutstring());
 				auto inputarr = vd.layoutarray();
 				mDevice->CreateInputLayout(inputarr.data(), inputarr.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &vd);
 			}

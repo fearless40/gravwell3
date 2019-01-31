@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Visuals {
-	using ID = unsigned int;
+	/*using ID = unsigned int;
 	
 	struct Visual {
 		ID modelID;
@@ -12,5 +12,5 @@ namespace Visuals {
 	ID addColor(std::string name, ColorData color);
 	ID findModel(std::string name);
 	ID findColor(std::string name);
-	
+	*/
 }

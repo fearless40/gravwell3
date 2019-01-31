@@ -11,6 +11,7 @@ namespace Engine {
 	}
 
 	
+
 	Util::CommandLineParameters Initalize(std::wstring_view cmdLine) {
 		auto clp = Util::ParseCommandLine(cmdLine);
 		//mLogger = spdlog::create<spdlog::stdout_color_st>("default_log");

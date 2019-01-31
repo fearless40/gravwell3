@@ -69,13 +69,17 @@ namespace Graphics::D3D11 {
 
 		VertexShader createVSShader(RawMemory memory) {
 			VertexShader shader{ nullptr };
-			mDevice->get()->CreateVertexShader(toVoidPtr(memory), memory.size_bytes(), nullptr, shader.put());
+			winrt::check_hresult(
+				mDevice->get()->CreateVertexShader(toVoidPtr(memory), memory.size(), nullptr, shader.put())
+			);
 			return shader;
 		}
 
 		PixelShader createPSShader(RawMemory memory) {
 			PixelShader shader{ nullptr };
-			mDevice->get()->CreatePixelShader(toVoidPtr(memory), memory.size_bytes(), nullptr, shader.put());
+			winrt::check_hresult(
+				mDevice->get()->CreatePixelShader(toVoidPtr(memory), memory.size(), nullptr, shader.put())
+			);
 			return shader;
 		}
 
@@ -122,15 +126,15 @@ namespace Graphics::D3D11 {
 		template <typename MeshType> 
 		void initalizeIA() {
 			using vt = VertexDescription<typename MeshType::vertex_type>;
-			mRender->IASetPrimitiveTopology(Topology(md));
+			mRender->IASetPrimitiveTopology(Topology<MeshType>());
 			mRender->IASetInputLayout(vt::getInputLayout());
 		}
 
 		template <typename BufferBag>
 		void initalizeVS(BufferBag & bag) {
-			std::array<ID3D11Resource*, bag.size()> buffers;
+			std::array<ID3D11Resource*, BufferBag::size_n::value> buffers;
 			std::transform(bag.begin(), bag.end(), buffers.begin(), [](auto & item) { return item.get(); });
-			mRender->VSSetConstantBuffers(0, buffers.size(), buffers.data());
+			mRender->VSSetConstantBuffers(0, buffers.size(), (ID3D11Buffer * const*) buffers.data());
 		}
 
 		template <typename BufferBag>
@@ -142,7 +146,8 @@ namespace Graphics::D3D11 {
 
 		void meshBind(const VertexBuffer & vb, const IndexBuffer & ib, unsigned int vbStride, DXGI_FORMAT ibStride) {
 			auto vBuffers = vb.get();
-			mRender->IASetVertexBuffers(0, 1, &vBuffers, &vbStride, nullptr);
+			unsigned int offsets = 0;
+			mRender->IASetVertexBuffers(0, 1, &vBuffers, &vbStride, &offsets);
 			mRender->IASetIndexBuffer(ib.get(), ibStride,0);
 		}
 
@@ -174,11 +179,11 @@ namespace Graphics::D3D11 {
 		}*/
 
 		void vsShaderBind(VertexShader & vs) {
-			mRender->VSSetShader(vs.get(), nullptr, 1);
+			mRender->VSSetShader(vs.get(), nullptr, 0);
 		}
 
 		void psShaderBind(PixelShader & ps) {
-			mRender->PSSetShader(ps.get(), nullptr, 1);
+			mRender->PSSetShader(ps.get(), nullptr, 0);
 		}
 		
 

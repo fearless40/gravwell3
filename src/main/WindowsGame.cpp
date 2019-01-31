@@ -8,16 +8,13 @@
 #include "../Graphics/D3D11/Driver.h"
 #include "Globals.h"
 #include "../Graphics/D3D11/Render.h"
+#include "../Graphics/D3D11/VisualInit.h"
 
 
-Graphics::D3D11::Render * global_render{ nullptr };
+#include "../game-gwell/Game.h"
 
-std::unique_ptr<Graphics::D3D11::Driver> graphics_driver{ nullptr };
 
-Graphics::D3D11::Render & GetRender() {
-	return *global_render;
-}
-
+WindowsGame::~WindowsGame() = default;
 
 WindowsGame::WindowsGame(HINSTANCE hInstance, Util::CommandLineParameters clp) : mInst( hInstance ) {
 	Window::RegisterWindowClasses(mInst, IDI_GRAVWELL3, IDI_SMALL, L"D3D Window", L"D3DWindow");
@@ -29,8 +26,21 @@ WindowsGame::WindowsGame(HINSTANCE hInstance, Util::CommandLineParameters clp) :
 void WindowsGame::run() {
 	MSG msg;
 	mRunning = true;
-	graphics_driver = Graphics::D3D11::Driver::CreateDevice(getHWND(), { 0,0,{0,0},false,false });
+	RECT wndSize;
+	GetWindowRect(getHWND(), &wndSize);
+
+	unsigned int width = wndSize.right - wndSize.left;
+	unsigned int height = wndSize.bottom - wndSize.top;
+
+	graphics_driver = Graphics::D3D11::Driver::CreateDevice(getHWND(), { width,height,{0,0},false,false });
+	graphics_driver->setupDefaults();
+
+	Engine::Visuals::Basic::Init(graphics_driver.get());
+
+	Game::Initalize();
 	
+	Events::Event<Engine::GameInitalizeData>::Fire({});
+
 	timer.start();
 
 	while (mRunning)

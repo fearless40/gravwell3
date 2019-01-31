@@ -2,7 +2,7 @@
 #include <gsl/span>
 #include <memory>
 #include "ID.h"
-#include "MathTypes.h"
+#include "Math.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "../util/MultiIterator.hpp"
