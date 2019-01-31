@@ -11,6 +11,7 @@
 namespace Game {
 
 	Engine::Visuals::Basic::Visual box_visual;
+	float rotAngle = 0.f;
 	Camera	cam;
 
 	void Initalize() {
@@ -32,12 +33,18 @@ namespace Game {
 	void onRenderEvent(const Engine::NextRenderFrame & frame) {
 		namespace vs = Engine::Visuals::Basic;
 		Engine::Matrix world;
-		Engine::Math::XMStoreFloat4x4(&world, Engine::Math::XMMatrixIdentity());
+		Engine::fMatrix worldf;
+		Engine::fVector4 rotVector = Engine::Math::XMVectorSet(0, 1, 1, 0);
+		
+		rotAngle += 0.01;
+
+		worldf = Engine::Math::XMMatrixRotationAxis(rotVector, Engine::Math::XMConvertToRadians(rotAngle));
+		Engine::Math::XMStoreFloat4x4(&world, worldf);
 
 		vs::VisualState state;
 		state.states.push_back({ world, box_visual });
 
-		Engine::fVector4 eyePosition = Engine::Math::XMVectorSet(3, 5, -10, 1);
+		Engine::fVector4 eyePosition = Engine::Math::XMVectorSet(3, 5, -5, 1);
 		Engine::fVector4 focusPoint = Engine::Math::XMVectorSet(0, 0, 0, 1);
 		Engine::fVector4 upDirection = Engine::Math::XMVectorSet(0, 1, 0, 0);
 		Engine::fMatrix  g_ViewMatrix = Engine::Math::XMMatrixLookAtLH(eyePosition, focusPoint, upDirection);

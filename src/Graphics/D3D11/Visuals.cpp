@@ -89,14 +89,20 @@ namespace Engine::Visuals {
 
 			render.registerVertexDescription<driver_vertex>(low_level_vertex_description);
 			
-			camera.setPerspectiveFOV(60,driver->getWidth()/ driver->getHeight(), 0.001f, 1000.f);
+			camera.setPerspectiveFOV(math::XMConvertToRadians(60),driver->getWidth()/ driver->getHeight(), 0.001f, 1000.f);
 			camera.lookAt({ 0.f,0.f,0.f });
-			camera.setPosition({ 0.f,0.f,-5.f });
+			camera.setPosition({ 0.f,0.f,-30.f });
 
-			CB::InfreqVS infreqVs{ camera.getProjData() };
+			Engine::fMatrix m = math::XMMatrixPerspectiveFovLH(math::XMConvertToRadians(45),
+				driver->getWidth() / driver->getHeight(),
+				0.1f,
+				100.f);
+
+			
+			CB::InfreqVS infreqVs;
 			CB::Frame frame{ 0.f };
 			CB::ItemVS itemVS;
-			math::XMStoreFloat4x4(&infreqVs.proj, math::XMMatrixTranspose(math::XMMatrixIdentity()));
+			math::XMStoreFloat4x4(&infreqVs.proj, m);
 			math::XMStoreFloat4x4(&itemVS.world_view, math::XMMatrixTranspose(math::XMMatrixIdentity()));
 
 			render.initalizeConstantBufferBag(vsBuffers, infreqVs, frame, itemVS);
@@ -124,7 +130,7 @@ namespace Engine::Visuals {
 				Engine::fMatrix world = math::XMLoadFloat4x4(&item.world);
 				CB::ItemVS itemVS;
 				math::XMStoreFloat4x4(&itemVS.world_view,
-					math::XMMatrixTranspose(world * view));
+					world * view);
 				
 
 				auto current_mesh = getMesh(item.id);
