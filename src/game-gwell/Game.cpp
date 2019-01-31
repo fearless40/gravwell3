@@ -18,8 +18,8 @@ namespace Game {
 		Events::Event<Engine::NextRenderFrame>::Listen(&onRenderEvent);
 		Events::Event<Engine::GameInitalizeData>::Listen(&onGameInitalizeEvent);
 
-		//cam.setUpVector({ 0.f,1.f,0.f });
-		cam.setPosition({ 0.f,0.f,-10.f });
+		cam.setUpVector({ 0.f,1.f,0.f });
+		cam.setPosition({ 3.f,5.f,-10.f });
 		cam.lookAt({ 0.f,0.f,0.f });
 		//cam.setPerspective()
 	}
@@ -36,7 +36,14 @@ namespace Game {
 
 		vs::VisualState state;
 		state.states.push_back({ world, box_visual });
-		Engine::Math::XMStoreFloat4x4(&state.view, cam.getView());
+
+		Engine::fVector4 eyePosition = Engine::Math::XMVectorSet(3, 5, -10, 1);
+		Engine::fVector4 focusPoint = Engine::Math::XMVectorSet(0, 0, 0, 1);
+		Engine::fVector4 upDirection = Engine::Math::XMVectorSet(0, 1, 0, 0);
+		Engine::fMatrix  g_ViewMatrix = Engine::Math::XMMatrixLookAtLH(eyePosition, focusPoint, upDirection);
+
+
+		Engine::Math::XMStoreFloat4x4(&state.view, g_ViewMatrix);
 		vs::Render(std::move(state));
 	}
 

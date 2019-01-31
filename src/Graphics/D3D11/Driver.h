@@ -2,12 +2,12 @@
 //#include "../Shared.h"
 //#include <memory>
 #include "../Generic/Driver.h"
-#include "../Generic/ConstantBuffer.h"
+//#include "../Generic/ConstantBuffer.h"
 //#include "Context.h"
 //#include "GenericToD3D.h"
-#include "Buffer.h"
-#include "ShaderCompiler.h"
-#include "BufferTraits.h"
+//#include "Buffer.h"
+//#include "ShaderCompiler.h"
+
 
 
 namespace Graphics::D3D11 {
@@ -40,20 +40,6 @@ namespace Graphics::D3D11 {
 
 
 		ID3D11Device * get() const noexcept { return mDevice.get(); }
-
-		template< typename VertexDescription >
-		void registerVertexDescription(VertexDescription & vd) {
-			if constexpr (VertexDescription::requires_compilation::value) {
-				auto shader = ShaderCompiler::compile_vertexshader(vd.layoutstring());
-				auto inputarr = vd.layoutarray();
-				mDevice->CreateInputLayout(inputarr.data(), inputarr.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &vd);
-			}
-			else {
-				auto shader = vd.compiledshader();
-				auto inputarr = vd.layoutarray();
-				mDevice->CreateInputLayout(inputarr.data(), inputarr.size(), shader.data(), shader.size(), &vd);
-			}
-		}
 
 		ID3D11RenderTargetView * getRenderTargetView() const noexcept {
 			return mRenderTargetView.get();

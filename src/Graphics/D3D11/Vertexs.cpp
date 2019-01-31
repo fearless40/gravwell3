@@ -7,11 +7,7 @@
 
 namespace Graphics::D3D11
 {
-	void test() {
-		VertexDescription<Graphics::Generic::VertexTypes::Position> vpos;
-		auto d = Driver::CreateDevice(0, {});
-		d->registerVertexDescription(vpos);
-	}
+
 
 
 }

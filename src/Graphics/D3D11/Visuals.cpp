@@ -85,12 +85,10 @@ namespace Engine::Visuals {
 
 
 		void Init(dx::Driver * driver) {
-			
-			
-			driver->registerVertexDescription<driver_vertex>(low_level_vertex_description);
-
-			
 			render.setDevice(driver);
+
+			render.registerVertexDescription<driver_vertex>(low_level_vertex_description);
+			
 			camera.setPerspectiveFOV(60,driver->getWidth()/ driver->getHeight(), 0.001f, 1000.f);
 			camera.lookAt({ 0.f,0.f,0.f });
 			camera.setPosition({ 0.f,0.f,-5.f });
@@ -119,16 +117,15 @@ namespace Engine::Visuals {
 		}
 
 		void Render(input && state) {
-			// Skip the sorting for now
 			Engine::fMatrix view = DirectX::XMLoadFloat4x4(&state.view);
-
 			render.clear();
+
 			for (auto & item : state.states) {
 				Engine::fMatrix world = math::XMLoadFloat4x4(&item.world);
 				CB::ItemVS itemVS;
 				math::XMStoreFloat4x4(&itemVS.world_view,
-					math::XMMatrixTranspose(math::XMMatrixMultiply(world, view))
-				);
+					math::XMMatrixTranspose(world * view));
+				
 
 				auto current_mesh = getMesh(item.id);
 				render.meshBind<iMesh::vertex_type, iMesh::index_definition>(current_mesh.vb, current_mesh.ib);
@@ -143,48 +140,64 @@ namespace Engine::Visuals {
 
 
 		void compile_shaders() {
-			const char * psShaderChar = R"( float4 main(float4 position : SV_POSITION, float4 normal : Normal, float2 uv : TexCoord) : SV_TARGET
+			const char * psShaderChar = 
+R"(
+struct PIn {
+	float4 position : SV_POSITION;
+	float4 normal : TEXCOORD2;
+	float2 uv : TEXCOORD0;
+};
+
+float4 main(PIn pin) : SV_TARGET
 {
-	return float4(normal.x+uv.x,normal.y+uv.y,normal.z+uv.x,1.0);
-} )";
+	return float4(pin.normal.x+ pin.uv.x, pin.normal.y+ pin.uv.y, pin.normal.z+ pin.uv.x,1.0);
+}
+)";
 
-			const char * vsShaderChar = R"(
+			const char * vsShaderChar = 
+R"(
+cbuffer PerSession : register(b0)
+{
+	matrix proj;
+}
 
-				cbuffer PerSession : register(b0)
-				{
-					matrix proj;
-				}
+cbuffer PerFrame : register(b1)
+{
+	float4 time;
+}
 
-				cbuffer PerFrame : register(b1)
-				{
-					float4 time;
-				}
+cbuffer PerItem : register(b2)
+{
+	matrix world_view;
+}
 
-				cbuffer PerItem  : register(b2)
-				{
-					matrix world_view;
-				}
+struct VIn {
+	float3 position : POSITION;
+	float3 normal : NORMAL;
+	float2 uv : TexCoord;
+};
 
+struct VOut {
+	float4 position : SV_POSITION;
+	float4 normal : TEXCOORD2;
+	float2 uv : TEXCOORD0;
+};
 
-				struct VOut {
-					float4 position : SV_POSITION;
-					float4 normal : Normal;
-					float2 uv : TexCoord;
-				};
+VOut main(VIn input)
+{
+	VOut outpt;
+	matrix m;
+	m = mul( proj, world_view );
+	outpt.position = mul(m, float4(input.position, 1.0f));
+	outpt.normal = float4(input.normal,1);
+	outpt.uv = input.uv;
 
-				VOut main(  float4 position : Position, float4 normal : Normal, float2 uv : TexCoord ) 
-				{
-					VOut v;
-					float4 pos;
+	return outpt;
+}
+)";
 
-					pos = mul( position, world_view );
-					v.position = mul( pos, proj );
-					v.normal = normal;
-					v.uv = uv;
-
-					return v;
-				}		)";
-
+			//pos = mul( world_view, position );
+			
 			auto shaderPSCompiled = dx::ShaderCompiler::compile_pixelshader(psShaderChar);
 			auto shaderVSCompiled = dx::ShaderCompiler::compile_vertexshader(vsShaderChar);
 

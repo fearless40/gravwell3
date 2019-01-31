@@ -369,5 +369,8 @@
     <FxCompile Include="..\media\PixelShaders\PSPosUV.hlsl">
       <Filter>media\pixelshaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\VSLayout.hlsl">
+      <Filter>media\vertexshaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

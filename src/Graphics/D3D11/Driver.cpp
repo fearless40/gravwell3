@@ -2,7 +2,7 @@
 #include <d3d11.h>
 #include "../DXGI/dxgi.h"
 #include "Driver.h"
-#include "Render.h"
+
 
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d11.lib")
@@ -134,7 +134,7 @@ namespace Graphics::D3D11 {
 		rasterDesc.CullMode = D3D11_CULL_BACK;
 		rasterDesc.DepthBias = 0;
 		rasterDesc.DepthBiasClamp = 0.0f;
-		rasterDesc.DepthClipEnable = true;
+		rasterDesc.DepthClipEnable = false;
 		rasterDesc.FillMode = D3D11_FILL_SOLID;
 		rasterDesc.FrontCounterClockwise = false;
 		rasterDesc.MultisampleEnable = false;

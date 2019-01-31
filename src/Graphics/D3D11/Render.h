@@ -3,7 +3,8 @@
 #include "../Generic/Color.h"
 #include "Vertexs.h"
 #include "Types.h"
-
+//#include "ShaderCompiler.h"
+#include "BufferTraits.h"
 
 namespace Graphics::D3D11 {
 	class Driver;
@@ -29,6 +30,24 @@ namespace Graphics::D3D11 {
 			mDevice = device;
 			mRender = nullptr;
 			mRender = device->getContext_comptr();
+		}
+
+		template< typename VertexDescription >
+		void registerVertexDescription(VertexDescription & vd) {
+			if constexpr (VertexDescription::requires_compilation::value) {
+				auto shader = ShaderCompiler::compile_vertexshader(vd.layoutstring());
+				auto inputarr = vd.layoutarray();
+				winrt::check_hresult(
+					mDevice->get()->CreateInputLayout(inputarr.data(), inputarr.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &vd)
+				);
+			}
+			else {
+				auto shader = vd.compiledshader();
+				auto inputarr = vd.layoutarray();
+				winrt::check_hresult(
+					mDevice->get()->CreateInputLayout(inputarr.data(), inputarr.size(), shader.data(), shader.size(), &vd)
+					);
+			}
 		}
 
 		comptr<ID3D11Buffer> createBuffer(void * mem, std::size_t memSize,
@@ -144,6 +163,7 @@ namespace Graphics::D3D11 {
 			mRender->PSSetConstantBuffers(0, buffers.size(), buffers.data());
 		}
 
+		
 		void meshBind(const VertexBuffer & vb, const IndexBuffer & ib, unsigned int vbStride, DXGI_FORMAT ibStride) {
 			auto vBuffers = vb.get();
 			unsigned int offsets = 0;
