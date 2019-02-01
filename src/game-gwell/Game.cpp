@@ -31,7 +31,7 @@ namespace Game {
 		Engine::fMatrix worldf;
 		Engine::fVector4 rotVector = Engine::Math::XMVectorSet(0, 1, 1, 0);
 		
-		rotAngle += 0.1;
+		rotAngle += 0.01;
 
 		worldf = Engine::Math::XMMatrixRotationAxis(rotVector, Engine::Math::XMConvertToRadians(rotAngle));
 		Engine::Math::XMStoreFloat4x4(&world, worldf);
