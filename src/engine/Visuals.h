@@ -5,6 +5,7 @@
 #include "Math.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "Camera.h"
 #include "../util/MultiIterator.hpp"
 
 
@@ -14,21 +15,29 @@ namespace Engine::Visuals {
 		struct basic_tag {};
 		using Visual = ID<basic_tag, std::uint64_t>;
 
-		struct VisualItemState {
+		struct VisualState {
 			Engine::Matrix world;
 			Visual id;
 		};
 
-		struct VisualState{
-			std::vector<VisualItemState> states;
-			Engine::Matrix view;
+		struct RenderState{
+			const Engine::Camera & cam;
+			std::vector<VisualState> states;
 		};
 
-		using input = VisualState;
+		struct ScreenSize {
+			float width{ 0 };
+			float height{ 0 };
+			float aspect_ratio() const noexcept { return width / height; }
+		};
+
+		using input = RenderState;
 		//using output = Visual;
 
+
 		Visual Create(Engine::MeshView mesh, Engine::Material mat);
-		void Render(input && state);
+		void Render(RenderState && state);
+		ScreenSize Get_ScreenSize();
 
 		/*
 		Visual CopyMesh(Visual src, Engine::Material mat);

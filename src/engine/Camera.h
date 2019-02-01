@@ -1,60 +1,68 @@
 #pragma once
 
+#include "Math.h"
+
+namespace Engine {
+	class Camera
+	{
+	public:
+		Camera(void);
+		~Camera(void);
+
+		void lookAt(Vector4 item_position);
+		void lookAt(Vector4 item_position, Vector4 up);
+		void lookAt(Vector4 eye_position, Vector4 item_position,  Vector4 up);
+		void lookAtFast(Math::FXMVECTOR eye_position, Math::FXMVECTOR item_position, Math::FXMVECTOR up) {
+			mPosition = eye_position;
+			mViewMatrix = Math::XMMatrixLookAtLH(mPosition, item_position, up);
+			mQuatRotation = Math::XMQuaternionRotationMatrix(Math::XMMatrixTranspose(mViewMatrix));
+
+		}
+
+		void setPosition(Vector4 position, Vector4 rotQ);
+		void setPosition(Vector4 position);
+		void setPosition(Math::FXMVECTOR position, Math::FXMVECTOR qrotation);
+
+		void setRotationEuler(Vector3 rotEuler);
+		void setRotationEuler(Vector3 rotEuler, Vector4 position);
+
+		void setRotation(DirectX::XMFLOAT4 rotQuat);
+		void setRotation(Math::FXMVECTOR rotQuat);
+
+		void setPerspective(float width, float height, float near, float far);
+		void setPerspectiveFOV(float fovAngleRadiansY, float aspectRatio, float near, float far);
+		void setOrthographic(float width, float height, float near, float far);
+
+		fMatrix getView() const noexcept { return mViewMatrix; }
+		fMatrix getProj() const noexcept { return mProjMatrix; }
 
 
-class Camera
-{
-public:
-	Camera(void);
-	~Camera(void);
+	private:
+		void calcView();
 
-	void lookAt( DirectX::XMFLOAT3 pos );
-	void lookAt( float x, float y, float z );
+		alignas(16)	fMatrix		mViewMatrix;
+		alignas(16) fMatrix		mProjMatrix;
+		alignas(16) fVector4	mQuatRotation;
+		alignas(16) fVector4	mPosition;
 
-	void setUpVector( DirectX::XMFLOAT3 up );
-	void setUpVector( float x, float y, float z);
+		/*float					mFovAngleRadians;
+		float					mAspectRatio;
+		float					mNear;
+		float					mFar;*/
 
-	void setPosition( float x, float y, float z );
-	void setPosition( DirectX::XMFLOAT3 pos );
+		/*
+		__declspec(align(16)) struct privateData {
+			DirectX::XMVECTOR mUp;
+			DirectX::XMVECTOR mPos;
+			DirectX::XMVECTOR mRotQuat;
+			DirectX::XMVECTOR mLookAt;
 
-	void setRotationEuler( DirectX::XMFLOAT3 rotEuler );
-	void setRotationEuler( float pitch, float yaw, float roll );
+			DirectX::XMMATRIX mViewProjMatrixT;	//T is that the matrix is transposed
+		};
+		*/
+		//privateData * mpd;
 
-	void setRotationQuat( DirectX::XMFLOAT4 rotQuat  );
-	void setRotationQuat( float x, float y, float z, float w  );
-
-
-	void setPerspective( float width, float height, float near, float far );
-	void setPerspectiveFOV( float fovAngleY, float aspectRation, float near, float far );
-
-	void setOrthographic( float width, float height, float near, float far );
-
-	DirectX::XMMATRIX getView();
-	DirectX::XMMATRIX getProj();
-	DirectX::XMMATRIX getViewProj();
-
-	DirectX::XMFLOAT4X4 & getViewData( DirectX::XMFLOAT4X4 * value );
-	DirectX::XMFLOAT4X4 & getProjData( DirectX::XMFLOAT4X4 * value );
-	DirectX::XMFLOAT4X4 Camera::getProjData();
-
-	DirectX::XMFLOAT4X4 & getViewProjData( DirectX::XMFLOAT4X4 * value );
-
-protected:
-
-	__declspec(align(16)) struct privateData {
-		DirectX::XMVECTOR mUp;
-		DirectX::XMVECTOR mPos;
-		DirectX::XMVECTOR mRotQuat;
-		DirectX::XMVECTOR mLookAt;
-
-		DirectX::XMMATRIX mViewMatrix;
-		DirectX::XMMATRIX mProjMatrix;
-		DirectX::XMMATRIX mViewProjMatrixT;	//T is that the matrix is transposed
+		//void calcViewProj();
 	};
 
-	privateData * mpd;
-
-	void calcView();
-	void calcViewProj();
 };
-

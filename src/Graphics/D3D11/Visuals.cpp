@@ -75,7 +75,6 @@ namespace Engine::Visuals {
 		dx::VertexShader	vsShader{ nullptr };
 		dx::PixelShader		psShader{ nullptr };
 
-		Camera camera;
 
 
 		const iMesh & getMesh(Visual id) {
@@ -89,21 +88,9 @@ namespace Engine::Visuals {
 
 			render.registerVertexDescription<driver_vertex>(low_level_vertex_description);
 			
-			camera.setPerspectiveFOV(math::XMConvertToRadians(60),driver->getWidth()/ driver->getHeight(), 0.001f, 1000.f);
-			camera.lookAt({ 0.f,0.f,0.f });
-			camera.setPosition({ 0.f,0.f,-30.f });
-
-			Engine::fMatrix m = math::XMMatrixPerspectiveFovLH(math::XMConvertToRadians(45),
-				driver->getWidth() / driver->getHeight(),
-				0.1f,
-				100.f);
-
-			
-			CB::InfreqVS infreqVs;
+			CB::InfreqVS infreqVs{};
 			CB::Frame frame{ 0.f };
-			CB::ItemVS itemVS;
-			math::XMStoreFloat4x4(&infreqVs.proj, m);
-			math::XMStoreFloat4x4(&itemVS.world_view, math::XMMatrixTranspose(math::XMMatrixIdentity()));
+			CB::ItemVS itemVS{};
 
 			render.initalizeConstantBufferBag(vsBuffers, infreqVs, frame, itemVS);
 			render.initalizeIA<iMesh>();
@@ -111,6 +98,10 @@ namespace Engine::Visuals {
 
 			compile_shaders();
 
+		}
+
+		ScreenSize Get_ScreenSize() {
+			return { render.mDevice->getWidth(), render.mDevice->getHeight() };
 		}
 
 
@@ -123,7 +114,10 @@ namespace Engine::Visuals {
 		}
 
 		void Render(input && state) {
-			Engine::fMatrix view = DirectX::XMLoadFloat4x4(&state.view);
+			Engine::fMatrix view = state.cam.getView();
+			CB::InfreqVS proj;
+			Math::XMStoreFloat4x4(&proj.proj, state.cam.getProj());
+			render.writeBuffer(vsBuffers, proj);
 			render.clear();
 
 			for (auto & item : state.states) {

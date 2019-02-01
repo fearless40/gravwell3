@@ -12,17 +12,12 @@ namespace Game {
 
 	Engine::Visuals::Basic::Visual box_visual;
 	float rotAngle = 0.f;
-	Camera	cam;
+	Engine::Camera	cam;
 
 	void Initalize() {
 		Events::Event<Engine::NextLogicFrame>::Listen(&onLogicEvent);
 		Events::Event<Engine::NextRenderFrame>::Listen(&onRenderEvent);
 		Events::Event<Engine::GameInitalizeData>::Listen(&onGameInitalizeEvent);
-
-		cam.setUpVector({ 0.f,1.f,0.f });
-		cam.setPosition({ 3.f,5.f,-10.f });
-		cam.lookAt({ 0.f,0.f,0.f });
-		//cam.setPerspective()
 	}
 
 
@@ -36,21 +31,14 @@ namespace Game {
 		Engine::fMatrix worldf;
 		Engine::fVector4 rotVector = Engine::Math::XMVectorSet(0, 1, 1, 0);
 		
-		rotAngle += 0.01;
+		rotAngle += 0.1;
 
 		worldf = Engine::Math::XMMatrixRotationAxis(rotVector, Engine::Math::XMConvertToRadians(rotAngle));
 		Engine::Math::XMStoreFloat4x4(&world, worldf);
 
-		vs::VisualState state;
+		vs::RenderState state{ cam };
 		state.states.push_back({ world, box_visual });
 
-		Engine::fVector4 eyePosition = Engine::Math::XMVectorSet(3, 5, -5, 1);
-		Engine::fVector4 focusPoint = Engine::Math::XMVectorSet(0, 0, 0, 1);
-		Engine::fVector4 upDirection = Engine::Math::XMVectorSet(0, 1, 0, 0);
-		Engine::fMatrix  g_ViewMatrix = Engine::Math::XMMatrixLookAtLH(eyePosition, focusPoint, upDirection);
-
-
-		Engine::Math::XMStoreFloat4x4(&state.view, g_ViewMatrix);
 		vs::Render(std::move(state));
 	}
 
@@ -59,13 +47,17 @@ namespace Game {
 		
 		Geometry::VertexCollection vbs;
 		Geometry::IndexCollection  ids;
+		auto screenInfo = vs::Get_ScreenSize();
 
-		Geometry::ComputeBox(vbs, ids, { .5f,.5f,.5f }, false, false);
+		//Geometry::ComputeBox(vbs, ids, { .5f,.5f,.5f }, false, false);
+		Geometry::ComputeTeapot(vbs, ids, 2, 4, false);
 
 		Engine::MeshView mesh_view{ Engine::make_meshview( vbs,ids ) };
 		Engine::Material mat;
 
 		box_visual = vs::Create(mesh_view, mat);
-		
+
+		cam.setPerspectiveFOV(Engine::Math::XMConvertToRadians(45), screenInfo.aspect_ratio(), .1f, 500.f);
+		cam.lookAt({ 3,5,10,0 }, { 0,0,0,0 }, { 0,1,0,0 });
 	}
 }

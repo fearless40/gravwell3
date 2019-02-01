@@ -4,10 +4,10 @@
 
 namespace Engine {
 	struct Material {
+		Graphics::Generic::RGBA emissive;
 		Graphics::Generic::RGBA diffuse;
+		Graphics::Generic::RGBA ambient;
 		Graphics::Generic::RGBA specular;
-		float roughness;
-		float reflectiveness;
-		// Texture stuff
+		float specular_power;
 	};
 }
