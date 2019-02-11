@@ -372,5 +372,11 @@
     <FxCompile Include="..\media\VertexShaders\VSLayout.hlsl">
       <Filter>media\vertexshaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\media\PixelShaders\TexturedLitPixelShader.hlsl">
+      <Filter>media\pixelshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\EngineLitVertexShaderSimple.hlsl">
+      <Filter>media\vertexshaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

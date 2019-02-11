@@ -41,6 +41,19 @@ namespace Engine::Visuals {
 			using topology_type = typename Graphics::Generic::Topology::TriangleList;
 		};
 
+		struct iMaterial
+		{
+			Graphics::Generic::RGBA emissive;
+			Graphics::Generic::RGBA diffuse;
+			Graphics::Generic::RGBA ambient;
+			Graphics::Generic::RGBA specular;
+			float specular_power;
+			bool    UseTexture;     // 4 bytes
+			float  Padding1;        // 4 bytes
+			float  Padding2;		// 4 bytes
+			//----------------------------------- (16 byte boundary)
+		};  // Total:               // 80 bytes ( 5 * 16 )
+
 		namespace CB {
 			struct InfreqVS {
 				Engine::Matrix proj;
@@ -55,7 +68,9 @@ namespace Engine::Visuals {
 			};
 
 			struct ItemVS {
-				Engine::Matrix world_view;
+				Engine::Matrix     WorldMatrix;
+				Engine::Matrix     InverseTransposeWorldMatrix;
+				Engine::Matrix     WorldViewProjectionMatrix;
 			};
 
 			struct ItemPS {
