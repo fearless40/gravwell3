@@ -38,6 +38,28 @@ namespace Game {
 
 		vs::RenderState state{ cam };
 		state.states.push_back({ world, box_visual });
+		state.GlobalAmbientLight = { 0.1,0.1,0.1,1 };
+		state.lights.push_back( Engine::Lights::AnyLight{ 
+			Engine::Lights::Point {
+				{1,10,10},
+				{ 1,1,1,0},
+				0.0001,0.02,0.003	}
+			});
+
+		state.lights.push_back(Engine::Lights::AnyLight{
+			Engine::Lights::Point {
+				{-2,-2,-20},
+				{ 0.3,1,1,0},
+				0.001,0.002,0.003	}
+			});
+
+		state.lights.push_back(Engine::Lights::AnyLight{
+			Engine::Lights::Point {
+				{0,0,-3},
+				{ 0.2,0.1,0.33,0},
+				0.001,0.002,0.003	}
+			});
+
 
 		vs::Render(std::move(state));
 	}
@@ -53,7 +75,12 @@ namespace Game {
 		Geometry::ComputeTeapot(vbs, ids, 2, 4, false);
 
 		Engine::MeshView mesh_view{ Engine::make_meshview( vbs,ids ) };
-		Engine::Material mat;
+		Engine::Material mat{
+			{0,0,0,0},
+			{0.1,0.1,0.1,1},
+			{0.1,0.1,0.1,1},
+			{0.1,1,0.1,1},
+			128 };
 
 		box_visual = vs::Create(mesh_view, mat);
 

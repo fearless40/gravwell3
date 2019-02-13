@@ -70,8 +70,8 @@ float4 DoSpecular( Light light, float3 V, float3 L, float3 N )
     float RdotV = max( 0, dot( R, V ) );
 
     // Blinn-Phong lighting
-    float3 H = normalize( L + V );
-    float NdotH = max( 0, dot( N, H ) );
+    //float3 H = normalize( L + V );
+    //float NdotH = max( 0, dot( N, H ) );
 
     return light.Color * pow( RdotV, Material.SpecularPower );
 }
@@ -146,7 +146,7 @@ LightingResult ComputeLighting( float4 P, float3 N )
 
     LightingResult totalResult = { {0, 0, 0, 0}, {0, 0, 0, 0} };
 
-    [unroll]
+    //[unroll]
     for( int i = 0; i < MAX_LIGHTS; ++i )
     {
         LightingResult result = { {0, 0, 0, 0}, {0, 0, 0, 0} };

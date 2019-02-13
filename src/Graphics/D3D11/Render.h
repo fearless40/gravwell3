@@ -158,9 +158,9 @@ namespace Graphics::D3D11 {
 
 		template <typename BufferBag>
 		void initalizePS(BufferBag & bag) {
-			std::array<ID3D11Resource*, bag.size()> buffers;
+			std::array<ID3D11Resource*, BufferBag::size_n::value> buffers;
 			std::transform(bag.begin(), bag.end(), buffers.begin(), [](auto & item) { return item.get(); });
-			mRender->PSSetConstantBuffers(0, buffers.size(), buffers.data());
+			mRender->PSSetConstantBuffers(0, buffers.size(), (ID3D11Buffer * const*) buffers.data());
 		}
 
 		

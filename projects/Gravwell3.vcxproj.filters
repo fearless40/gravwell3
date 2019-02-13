@@ -340,6 +340,9 @@
     <ClInclude Include="..\src\engine\Math.h">
       <Filter>engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\engine\Lights.h">
+      <Filter>engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

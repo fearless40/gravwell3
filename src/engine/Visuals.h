@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Camera.h"
+#include "Lights.h"
 #include "../util/MultiIterator.hpp"
 
 
@@ -22,7 +23,9 @@ namespace Engine::Visuals {
 
 		struct RenderState{
 			const Engine::Camera & cam;
+			Graphics::Generic::RGBA GlobalAmbientLight{ .1f,.1f,.1f,0.f };
 			std::vector<VisualState> states;
+			std::vector<Engine::Lights::AnyLight> lights;
 		};
 
 		struct ScreenSize {
