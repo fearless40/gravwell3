@@ -30,4 +30,16 @@ namespace Util {
 		return invoke_active(std::forward<F>(f), std::forward<Variant>(var)
 			, std::make_index_sequence<std::variant_size_v<std::remove_reference_t<Variant>>>{});
 	}
+
+
+	template< typename Variant, typename... Handlers>
+	auto match(Variant && v, Handlers &&... handlers) {
+		return std::visit(
+			overload{ std::forward<Handlers>(handlers)... },
+			std::forward<Variant>(v));
+	}
+
+
+
+
 }

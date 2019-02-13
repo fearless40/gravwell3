@@ -58,6 +58,8 @@
     <ClInclude Include="..\src\engine\Material.h" />
     <ClInclude Include="..\src\engine\Math.h" />
     <ClInclude Include="..\src\engine\Mesh.h" />
+    <ClInclude Include="..\src\engine\RawResource.h" />
+    <ClInclude Include="..\src\engine\ResourceManager.h" />
     <ClInclude Include="..\src\engine\Visuals.h" />
     <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
     <ClInclude Include="..\src\game-gwell\Coord.h" />
@@ -113,6 +115,7 @@
     <ClInclude Include="..\src\util\Math\Vector3.h" />
     <ClInclude Include="..\src\util\MinTypeSize.hpp" />
     <ClInclude Include="..\src\util\MultiIterator.hpp" />
+    <ClInclude Include="..\src\util\Overload.hpp" />
     <ClInclude Include="..\src\util\RefCountPointer.h" />
     <ClInclude Include="..\src\util\TagArray.h" />
     <ClInclude Include="..\src\util\Temp.hpp" />

@@ -1,54 +1,57 @@
 
 #pragma once
 
-namespace Engine {
-	/*
-	using RawResourceID = std::variant<uint64_t, std::string>;
+#include "ID.h"
+#include "RawResource.h"
 
-	struct RawResource {
-		std::uniqueptr<std::byte> data;
-		std::size_t size;
-		RawResourceID id;
-	};
+namespace Engine::Resources {
 	
-	class ResourceLoader {
+	
+	template<typename ResourceType, typename Tag>
+	class ResourceManager {
 	public:
-		virtual ~ResourceLoader();
-		virtual RawResource read_item(RawResourceID id);
-		virtual bool		has_item(RawResourceID id);
-
-	};
-
-	//
-	struct ResourceTransform {
-		// input RawResource -> output engine compatible resource 
-	};
-
-
-
-	template<typename ResourceType>
-	struct ResourceManager {
 		using ID = Engine::ID<ResourceManager, uint32_t>;
+		using type = ResourceType;
+		using tag = Tag;
 
 		struct ResourceMapItem {
-			RawResourceID	raw_id;
-			ID				expected_id;
+			RawID		raw_id;
+			ID			game_id;
 		};
-		ystem 
+		
 		using ResourceMap = std::vector<ResourceMapItem>;
 
-		void addRawResourceLoader(ResourceLoader * loader, int priority);
+		static const type & get(ID id) { return resources[id.id]; }
 
-		const ResourceType & get(ID id);
-		const ResourceType & load_get(RawResourceID rid);
+		// Resource map Functions, useful for games that know what they need to load 
+		// and need dedicated values that are hardcoded
+		// Also easy to use a file list
 
-		ID			load(RawResourceID rid);
-		void		load_ResourceMap(const ResourceMap & map);
+		// Clears any existing maps. Does not unload loaded data
+		static void		setResourceMap(const ResourceMap & map) {
+			std::copy(map.begin(), map.end(), resource_map.end());
+		}
 		
-		ID			create(ResourceType && resource);
 
-		void		unload(ID id);
+		// using TransFormFunctor = ResourceType 
 
+		template< typename TransFormFunctor>
+		static void		loadResourceMap(const ResourceMap & map, TransFormFunctor && func);
+
+
+		template< typename TransFormFunctor>
+		static ID		load(RawResourceID rid, TransFormFunctor && func);
+		
+		static ID		create(ResourceType && resource); //No RawID is created. It has no entry in resource_map
+
+		static void		unload(ID id); // Frees the memory. If it needs to be reloaded from disk it is
+		static void		unloadAll();
+		static void		removalAll();
+
+
+	private:
+		static std::vector<ResourceType> resources;
+		static std::vector<ResourceMapItem> resource_map; // not sorted
 	};
-	*/
+	
 }

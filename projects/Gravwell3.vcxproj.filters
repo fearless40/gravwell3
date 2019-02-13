@@ -343,6 +343,15 @@
     <ClInclude Include="..\src\engine\Lights.h">
       <Filter>engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\util\Overload.hpp">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\RawResource.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\ResourceManager.h">
+      <Filter>engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">
