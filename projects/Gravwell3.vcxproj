@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\engine\Camera.cpp" />
     <ClCompile Include="..\src\engine\Engine.cpp" />
+    <ClCompile Include="..\src\engine\RawLoaders.cpp" />
     <ClCompile Include="..\src\game-gwell\BroadCollisions.cpp" />
     <ClCompile Include="..\src\game-gwell\Entity.cpp" />
     <ClCompile Include="..\src\game-gwell\Game.cpp" />
@@ -34,6 +35,7 @@
     <ClCompile Include="..\src\Graphics\D3D11\Vertexs.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Visuals.cpp" />
     <ClCompile Include="..\src\Graphics\DXGI\dxgi.cpp" />
+    <ClCompile Include="..\src\main\FileSystemRawLoader.cpp" />
     <ClCompile Include="..\src\main\WindowsGame.cpp" />
     <ClCompile Include="..\src\main\main.cpp" />
     <ClCompile Include="..\src\main\Window.cpp" />
@@ -58,6 +60,7 @@
     <ClInclude Include="..\src\engine\Material.h" />
     <ClInclude Include="..\src\engine\Math.h" />
     <ClInclude Include="..\src\engine\Mesh.h" />
+    <ClInclude Include="..\src\engine\RawLoaders.h" />
     <ClInclude Include="..\src\engine\RawResource.h" />
     <ClInclude Include="..\src\engine\ResourceManager.h" />
     <ClInclude Include="..\src\engine\Visuals.h" />
@@ -92,6 +95,7 @@
     <ClInclude Include="..\src\Graphics\Generic\Mesh.h" />
     <ClInclude Include="..\src\Graphics\Generic\Topology.h" />
     <ClInclude Include="..\src\Graphics\Generic\Vertexs.h" />
+    <ClInclude Include="..\src\main\FileSystemRawLoader.h" />
     <ClInclude Include="..\src\main\WindowsGame.h" />
     <ClInclude Include="..\src\main\Resource.h" />
     <ClInclude Include="..\src\main\targetver.h" />

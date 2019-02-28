@@ -131,6 +131,12 @@
     <ClCompile Include="..\src\engine\Camera.cpp">
       <Filter>engine</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\engine\RawLoaders.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main\FileSystemRawLoader.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\Resource.h">
@@ -351,6 +357,12 @@
     </ClInclude>
     <ClInclude Include="..\src\engine\ResourceManager.h">
       <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\RawLoaders.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\main\FileSystemRawLoader.h">
+      <Filter>main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
