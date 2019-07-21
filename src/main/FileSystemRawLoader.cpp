@@ -14,12 +14,13 @@ namespace windows {
 	}
 
 	std::optional<RawResource> FileSystemLoader::load_file(const std::filesystem::path & rel_path) {
-
+		return read_item(rel_path);
 	}
 
 	std::optional<std::filesystem::path> extract_id(RawID id) {
-		return Util::match(id, [](const RawID_IntID & id) { return {}; },
-			[](const std::filesystem::path & path) { return path; }
+		return Util::match(id, 
+			[](const RawID_IntID & id) -> std::optional<std::filesystem::path>  { return std::nullopt; },
+			[](const std::filesystem::path& path) -> std::optional<std::filesystem::path> { return path ; }
 		);
 	}
 
@@ -30,9 +31,10 @@ namespace windows {
 			if (std::filesystem::exists(file_path)) {
 				auto mem_size = std::filesystem::file_size(file_path);
 				
-				RawResource outpt{ std::make_unique<std::byte>(mem_size),
+				RawResource outpt{ 
+					std::make_unique<std::byte[]>(mem_size),
 					static_cast<std::size_t>(mem_size),
-					{fid.value} 
+					file_path
 				};
 
 				std::ifstream reader{ file_path };

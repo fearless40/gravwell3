@@ -15,12 +15,12 @@ namespace Engine::Resources {
 	using RawID = std::variant<uint64_t, std::filesystem::path>;
 
 	struct RawResource {
-		std::unique_ptr<std::byte> file_data;
+		std::unique_ptr<std::byte[]> file_data;
 		std::size_t size;
 		RawID id;
 
 		gsl::span<std::byte> asSpan() {
-			return { file_data.get(), size };
+			return { file_data.get(), static_cast<gsl::span<std::byte>::index_type>(size) };
 		}
 //		FileInfo * fileinfo;
 	};
