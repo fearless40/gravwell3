@@ -41,10 +41,10 @@ namespace Graphics::Generic
 			alpha() = c.alpha();
 		}
 
-		float & red()	noexcept { return &colors[color_layout::red]; }
-		float & green() noexcept { return &colors[color_layout::green]; }
-		float & blue()	noexcept { return &colors[color_layout::blue]; }
-		float & alpha() noexcept { return &colors[color_layout::alpha]; }
+		float & red()	noexcept { return colors[color_layout::red]; }
+		float & green() noexcept { return colors[color_layout::green]; }
+		float & blue()	noexcept { return colors[color_layout::blue]; }
+		float & alpha() noexcept { return colors[color_layout::alpha]; }
 
 		constexpr float red()	const noexcept { return colors[color_layout::red]; }
 		constexpr float green()	const noexcept { return colors[color_layout::green]; }

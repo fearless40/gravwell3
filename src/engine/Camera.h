@@ -35,6 +35,7 @@ namespace Engine {
 
 		fMatrix getView() const noexcept { return mViewMatrix; }
 		fMatrix getProj() const noexcept { return mProjMatrix; }
+		fVector4 getPosition() const noexcept { return mPosition; }
 
 
 	private:

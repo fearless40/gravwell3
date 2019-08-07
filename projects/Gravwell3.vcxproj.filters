@@ -131,6 +131,12 @@
     <ClCompile Include="..\src\engine\Camera.cpp">
       <Filter>engine</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\engine\RawLoaders.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main\FileSystemRawLoader.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\Resource.h">
@@ -340,6 +346,24 @@
     <ClInclude Include="..\src\engine\Math.h">
       <Filter>engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\engine\Lights.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\Overload.hpp">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\RawResource.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\ResourceManager.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\engine\RawLoaders.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\main\FileSystemRawLoader.h">
+      <Filter>main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">
@@ -370,6 +394,12 @@
       <Filter>media\pixelshaders</Filter>
     </FxCompile>
     <FxCompile Include="..\media\VertexShaders\VSLayout.hlsl">
+      <Filter>media\vertexshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\PixelShaders\TexturedLitPixelShader.hlsl">
+      <Filter>media\pixelshaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\EngineLitVertexShaderSimple.hlsl">
       <Filter>media\vertexshaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\engine\Camera.cpp" />
     <ClCompile Include="..\src\engine\Engine.cpp" />
+    <ClCompile Include="..\src\engine\RawLoaders.cpp" />
     <ClCompile Include="..\src\game-gwell\BroadCollisions.cpp" />
     <ClCompile Include="..\src\game-gwell\Entity.cpp" />
     <ClCompile Include="..\src\game-gwell\Game.cpp" />
@@ -34,6 +35,7 @@
     <ClCompile Include="..\src\Graphics\D3D11\Vertexs.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Visuals.cpp" />
     <ClCompile Include="..\src\Graphics\DXGI\dxgi.cpp" />
+    <ClCompile Include="..\src\main\FileSystemRawLoader.cpp" />
     <ClCompile Include="..\src\main\WindowsGame.cpp" />
     <ClCompile Include="..\src\main\main.cpp" />
     <ClCompile Include="..\src\main\Window.cpp" />
@@ -54,9 +56,13 @@
     <ClInclude Include="..\src\engine\Event.h" />
     <ClInclude Include="..\src\engine\GameEvent.h" />
     <ClInclude Include="..\src\engine\ID.h" />
+    <ClInclude Include="..\src\engine\Lights.h" />
     <ClInclude Include="..\src\engine\Material.h" />
     <ClInclude Include="..\src\engine\Math.h" />
     <ClInclude Include="..\src\engine\Mesh.h" />
+    <ClInclude Include="..\src\engine\RawLoaders.h" />
+    <ClInclude Include="..\src\engine\RawResource.h" />
+    <ClInclude Include="..\src\engine\ResourceManager.h" />
     <ClInclude Include="..\src\engine\Visuals.h" />
     <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
     <ClInclude Include="..\src\game-gwell\Coord.h" />
@@ -89,6 +95,7 @@
     <ClInclude Include="..\src\Graphics\Generic\Mesh.h" />
     <ClInclude Include="..\src\Graphics\Generic\Topology.h" />
     <ClInclude Include="..\src\Graphics\Generic\Vertexs.h" />
+    <ClInclude Include="..\src\main\FileSystemRawLoader.h" />
     <ClInclude Include="..\src\main\WindowsGame.h" />
     <ClInclude Include="..\src\main\Resource.h" />
     <ClInclude Include="..\src\main\targetver.h" />
@@ -112,6 +119,7 @@
     <ClInclude Include="..\src\util\Math\Vector3.h" />
     <ClInclude Include="..\src\util\MinTypeSize.hpp" />
     <ClInclude Include="..\src\util\MultiIterator.hpp" />
+    <ClInclude Include="..\src\util\Overload.hpp" />
     <ClInclude Include="..\src\util\RefCountPointer.h" />
     <ClInclude Include="..\src\util\TagArray.h" />
     <ClInclude Include="..\src\util\Temp.hpp" />
@@ -140,6 +148,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\media\PixelShaders\TexturedLitPixelShader.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\media\VertexShaders\EngineLitVertexShaderSimple.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
