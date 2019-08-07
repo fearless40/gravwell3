@@ -15,7 +15,6 @@ namespace DX::DXGI {
 
 		std::vector<VideoCard> GetVideoCards() {
 			std::vector<VideoCard> videocards;
-			HRESULT result;
 			comptr<IDXGIAdapter> videocard;
 			unsigned int index = 0;
 

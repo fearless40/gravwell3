@@ -26,6 +26,8 @@
 #include <vector>
 #include <functional>
 
+
+#include <Unknwn.h>
 #include <winrt/base.h>
 
 #include <d3d11.h>

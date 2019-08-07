@@ -6,7 +6,7 @@
 namespace Microsoft {
 	namespace VisualStudio {
 		namespace CppUnitTestFramework {
-			template<> inline std::wstring ToString<long long>(const long long& t) { RETURN_WIDE_STRING(t); }
+			//template<> inline std::wstring ToString<long long>(const long long& t) { RETURN_WIDE_STRING(t); }
 		}
 	}
 }
