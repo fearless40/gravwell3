@@ -1,5 +1,5 @@
 
-#include <gsl/span>
+#include <span>
 #include <memory>
 #include "ID.h"
 #include "Math.h"

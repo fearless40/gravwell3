@@ -1,6 +1,9 @@
 #include "../stdafx.h"
-#include "Position.h"
+#include <vector>
+#include <iterator>
 #include <algorithm>
+#include "Position.h"
+
 
 namespace Position {
 	std::vector<Positions> freePositions;

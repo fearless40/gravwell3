@@ -10,7 +10,7 @@
 
 
 
-int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPTSTR    lpCmdLine,
                      _In_ int       nCmdShow)
@@ -22,6 +22,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	WindowsGame game{ hInstance, parsedcommandline };
 	game.run();
 	Engine::Shutdown();
+	return 0;
 }
 
 

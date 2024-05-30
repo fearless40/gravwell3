@@ -21,6 +21,7 @@ private:
 	void next_game_step(float since_last_frame);
 	void next_render_step(float since_last_frame);
 
+	void onKey(WORD vkCode, bool isKeyUp, int repeatCount) override;
 	void onSize(stdBounds newSize) override;
 
 	HINSTANCE mInst;

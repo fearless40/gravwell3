@@ -1,5 +1,9 @@
-#include "../../stdafx.h"
+
 #include <d3d11.h>
+#include <winrt/base.h>
+#include <vector>
+template<typename T> using comptr = winrt::com_ptr<T>;
+
 #include "../../engine/Visuals.h"
 #include "../../engine/Mesh.h"
 #include "Driver.h"
@@ -13,6 +17,8 @@
 #include "ShaderCompiler.h"
 #include "Vertexs.h"
 #include "../../util/Overload.hpp"
+
+
 
 namespace Engine::Visuals {
 	namespace dx = Graphics::D3D11;

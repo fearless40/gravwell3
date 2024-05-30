@@ -1,6 +1,5 @@
 #pragma once
-#include <string_view>
-#include <gsl/span>
+
 
 namespace Graphics::D3D11::ShaderCompiler {
 	struct CompiledShader {
@@ -13,9 +12,9 @@ namespace Graphics::D3D11::ShaderCompiler {
 		operator ID3DBlob * () const { return shader.get(); }
 		std::string_view error_string();
 		auto operator -> () { return shader.get(); }
-		gsl::span<std::byte> asSpan() { 
+		std::span<std::byte> asSpan() { 
 			return { (std::byte *)(shader->GetBufferPointer()),
-			(std::ptrdiff_t)shader->GetBufferSize() };
+			shader->GetBufferSize() };
 		};
 
 	private:

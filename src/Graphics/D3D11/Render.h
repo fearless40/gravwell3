@@ -8,7 +8,7 @@
 
 namespace Graphics::D3D11 {
 	class Driver;
-	using RawMemory = gsl::span<const std::byte>;
+	using RawMemory = std::span<const std::byte>;
 	class Render {
 	
 		void * toVoidPtr(RawMemory memory) {

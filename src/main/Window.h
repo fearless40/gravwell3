@@ -103,6 +103,10 @@ protected:
 	// WM_COMMAND on Menu
 	virtual void onMenu( int id );
 
+	// WM_KEY*
+	virtual void onKey(WORD vkCode, bool isKeyUp, int repeatCount);
+
+
 	// Rather than editing the window class everytime I need to handle a new command
 	// you can override the following function it is called if Window::WndProc doesn't
 	// have any logic. 

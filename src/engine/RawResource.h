@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <variant>
 #include <memory>
-#include <gsl/span>
+#include <span>
 #include <filesystem>
 
 namespace Engine::Resources {
@@ -19,8 +19,9 @@ namespace Engine::Resources {
 		std::size_t size;
 		RawID id;
 
-		gsl::span<std::byte> asSpan() {
-			return { file_data.get(), static_cast<gsl::span<std::byte>::index_type>(size) };
+		std::span<std::byte> asSpan() {
+			 return { file_data.get(), size };
+			
 		}
 //		FileInfo * fileinfo;
 	};
@@ -39,7 +40,7 @@ namespace Engine::Resources {
 */
 	class RawLoader {
 	public:
-		virtual ~RawLoader() = 0;
+		virtual ~RawLoader() {};
 		virtual std::optional<RawResource> read_item(RawID id) const = 0;
 		virtual bool		has_item(RawID id) const = 0;
 	};

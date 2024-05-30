@@ -1,4 +1,8 @@
-#include "../stdafx.h"
+//#include "../stdafx.h"
+
+#include <array>
+#include <atomic>
+#include <assert.h>
 #include "Job.h"
 
 void Util::Work::Job::incrementWaiting()

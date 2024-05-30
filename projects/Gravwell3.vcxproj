@@ -23,11 +23,13 @@
     <ClCompile Include="..\src\engine\Engine.cpp" />
     <ClCompile Include="..\src\engine\RawLoaders.cpp" />
     <ClCompile Include="..\src\game-gwell\BroadCollisions.cpp" />
+    <ClCompile Include="..\src\game-gwell\crossfire.cpp" />
     <ClCompile Include="..\src\game-gwell\Entity.cpp" />
     <ClCompile Include="..\src\game-gwell\Game.cpp" />
     <ClCompile Include="..\src\game-gwell\LargeObjectManager.cpp" />
     <ClCompile Include="..\src\game-gwell\LinearMotion.cpp" />
     <ClCompile Include="..\src\game-gwell\Physics.cpp" />
+    <ClCompile Include="..\src\game-gwell\Player.cpp" />
     <ClCompile Include="..\src\game-gwell\Position.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Driver.cpp" />
     <ClCompile Include="..\src\Graphics\D3D11\Render.cpp" />
@@ -66,8 +68,11 @@
     <ClInclude Include="..\src\engine\Visuals.h" />
     <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
     <ClInclude Include="..\src\game-gwell\Coord.h" />
+    <ClInclude Include="..\src\game-gwell\crossfire.h" />
     <ClInclude Include="..\src\game-gwell\Entity.h" />
     <ClInclude Include="..\src\game-gwell\Game.h" />
+    <ClInclude Include="..\src\game-gwell\map.h" />
+    <ClInclude Include="..\src\game-gwell\Player.h" />
     <ClInclude Include="..\src\game-gwell\LargeObjectManager.h" />
     <ClInclude Include="..\src\game-gwell\LinearMotion.h" />
     <ClInclude Include="..\src\game-gwell\Physics.h" />
@@ -193,26 +198,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -276,6 +281,9 @@
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ConformanceMode>false</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/await %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

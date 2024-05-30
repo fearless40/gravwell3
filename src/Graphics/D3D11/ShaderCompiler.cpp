@@ -1,4 +1,6 @@
-#include "../../stdafx.h"
+//#include "../../stdafx.h"
+#include <span>
+#include <string>
 #include "../Shared.h"
 //#include <d3d11.h>
 #include <D3DCompiler.h>
@@ -34,6 +36,6 @@ namespace Graphics::D3D11::ShaderCompiler {
 		if (hasError && shader.get() != nullptr) {
 			return { static_cast<char*>(shader->GetBufferPointer()), shader->GetBufferSize() };
 		}
-		return { nullptr };
+		return  "";
 	}
 }

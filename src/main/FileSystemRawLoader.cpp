@@ -1,5 +1,6 @@
 
 #include "../stdafx.h"
+#include <optional>
 #include <memory>
 #include <fstream>
 #include "FileSystemRawLoader.h"

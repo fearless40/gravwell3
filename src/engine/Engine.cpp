@@ -1,4 +1,6 @@
-#include "../stdafx.h"
+#include <string>
+#include <vector>
+#include <functional>
 #include "Engine.h"
 #include "Event.h"
 

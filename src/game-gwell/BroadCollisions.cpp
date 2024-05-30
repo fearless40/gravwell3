@@ -1,5 +1,8 @@
-#include "../stdafx.h"
+//#include "../stdafx.h"
 
+
+#include <vector>
+#include <assert.h>
 #include "Entity.h"
 #include "Coord.h"
 #include "BroadCollisions.h"

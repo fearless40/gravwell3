@@ -11,6 +11,11 @@
 // Windows Header Files:
 #include <windows.h>
 
+#include <winrt/base.h>
+template<typename T> using comptr = winrt::com_ptr<T>;
+
+
+/*
 // C RunTime Header Files
 #include <stdlib.h>
 #include <malloc.h>
@@ -28,10 +33,11 @@
 
 
 #include <Unknwn.h>
-#include <winrt/base.h>
+
 
 #include <d3d11.h>
 
-template<typename T> using comptr = winrt::com_ptr<T>;
+
 
 // TODO: reference additional headers your program requires here
+*/

@@ -1,4 +1,3 @@
-#include "../../stdafx.h"
 #include <d3d11.h>
 #include "../DXGI/dxgi.h"
 #include "Driver.h"

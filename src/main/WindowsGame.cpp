@@ -1,4 +1,9 @@
 #include "../stdafx.h"
+#include <d3d11.h>
+#include <string>
+#include <functional>
+#include <vector>
+#include <span>
 #include "Resource.h"
 #include "../util/CmdLineParser.h"
 #include "Window.h"
@@ -93,4 +98,8 @@ void WindowsGame::next_render_step(float step) {
 
 void WindowsGame::onSize(stdBounds newSize) {
 
+}
+
+void WindowsGame::onKey(WORD vkCode, bool isKeyUp, int repeatCount) {
+	Events::Event<Engine::KeyEvent>::Fire({ vkCode, isKeyUp, repeatCount });
 }

@@ -1,5 +1,6 @@
 #include "../../stdafx.h"
 #include <d3d11.h>
+#include <span>
 #include "../DXGI/dxgi.h"
 #include "../Shared.h"
 #include "Driver.h"

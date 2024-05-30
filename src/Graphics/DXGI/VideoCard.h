@@ -1,8 +1,6 @@
 #pragma once
 
 #include "dxgi.h"
-#include <vector>
-#include <memory>
 
 
 namespace DX::DXGI {

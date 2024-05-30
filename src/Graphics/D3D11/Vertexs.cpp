@@ -1,4 +1,5 @@
-#include "../../stdafx.h"
+
+#include <span>
 #include "../Shared.h"
 #include <d3d11.h>
 #include <D3DCompiler.h>

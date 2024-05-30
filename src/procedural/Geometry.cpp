@@ -11,6 +11,8 @@
 #include "../stdafx.h"
 #include <map>
 #include <algorithm>
+#include <vector>
+#include <stdexcept>
 #include "Geometry.h"
 #include "Bezier.h"
 #undef max

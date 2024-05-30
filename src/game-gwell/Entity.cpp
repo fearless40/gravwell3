@@ -1,4 +1,6 @@
-#include "../stdafx.h"
+//#include "../stdafx.h"
+#include <vector>
+#include <string>
 #include "Entity.h"
 
 namespace Entity {

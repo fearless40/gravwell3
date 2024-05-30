@@ -1,4 +1,7 @@
-#include "../stdafx.h"
+#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+// Windows Header Files:
+#include <windows.h>
+
 #include "Window.h"
 //#include <boost\bind.hpp>
 
@@ -133,6 +136,10 @@ void Window::onMenu( int id )
 
 void Window::onPaint( HDC dc, RectI bounds )
 {
+
+}
+
+void Window::onKey(WORD vkCode, bool isKeyUp, int repeatCount) {
 
 }
 
@@ -333,6 +340,42 @@ int CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+
+	case WM_KEYDOWN:
+	case WM_KEYUP:
+	case WM_SYSKEYDOWN:
+	case WM_SYSKEYUP:
+	{
+		WORD vkCode = LOWORD(wParam);                                 // virtual-key code
+
+		WORD keyFlags = HIWORD(lParam);
+
+		WORD scanCode = LOBYTE(keyFlags);                             // scan code
+		bool isExtendedKey = (keyFlags & KF_EXTENDED) == KF_EXTENDED; // extended-key flag, 1 if scancode has 0xE0 prefix
+
+		if (isExtendedKey)
+			scanCode = MAKEWORD(scanCode, 0xE0);
+
+		bool wasKeyDown = (keyFlags & KF_REPEAT) == KF_REPEAT;        // previous key-state flag, 1 on autorepeat
+		WORD repeatCount = LOWORD(lParam);                            // repeat count, > 0 if several keydown messages was combined into one message
+
+		bool isKeyReleased = (keyFlags & KF_UP) == KF_UP;             // transition-state flag, 1 on keyup
+
+		// if we want to distinguish these keys:
+		switch (vkCode)
+		{
+		case VK_SHIFT:   // converts to VK_LSHIFT or VK_RSHIFT
+		case VK_CONTROL: // converts to VK_LCONTROL or VK_RCONTROL
+		case VK_MENU:    // converts to VK_LMENU or VK_RMENU
+			vkCode = LOWORD(MapVirtualKeyW(scanCode, MAPVK_VSC_TO_VK_EX));
+			break;
+		}
+
+		win->onKey(vkCode, isKeyReleased == 1, repeatCount);
+		return win->WindowProc(message, wParam, lParam);
+	}
+	break;
+
 	
 	default:
 		return win->WindowProc(message, wParam, lParam);

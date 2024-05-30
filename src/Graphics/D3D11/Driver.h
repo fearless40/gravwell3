@@ -1,14 +1,5 @@
 #pragma once
-//#include "../Shared.h"
-//#include <memory>
 #include "../Generic/Driver.h"
-//#include "../Generic/ConstantBuffer.h"
-//#include "Context.h"
-//#include "GenericToD3D.h"
-//#include "Buffer.h"
-//#include "ShaderCompiler.h"
-
-
 
 namespace Graphics::D3D11 {
 

@@ -137,6 +137,12 @@
     <ClCompile Include="..\src\main\FileSystemRawLoader.cpp">
       <Filter>main</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\game-gwell\Player.cpp">
+      <Filter>game-gwell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\game-gwell\crossfire.cpp">
+      <Filter>game-gwell</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\main\Resource.h">
@@ -363,6 +369,15 @@
     </ClInclude>
     <ClInclude Include="..\src\main\FileSystemRawLoader.h">
       <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game-gwell\Player.h">
+      <Filter>game-gwell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game-gwell\map.h">
+      <Filter>game-gwell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\game-gwell\crossfire.h">
+      <Filter>game-gwell</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

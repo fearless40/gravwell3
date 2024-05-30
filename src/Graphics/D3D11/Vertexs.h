@@ -1,7 +1,4 @@
 #pragma once
-#include <string_view>
-#include <vector>
-#include <gsl/span>
 #include "../Generic/Vertexs.h"
 
 namespace Graphics::D3D11 {
@@ -25,7 +22,7 @@ namespace Graphics::D3D11 {
 			};
 
 			constexpr std::string_view getString() const { return element_string; }
-			constexpr gsl::span<const D3D11_INPUT_ELEMENT_DESC> getDesc() const { return { element_desc }; }
+			constexpr std::span<const D3D11_INPUT_ELEMENT_DESC> getDesc() const { return { element_desc }; }
 		};
 
 		template<> 	struct VertexTypeInfo<Graphics::Generic::VertexTypes::PositionColor>
@@ -38,7 +35,7 @@ namespace Graphics::D3D11 {
 			};
 
 			constexpr std::string_view getString() const { return element_string; }
-			constexpr gsl::span<const D3D11_INPUT_ELEMENT_DESC> getDesc() const { return { element_desc }; }
+			constexpr std::span<const D3D11_INPUT_ELEMENT_DESC> getDesc() const { return { element_desc }; }
 		};
 
 		template<> 	struct VertexTypeInfo<Graphics::Generic::VertexTypes::PositionUV>
@@ -51,7 +48,7 @@ namespace Graphics::D3D11 {
 			};
 
 			constexpr std::string_view getString() const { return element_string; }
-			constexpr gsl::span<const D3D11_INPUT_ELEMENT_DESC> getDesc() const { return { element_desc }; }
+			constexpr std::span<const D3D11_INPUT_ELEMENT_DESC> getDesc() const { return { element_desc }; }
 		};
 
 		template<> 	struct VertexTypeInfo<Graphics::Generic::VertexTypes::PositionNormalUV>
@@ -87,7 +84,7 @@ VOut main(VIn input)
 			};
 
 			constexpr std::string_view getString() const { return element_string; }
-			constexpr gsl::span<const D3D11_INPUT_ELEMENT_DESC> getDesc() const { return { element_desc }; }
+			constexpr std::span<const D3D11_INPUT_ELEMENT_DESC> getDesc() const { return { element_desc }; }
 		};
 
 	}

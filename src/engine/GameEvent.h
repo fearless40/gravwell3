@@ -11,5 +11,11 @@ namespace Engine {
 		NextRenderFrame(float tm) : elapsedTimeMS(tm) {}
 	};
 
+	struct KeyEvent {
+		unsigned short vkCode{ 0 };
+		bool isKeyUp{ false };
+		int repeatCount{ 0 };
+	};
+
 	struct GameInitalizeData {};
 }
