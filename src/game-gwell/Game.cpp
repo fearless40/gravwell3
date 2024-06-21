@@ -3,6 +3,7 @@
 #include <span>
 #include <functional>
 #include <optional>
+#include <array>
 #include "Game.h"
 //#include "Entity.h"
 //#include "LinearMotion.h"
@@ -25,6 +26,8 @@ const unsigned short VK_DOWN = 0x28;
 namespace Game {
 
 	Engine::Visuals::Basic::Visual box_visual;
+	Engine::Visuals::Basic::Visual row_visual;
+	Engine::Visuals::Basic::Visual col_visual;
 	float rotAngle = 0.f;
 	Engine::Camera	cam;
 
@@ -34,9 +37,14 @@ namespace Game {
 		Engine::Visuals::Basic::Visual visualId{};
 		float x = 0;
 		float y = 0;
+
+		static constexpr float gameUnitToFloat(unsigned int value) {
+			return (static_cast<float>(value)); 
+		}
 	};
 	
-	std::vector<CrossFireVisual> frame1;
+	std::vector<CrossFireVisual> dynamic_elements;
+	std::vector<CrossFireVisual> static_elements; 
 		
 	void onKeyPress(Engine::KeyEvent evt) {
 		if (!evt.isKeyUp) return;
@@ -71,15 +79,13 @@ namespace Game {
 
 	void onLogicEvent(const Engine::NextLogicFrame& frame) {
 		auto values = crossfire::linear::run(1.0f);
-		frame1.clear();
-		frame1.reserve(values.size()); 
+		dynamic_elements.clear();
+		dynamic_elements.reserve(values.size()); 
 		for (int i = 0; i < values.size(); ++i) {
-			frame1.push_back(
-				{
+			dynamic_elements.emplace_back(
 					box_visual,
-					static_cast<float>(values.positions[i].x)/100,
-					static_cast<float>(values.positions[i].y)/100
-				}
+					CrossFireVisual::gameUnitToFloat(values.positions[i].x),
+					CrossFireVisual::gameUnitToFloat(values.positions[i].y)
 			);
 		};
 	}
@@ -89,7 +95,7 @@ namespace Game {
 		namespace math = Engine::Math; 
 		vs::RenderState state{ cam };
 
-		for (auto const& renderable : frame1) {
+		for (auto const& renderable : dynamic_elements) {
 			Engine::Matrix world;
 			Engine::fMatrix worldf;
 			//Engine::fVector4 rotVector = math::XMVectorSet(0, 1, 1, 0);
@@ -97,21 +103,42 @@ namespace Game {
 			//rotAngle += 0.01;
 
 			//worldf = math::XMMatrixRotationAxis(rotVector, Engine::Math::XMConvertToRadians(rotAngle));
-			worldf = math::XMMatrixTranslation(renderable.x, renderable.y, 0);
+			worldf = math::XMMatrixTranslation(renderable.x+5, renderable.y+5, -205);
+			//worldf = math::XMMatrixTranslation(0, 0, -200);
 			math::XMStoreFloat4x4(&world, worldf);
 
-			state.states.push_back({ world, box_visual });
+			state.states.push_back({ world, renderable.visualId });
+
+			state.lights.push_back(Engine::Lights::AnyLight{
+			Engine::Lights::Point {
+				{renderable.x + 5,renderable.y + 5,-180},
+				{ 0,0.3,0,0},
+				 0.01,0.02,0.0003	}
+			});
+
+		}
+
+		int count = 0;
+		for (auto const& renderable : static_elements) {
+			//if (count > 7) break; 
+			Engine::Matrix world;
+			Engine::fMatrix worldf;
+			worldf = math::XMMatrixTranslation(renderable.x, renderable.y, -200);
+			//worldf = math::XMMatrixTranslation(0, 0, -200.5);
+			math::XMStoreFloat4x4(&world, worldf);
+			state.states.push_back({ world, renderable.visualId });
+			++count;
 		}
 		
 		state.GlobalAmbientLight = { 0.1,0.1,0.1,1 };
-		state.lights.push_back( Engine::Lights::AnyLight{ 
-			Engine::Lights::Point {
-				{1,10,10},
-				{ 1,1,1,0},
-				0.0001,0.02,0.003	}
+		state.lights.push_back(Engine::Lights::Directional{
+			{0,0,-1},
+			{0.3,0.3,0.3,0}
 			});
 
-		state.lights.push_back(Engine::Lights::AnyLight{
+		
+
+		/*state.lights.push_back(Engine::Lights::AnyLight{
 			Engine::Lights::Point {
 				{-2,-2,-20},
 				{ 0.3,1,1,0},
@@ -120,12 +147,12 @@ namespace Game {
 
 		state.lights.push_back(Engine::Lights::AnyLight{
 			Engine::Lights::Point {
-				{0,0,-3},
+				{0,0,-153},
 				{ 0.2,0.1,0.33,0},
 				0.001,0.002,0.003	}
 			});
 
-
+		*/
 		vs::Render(std::move(state));
 	}
 
@@ -136,20 +163,72 @@ namespace Game {
 		Geometry::IndexCollection  ids;
 		auto screenInfo = vs::Get_ScreenSize();
 
-		Geometry::ComputeBox(vbs, ids, { .5f,.5f,.5f }, false, false);
-		//Geometry::ComputeTeapot(vbs, ids, 2, 4, false);
+		{
+			vbs.clear(); 
+			ids.clear();
+			Geometry::ComputeBox(vbs, ids, { 10, 10,10 }, false, false);
+			//Geometry::ComputeTeapot(vbs, ids, 2, 4, false);
 
-		Engine::MeshView mesh_view{ Engine::make_meshview( vbs,ids ) };
-		Engine::Material mat{
-			{0,0,0,0},
-			{0.9,0.9,0.9,1},
-			{0.9,0.9,0.9,1},
-			{0.9,1,0.9,1},
-			128 };
+			Engine::MeshView mesh_view{ Engine::make_meshview(vbs,ids) };
+			Engine::Material mat{
+				{0,0,0,0},
+				{0.9,0.9,0.9,1},
+				{0.9,0.9,0.9,1},
+				{0.9,1,0.9,1},
+				128 };
+			box_visual = vs::Create(mesh_view, mat);
+		}
+		{
+			vbs.clear();
+			ids.clear();
+			auto path = crossfire::map::getRowPath(); 
+			Geometry::ComputeBox(vbs, ids, { static_cast<float>(path.x2-path.x) , static_cast<float>(path.y2-path.y),.01f}, false, false);
+			//Geometry::ComputeBox(vbs, ids, { 10,80,0.1f }, false, false);
 
-		box_visual = vs::Create(mesh_view, mat);
+			Engine::MeshView mesh_view{ Engine::make_meshview(vbs,ids) };
+			Engine::Material mat{
+				{0,0,0,0},
+				{0.1,0.1,0.5,1},
+				{0.9,0.9,0.9,1},
+				{0.9,1,0.9,1},
+				128 };
+			row_visual = vs::Create(mesh_view, mat);
+		}
+		{
+			vbs.clear();
+			ids.clear();
+			auto path = crossfire::map::getColPath();
+			Geometry::ComputeBox(vbs, ids, { static_cast<float>(path.x2 - path.x) , static_cast<float>(path.y2 - path.y),.001f }, false, false);
+			//Geometry::ComputeTeapot(vbs, ids, 2, 4, false);
+
+			Engine::MeshView mesh_view{ Engine::make_meshview(vbs,ids) };
+			Engine::Material mat{
+				{0,0,0,0},
+				{0.5,0.1,0.1,1},
+				{0.9,0.9,0.9,1},
+				{0.9,1,0.9,1},
+				128 };
+			col_visual = vs::Create(mesh_view, mat);
+		}
+
+		auto paths = crossfire::map::getPaths();
+		auto isRow = [](const crossfire::map::path& p) -> bool {
+			return (p.x2 - p.x) > (p.y2 - p.y);
+		};
+
+		for (const auto& p : paths) {
+			const auto asRow = isRow(p);
+			static_elements.emplace_back(
+				asRow ? row_visual : col_visual,
+				CrossFireVisual::gameUnitToFloat(p.x) + static_cast<float>(p.x2 - p.x)/2,
+				CrossFireVisual::gameUnitToFloat(p.y) + static_cast<float>(p.y2 - p.y)/2
+			);
+		}
+
 
 		cam.setPerspectiveFOV(Engine::Math::XMConvertToRadians(45), screenInfo.aspect_ratio(), .1f, 500.f);
-		cam.lookAt({ 0,0,10,0 }, { 0,0,0,0 }, { 0,1,0,0 });
+		//cam.setPosition({ 0,0,-10,0 });
+		//cam.setRotation({ })
+		cam.lookAt({ 85,85,50,0 }, { 85,85,-1,0 }, { 0,1,0,0 });
 	}
 }

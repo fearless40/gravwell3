@@ -83,9 +83,27 @@ namespace crossfire {
 	}
 
 	namespace map {
-		void setMap();
-		bool canTurn(CurrentPosition pos);
-		
+
+		struct path {
+			unsigned int x;
+			unsigned int y;
+			unsigned int x2;
+			unsigned int y2;
+		};
+
+		constexpr const int fudgeFactor{ 3 };
+		constexpr const int nbrRows{ 8 };
+		constexpr const int nbrCols{ 8 };
+		constexpr const int corridorWidth{ 10 };
+		constexpr const int spaceBetween = corridorWidth * 2;
+		constexpr const int startingX{ 0 };
+		constexpr const int startingY{ 0 };
+
+		std::array<path, nbrRows+nbrCols> getPaths();
+		path getRowPath();
+		path getColPath(); 
+
+
 		
 	}
 
