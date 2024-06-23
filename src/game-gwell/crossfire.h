@@ -91,6 +91,16 @@ namespace crossfire {
 			unsigned int y2;
 		};
 
+		struct ValidateHeadingChange {
+			bool canChangeHeading{ false };
+			Coordinate newX{ 0 };
+			Coordinate newY{ 0 };
+
+			operator bool() {
+				return canChangeHeading; 
+			}
+		};
+
 		constexpr const int fudgeFactor{ 3 };
 		constexpr const int nbrRows{ 8 };
 		constexpr const int nbrCols{ 8 };
@@ -100,8 +110,18 @@ namespace crossfire {
 		constexpr const int startingY{ 0 };
 
 		std::array<path, nbrRows+nbrCols> getPaths();
-		path getRowPath();
-		path getColPath(); 
+		path getRowPath(unsigned int x = 0, unsigned int y = 0);
+		path getColPath(unsigned int x = 0, unsigned int y = 0);
+		constexpr const path getMapExtents() {
+			return {
+				0,
+				0,
+				((nbrRows - 1) * 2 * corridorWidth + corridorWidth),
+				((nbrCols - 1) * 2 * corridorWidth + corridorWidth)
+			};
+		}
+
+		ValidateHeadingChange isValidIntersectionToChangeHeading(Heading current, Coordinate x, Coordinate y);
 
 
 		

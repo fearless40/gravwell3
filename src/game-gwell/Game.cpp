@@ -32,6 +32,7 @@ namespace Game {
 	Engine::Camera	cam;
 
 	crossfire::Entity theOne; 
+	crossfire::Heading desiredHeading; 
 
 	struct CrossFireVisual {
 		Engine::Visuals::Basic::Visual visualId{};
@@ -51,16 +52,16 @@ namespace Game {
 		
 		switch (evt.vkCode) {
 		case VK_RIGHT:
-			crossfire::linear::changeHeading(theOne, crossfire::Heading::Right);
+			desiredHeading = crossfire::Heading::Right;
 			break;
 		case VK_LEFT:
-			crossfire::linear::changeHeading(theOne, crossfire::Heading::Left);
+			desiredHeading = crossfire::Heading::Left;
 			break;
 		case VK_UP:
-			crossfire::linear::changeHeading(theOne, crossfire::Heading::Up);
+			desiredHeading = crossfire::Heading::Up;
 			break;
 		case VK_DOWN:
-			crossfire::linear::changeHeading(theOne, crossfire::Heading::Down);
+			desiredHeading = crossfire::Heading::Down;
 			break;
 
 		}
@@ -73,11 +74,13 @@ namespace Game {
 		Events::Event<Engine::KeyEvent>::Listen(&onKeyPress);
 		
 		theOne = crossfire::entities::create();
-		crossfire::linear::create(theOne, crossfire::Heading::Right, 0, 0); 
+		crossfire::linear::create(theOne, crossfire::Heading::Stopped, 0, 0); 
 	}
 
 
 	void onLogicEvent(const Engine::NextLogicFrame& frame) {
+		crossfire::linear::changeHeading(theOne, desiredHeading);
+		//desiredHeading = crossfire::Heading::Stopped;
 		auto values = crossfire::linear::run(1.0f);
 		dynamic_elements.clear();
 		dynamic_elements.reserve(values.size()); 
@@ -229,6 +232,6 @@ namespace Game {
 		cam.setPerspectiveFOV(Engine::Math::XMConvertToRadians(45), screenInfo.aspect_ratio(), .1f, 500.f);
 		//cam.setPosition({ 0,0,-10,0 });
 		//cam.setRotation({ })
-		cam.lookAt({ 85,85,50,0 }, { 85,85,-1,0 }, { 0,1,0,0 });
+		cam.lookAt({ 85,85,50,0 }, { 85,85,-1,0 }, { 0,-1,0,0 });
 	}
 }
