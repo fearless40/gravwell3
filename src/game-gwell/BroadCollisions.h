@@ -4,7 +4,7 @@
 
 namespace BroadCollisions {
 	struct CInfo {
-		Game::Coord width, height;
+		Game::FixedFunctionFloat width, height;
 		EntityID id;
 		uint32_t team;
 	};

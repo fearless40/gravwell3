@@ -17,5 +17,5 @@ namespace Game {
 }
 
 namespace GameUtil {
-	using CoordVector = std::vector<Game::Coord>;
+	using CoordVector = std::vector<Game::FixedFunctionFloat>;
 }
