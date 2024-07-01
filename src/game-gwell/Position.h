@@ -4,7 +4,7 @@
 #include "Entity.h"
 #include "../util/Temp.hpp"
 
-namespace Position {
+n/*amespace Position {
 	struct Pos {
 		Game::Coord x, y;
 		EntityID id;
@@ -30,4 +30,4 @@ namespace Position {
 	Temp<const Entity::Vector> getChanged();
 
 	static void frameEnd() {}
-}
+}*/

@@ -7,7 +7,7 @@ namespace Events {
 		using callback = std::function< void(const Msg &)>;
 
 		struct Token {
-			std::size_t value;
+			std::size_t m_value;
 		};
 
 		static const Token Listen(callback cb) {
@@ -27,7 +27,7 @@ namespace Events {
 		}
 
 		static void Remove(const Token tk) {
-			mRecievers.erase(mRecievers.begin() + tk.value);
+			mRecievers.erase(mRecievers.begin() + tk.m_value);
 		}
 
 	private:

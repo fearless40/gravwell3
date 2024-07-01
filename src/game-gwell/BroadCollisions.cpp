@@ -1,10 +1,10 @@
 //#include "../stdafx.h"
 
-
+/*
 #include <vector>
 #include <assert.h>
 #include "Entity.h"
-#include "Coord.h"
+//#include "Coord.h"
 #include "BroadCollisions.h"
 #include "Position.h"
 #include <algorithm>
@@ -102,3 +102,4 @@ namespace BroadCollisions {
 	}
 }
 
+*/

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+/*#include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../src/game-gwell/Coord.h"
 
@@ -59,3 +59,4 @@ namespace tests
 		
 	};
 }
+*/

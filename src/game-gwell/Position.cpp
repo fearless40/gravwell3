@@ -1,3 +1,4 @@
+/*
 #include "../stdafx.h"
 #include <vector>
 #include <iterator>
@@ -80,3 +81,4 @@ namespace Position {
 		return { changed };
 	}
 }
+*/

@@ -5,6 +5,7 @@
 #include <ranges>
 #include <algorithm>
 #include "../util/Math/RectT.h"
+#include "../util/FixedFunctionFloat.h"
 #include "crossfire.h"
 
 
@@ -29,16 +30,31 @@ namespace crossfire::entities {
 }
 
 namespace crossfire::linear {
+
+	using coord = util::FixedFunctionFloat<4>; 
+
+	struct Position {
+		Heading heading;
+		coord x;
+		coord y;
+		coord velocity; 
+
+		constexpr auto getX() const { return x.as<Coordinate>(); }
+		constexpr auto getY() const { return y.as<Coordinate>(); }
+		
+	};
+
 	std::array<Entity, 128> entityids;
-	std::array<CurrentPosition, 128> positions;
+	std::array<Position, 128> positions;
+	std::array<CurrentPosition, 128> visiblePositions; 
 	std::size_t nbrEntitiesAndPositions = 0;
 
 	std::array<Entity, 64> flaggedForRemoval;
 	std::size_t nbrFlaggedForRemoval = 0;
 
 	struct DeltaXY {
-		int x;
-		int y;
+		util::FixedFunctionSign x;
+		util::FixedFunctionSign y;
 	};
 
 	const DeltaXY headingDelta[] = {
@@ -47,12 +63,26 @@ namespace crossfire::linear {
 		{0,0}
 	};
 
-	void changeHeading(Entity id, Heading heading) {
+	const coord Velocities[] = {
+		coord{1},
+		coord{0.75f},
+		coord{0.5f},
+		coord{0.25f},
+		coord{2},
+		coord{3},
+		coord{4}
+	};
+
+	constexpr auto asSpeed(Velocity vel) {
+		return Velocities[static_cast<unsigned int>(vel)];
+	}
+
+	void changeHeading(Entity id, Heading heading, Velocity vel) {
 		// Happens immedietly should wait to the end of the current run
 		for (int i = 0; i < nbrEntitiesAndPositions; ++i) {
 			if (entityids[i] == id) {
 				
-				const auto& pos = positions[i];
+				auto& pos = positions[i];
 
 				if (pos.heading == Heading::Up || pos.heading == Heading::Down) {
 					if (heading == Heading::Up || heading == Heading::Down)
@@ -65,19 +95,20 @@ namespace crossfire::linear {
 				}
 
 
-				auto valid = map::isValidIntersectionToChangeHeading(positions[i].heading, positions[i].x + 5, positions[i].y + 5);
+				auto valid = map::isValidIntersectionToChangeHeading(pos.heading, pos.getX() + 5, pos.getY() + 5);
 				if (valid) {
-					positions[i].heading = heading;
-					positions[i].x = valid.newX;
-					positions[i].y = valid.newY;
+					pos.heading = heading;
+					pos.x = coord{ valid.newX };
+					pos.y = coord{ valid.newY };
+					pos.velocity = asSpeed(vel);
 				}
 			}
 		}
 	}
 
-	void create(Entity id, Heading heading, Coordinate x, Coordinate y) {
+	void create(Entity id, Heading heading, Coordinate x, Coordinate y, Velocity vel ) {
 		entityids[nbrEntitiesAndPositions] = id;
-		positions[nbrEntitiesAndPositions] = { heading, x, y };
+		positions[nbrEntitiesAndPositions] = { heading, coord{x}, coord{y}, asSpeed(vel)};
 		++nbrEntitiesAndPositions;
 	}
 
@@ -86,29 +117,45 @@ void remove(Entity id) {
 	++nbrFlaggedForRemoval;
 }
 
-EntityAndData run(float delta) {
-
-
+void run(float delta) {
 
 	auto update_positions = [](auto& pos) {
 		const auto extents{ map::getMapExtents() };
 		auto delta = headingDelta[static_cast<std::size_t>(pos.heading)];
-		pos.x += delta.x;
-		pos.y += delta.y;
+		pos.x = pos.x + (pos.velocity * delta.x);
+		pos.y = pos.y + (pos.velocity * delta.y);
+		
+		/*pos.x += delta.x;
+		pos.y += delta.y;*/
 
-		if (pos.x + 10 > extents.x2) pos.x = extents.x2 - 10;
-		if (pos.x < extents.x) pos.x = extents.x;
-		if (pos.y + 10 > extents.y2) pos.y = extents.y2 - 10;
-		if (pos.y < extents.y) pos.y = extents.y;
+		auto testx = pos.getX();
+		auto testy = pos.getY(); 
+
+		if (pos.getX() + 10 > extents.x2) pos.x = coord{extents.x2 - 10};
+		if (pos.getX() < extents.x) pos.x = coord{ extents.x };
+		if (pos.getY() + 10 > extents.y2) pos.y = coord{extents.y2 - 10};
+		if (pos.getY() < extents.y) pos.y = coord{extents.y};
 	};
 
 	std::ranges::for_each_n(positions.begin(), nbrEntitiesAndPositions, update_positions);
 
-	return {
+	/*return {
 		{entityids.cbegin(), nbrEntitiesAndPositions},
 		{positions.cbegin(), nbrEntitiesAndPositions}
+	};*/
+}
+
+EntityAndData getEntitiesPositions() {
+	
+	std::transform(positions.cbegin(), positions.cend(), visiblePositions.begin(), [](const auto& input) { return CurrentPosition{ input.heading, input.getX(), input.getY()}; });
+	
+	
+	return {
+		{entityids.cbegin(), nbrEntitiesAndPositions},
+		{visiblePositions.cbegin(), nbrEntitiesAndPositions}
 	};
 }
+
 
 void endFrame() {
 

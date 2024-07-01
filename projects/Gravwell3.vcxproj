@@ -67,7 +67,6 @@
     <ClInclude Include="..\src\engine\ResourceManager.h" />
     <ClInclude Include="..\src\engine\Visuals.h" />
     <ClInclude Include="..\src\game-gwell\BroadCollisions.h" />
-    <ClInclude Include="..\src\game-gwell\Coord.h" />
     <ClInclude Include="..\src\game-gwell\crossfire.h" />
     <ClInclude Include="..\src\game-gwell\Entity.h" />
     <ClInclude Include="..\src\game-gwell\Game.h" />
@@ -111,6 +110,7 @@
     <ClInclude Include="..\src\stdafx.h" />
     <ClInclude Include="..\src\util\CmdLineParser.h" />
     <ClInclude Include="..\src\util\CriticalSection.h" />
+    <ClInclude Include="..\src\util\FixedFunctionFloat.h" />
     <ClInclude Include="..\src\util\FreeListVector.h" />
     <ClInclude Include="..\src\util\GenericHandle.h" />
     <ClInclude Include="..\src\util\GenericHandleManager.h" />

@@ -210,9 +210,6 @@
     <ClInclude Include="..\src\game-gwell\LinearMotion.h">
       <Filter>game-gwell</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\game-gwell\Coord.h">
-      <Filter>game-gwell</Filter>
-    </ClInclude>
     <ClInclude Include="TimeStep.h">
       <Filter>main</Filter>
     </ClInclude>
@@ -378,6 +375,9 @@
     </ClInclude>
     <ClInclude Include="..\src\game-gwell\crossfire.h">
       <Filter>game-gwell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\FixedFunctionFloat.h">
+      <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

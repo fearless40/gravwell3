@@ -1,4 +1,4 @@
-
+/*
 #include <vector>
 #include <unordered_map>
 #include <optional>
@@ -105,7 +105,7 @@ namespace Physics {
 		Return Vel
 		Force and Acc are not remembered
 	
-	*/
+	
 
 
 	void setWriter(Forces & f) {
@@ -171,3 +171,4 @@ namespace Physics {
 		
 	}
 }
+*/

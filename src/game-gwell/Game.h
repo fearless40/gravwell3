@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "Coord.h"
+//#include "Coord.h"
 #include "../engine/GameEvent.h"
 
 
@@ -17,5 +17,5 @@ namespace Game {
 }
 
 namespace GameUtil {
-	using CoordVector = std::vector<Game::FixedFunctionFloat>;
+	//using CoordVector = std::vector<Game::FixedFunctionFloat>;
 }

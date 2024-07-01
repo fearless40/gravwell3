@@ -20,7 +20,17 @@ namespace crossfire {
 	struct CurrentPosition {
 		Heading heading;
 		Coordinate x;
-		Coordinate y;
+		Coordinate y; 
+	};
+
+	enum class Velocity : unsigned int {
+		Normal = 0,
+		ThreeQuarter = 1,
+		Half = 2,
+		Quarter = 3,
+		Double = 4,
+		Triple = 5,
+		Quadruple = 6
 	};
 
 	namespace entities {
@@ -37,11 +47,13 @@ namespace crossfire {
 			const auto size() { return entities.size(); };
 		};
 				
-		void changeHeading(Entity id, Heading heading);
-		void create(Entity id, Heading heading, Coordinate x, Coordinate y);
+		void changeHeading(Entity id, Heading heading, Velocity vel = Velocity::Normal);
+		void create(Entity id, Heading heading, Coordinate x, Coordinate y, Velocity vel = Velocity::Normal);
 		void remove(Entity id);
 	
-		EntityAndData run(float delta);
+		void run(float delta);
+		EntityAndData getEntitiesPositions();
+
 		void endFrame();
 
 

@@ -41,13 +41,13 @@ namespace Graphics::D3D11 {
 		}
 
 		template<typename BufferType>
-		void set_comptr(comptr<ID3D11Buffer> & value) {
-			set_comptr(get_cb_index<BufferType>(), std::forward<ptr>(value));
+		void set_comptr(comptr<ID3D11Buffer> & m_value) {
+			set_comptr(get_cb_index<BufferType>(), std::forward<ptr>(m_value));
 		}
 
-		void set_comptr(std::size_t index, comptr <ID3D11Buffer> & value) {
+		void set_comptr(std::size_t index, comptr <ID3D11Buffer> & m_value) {
 			mBuffers[index] = nullptr;
-			mBuffers[index].copy_from(value);
+			mBuffers[index].copy_from(m_value);
 		}
 
 		constexpr auto begin() { return mBuffers.begin(); }

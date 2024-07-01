@@ -81,7 +81,8 @@ namespace Game {
 	void onLogicEvent(const Engine::NextLogicFrame& frame) {
 		crossfire::linear::changeHeading(theOne, desiredHeading);
 		//desiredHeading = crossfire::Heading::Stopped;
-		auto values = crossfire::linear::run(1.0f);
+		crossfire::linear::run(1.0f);
+		auto values = crossfire::linear::getEntitiesPositions();
 		dynamic_elements.clear();
 		dynamic_elements.reserve(values.size()); 
 		for (int i = 0; i < values.size(); ++i) {
