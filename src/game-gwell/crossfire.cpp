@@ -53,8 +53,8 @@ namespace crossfire::linear {
 	std::size_t nbrFlaggedForRemoval = 0;
 
 	struct DeltaXY {
-		util::FixedFunctionSign x;
-		util::FixedFunctionSign y;
+		util::FixedFunctionMagnitude x;
+		util::FixedFunctionMagnitude y;
 	};
 
 	const DeltaXY headingDelta[] = {
@@ -72,6 +72,10 @@ namespace crossfire::linear {
 		coord{3},
 		coord{4}
 	};
+
+	constexpr auto asHeadingDelta(Heading head) {
+		return headingDelta[static_cast<unsigned int>(head)];
+	}
 
 	constexpr auto asSpeed(Velocity vel) {
 		return Velocities[static_cast<unsigned int>(vel)];
@@ -100,7 +104,7 @@ namespace crossfire::linear {
 					pos.heading = heading;
 					pos.x = coord{ valid.newX };
 					pos.y = coord{ valid.newY };
-					pos.velocity = asSpeed(vel);
+					//pos.velocity = asSpeed(vel);
 				}
 			}
 		}
@@ -121,7 +125,7 @@ void run(float delta) {
 
 	auto update_positions = [](auto& pos) {
 		const auto extents{ map::getMapExtents() };
-		auto delta = headingDelta[static_cast<std::size_t>(pos.heading)];
+		auto delta = asHeadingDelta(pos.heading);
 		pos.x = pos.x + (pos.velocity * delta.x);
 		pos.y = pos.y + (pos.velocity * delta.y);
 		

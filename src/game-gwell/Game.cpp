@@ -74,7 +74,7 @@ namespace Game {
 		Events::Event<Engine::KeyEvent>::Listen(&onKeyPress);
 		
 		theOne = crossfire::entities::create();
-		crossfire::linear::create(theOne, crossfire::Heading::Stopped, 0, 0); 
+		crossfire::linear::create(theOne, crossfire::Heading::Right, 0, 0, crossfire::Velocity::Quarter); 
 	}
 
 

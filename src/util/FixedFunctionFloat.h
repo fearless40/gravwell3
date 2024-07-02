@@ -365,18 +365,22 @@
 
 namespace util {
 
-	class FixedFunctionSign {
+	
+	class FixedFunctionMagnitude {
 	private:
-		int m_sign{ 1 };
+		int m_value{ 1 };
 
 	public:
-		template<typename T> 
-		requires  (std::is_signed_v<T> || std::is_floating_point_v<T>)
-		constexpr FixedFunctionSign(T value) noexcept : m_sign{ value >= 0 ? 1 : -1} {}
+		constexpr FixedFunctionMagnitude(int value) noexcept {
+			if (value >= -1 && value <= 1)
+				m_value = value;
+			else
+				m_value = 0;
+		}
 
-		constexpr bool is_negative() const noexcept { return m_sign < 0; }
-		constexpr bool is_positive() const noexcept { return m_sign > 0;  }
-		constexpr int get() const noexcept { return m_sign; }
+		constexpr bool is_negative() const noexcept { return m_value < 0; }
+		constexpr bool is_positive() const noexcept { return m_value > 0;  }
+		constexpr int get() const noexcept { return m_value; }
 		
 	};
 
@@ -455,7 +459,7 @@ namespace util {
 			return ret -= rhs;
 		}
 
-		friend constexpr type operator * (const type& lhs, const FixedFunctionSign sign) {
+		friend constexpr type operator * (const type& lhs, const FixedFunctionMagnitude sign) {
 			if constexpr (std::is_signed_v<underlying_type>) {
 				return type{ lhs.m_value * sign.get(), raw_t {} };
 			}
