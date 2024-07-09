@@ -5,6 +5,8 @@ namespace crossfire {
 
 	
 	using Entity = unsigned int;
+
+	const Entity INVALID_ENTITY = 0 - 1; 
 	
 	enum class Heading : unsigned int
 	{
@@ -44,10 +46,11 @@ namespace crossfire {
 			const std::span<const Entity, std::dynamic_extent> entities;
 			const std::span<const CurrentPosition, std::dynamic_extent> positions;
 
-			const auto size() { return entities.size(); };
+			const auto size() const { return entities.size(); };
 		};
 				
 		void changeHeading(Entity id, Heading heading, Velocity vel = Velocity::Normal);
+		void changePosition(Entity id, Coordinate x, Coordinate y);
 		void create(Entity id, Heading heading, Coordinate x, Coordinate y, Velocity vel = Velocity::Normal);
 		void remove(Entity id);
 	
@@ -72,12 +75,28 @@ namespace crossfire {
 	}
 
 	namespace keyboardinput {
-		using KeyToActionMapper = void*;
+
+		const std::size_t MAX_LOCAL_PLAYERS = 4; 
+
+		enum class Actions {
+			turn_right,
+			turn_left,
+			turn_up,
+			turn_down,
+			fire_missle,
+			fire_special
+		};
+		
+		struct KeyToAction {
+			int key;
+			Actions action;
+		};
+
+		using KeyToActionMapper = std::span<const KeyToAction>;
 		
 		void create(Entity id, KeyToActionMapper map); 
 		void remove(Entity id);
-
-		void run(float delta);
+		void inject_keys(Engine::KeyEvent key_event);
 
 	}
 
@@ -89,8 +108,18 @@ namespace crossfire {
 	}
 
 	namespace collider {
-		void create(Entity id, unsigned int width, unsigned int height);
-		void run(float delta, std::span<CurrentPosition> positions);
+		struct Collision {
+			Entity id1;
+			Entity id2;
+			std::size_t collisionId; 
+		};
+		
+		
+		void doCollisions(const linear::EntityAndData& data);
+		std::span<const Collision> getCollisions();
+
+		
+		
 
 	}
 

@@ -4,6 +4,7 @@
 #include <optional>
 #include <ranges>
 #include <algorithm>
+#include "../engine/GameEvent.h"
 #include "../util/Math/RectT.h"
 #include "../util/FixedFunctionFloat.h"
 #include "crossfire.h"
@@ -81,31 +82,45 @@ namespace crossfire::linear {
 		return Velocities[static_cast<unsigned int>(vel)];
 	}
 
+	std::optional<int> find_first(Entity id) {
+		for (int i = 0; i < nbrEntitiesAndPositions; ++i) {
+			if (entityids[i] == id) return i;
+		}
+		return {};
+	}
+
+	void changePosition(Entity id, Coordinate x, Coordinate y) {
+		auto found = find_first(id);
+		if (found) {
+			auto& pos = positions[found.value()];
+			pos.x = x;
+			pos.y = y;
+		}
+	}
+
 	void changeHeading(Entity id, Heading heading, Velocity vel) {
 		// Happens immedietly should wait to the end of the current run
-		for (int i = 0; i < nbrEntitiesAndPositions; ++i) {
-			if (entityids[i] == id) {
-				
-				auto& pos = positions[i];
+		auto found = find_first(id);
+		if(found) {
+			auto& pos = positions[found.value()];
 
-				if (pos.heading == Heading::Up || pos.heading == Heading::Down) {
-					if (heading == Heading::Up || heading == Heading::Down)
-						return;
-				}
+			if (pos.heading == Heading::Up || pos.heading == Heading::Down) {
+				if (heading == Heading::Up || heading == Heading::Down)
+					return;
+			}
 
-				if (pos.heading == Heading::Left || pos.heading == Heading::Right) {
-					if (heading == Heading::Left || heading == Heading::Right)
-						return;
-				}
+			if (pos.heading == Heading::Left || pos.heading == Heading::Right) {
+				if (heading == Heading::Left || heading == Heading::Right)
+					return;
+			}
 
 
-				auto valid = map::isValidIntersectionToChangeHeading(pos.heading, pos.getX() + 5, pos.getY() + 5);
-				if (valid) {
-					pos.heading = heading;
-					pos.x = coord{ valid.newX };
-					pos.y = coord{ valid.newY };
-					//pos.velocity = asSpeed(vel);
-				}
+			auto valid = map::isValidIntersectionToChangeHeading(pos.heading, pos.getX() + 5, pos.getY() + 5);
+			if (valid) {
+				pos.heading = heading;
+				pos.x = coord{ valid.newX };
+				pos.y = coord{ valid.newY };
+				//pos.velocity = asSpeed(vel);
 			}
 		}
 	}
@@ -129,7 +144,7 @@ void run(float delta) {
 		pos.x = pos.x + (pos.velocity * delta.x);
 		pos.y = pos.y + (pos.velocity * delta.y);
 		
-		/*pos.x += delta.x;
+		/*pos.x += delta.x;\
 		pos.y += delta.y;*/
 
 		auto testx = pos.getX();
@@ -185,9 +200,9 @@ namespace crossfire::map {
 	path getColPath(unsigned int x, unsigned int y) {
 		return {
 			x,
-			y,
-			corridorWidth + x,
-			y + ((nbrCols - 1) * 2 * corridorWidth + corridorWidth)
+y,
+corridorWidth + x,
+y + ((nbrCols - 1) * 2 * corridorWidth + corridorWidth)
 		};
 	}
 
@@ -232,13 +247,13 @@ namespace crossfire::map {
 	}
 
 	ValidateHeadingChange isValidIntersectionToChangeHeading(Heading current, Coordinate x, Coordinate y) {
-		auto xIntersection = std::div(x, corridorWidth *2);
-		auto yIntersection = std::div(y, corridorWidth *2);
-		
-		// Find the remainder that is acceptable
-		const int remainder = (corridorWidth / 4) % corridorWidth; 
+		auto xIntersection = std::div(x, corridorWidth * 2);
+		auto yIntersection = std::div(y, corridorWidth * 2);
 
-		
+		// Find the remainder that is acceptable
+		const int remainder = (corridorWidth / 4) % corridorWidth;
+
+
 		bool okToChange = false;
 
 		/*switch (current) {
@@ -255,14 +270,14 @@ namespace crossfire::map {
 			okToChange = (xIntersection.rem - fudgeFactor) && (yIntersection.rem < fudgeFactor || yIntersection.rem > fudgeFactor);
 			break;
 		case Heading::Stopped:
-			return {}; 
+			return {};
 		}*/
 
-		okToChange = between(xIntersection.rem, remainder - fudgeFactor, remainder + fudgeFactor) && between(yIntersection.rem, remainder - fudgeFactor, remainder+fudgeFactor);
-		
+		okToChange = between(xIntersection.rem, remainder - fudgeFactor, remainder + fudgeFactor) && between(yIntersection.rem, remainder - fudgeFactor, remainder + fudgeFactor);
+
 		//okToChange = xIntersection.rem == remainder && yIntersection.rem == remainder; 
 
-		if(okToChange)
+		if (okToChange)
 		{
 			return {
 				true,
@@ -273,6 +288,98 @@ namespace crossfire::map {
 
 		return {};
 	}
-		
+
+}
+
+namespace crossfire::collider {
+	const std::size_t MAX_COLLISIONS{ 255 };
+	const int ITEM_WIDTH = crossfire::map::corridorWidth;
+
+	std::array<Collision, MAX_COLLISIONS> lastCollisions;
+	std::size_t nbrCollisions;
+
+	bool aabb(const CurrentPosition& pos1, const CurrentPosition& pos2) noexcept {
+		if (  ((pos1.x >= pos2.x && pos1.x <= pos2.x + ITEM_WIDTH) || (pos1.x + ITEM_WIDTH >= pos2.x && pos1.x + ITEM_WIDTH <= pos2.x + ITEM_WIDTH))
+			&& ((pos1.y >= pos2.y && pos1.y <= pos2.y + ITEM_WIDTH) || (pos1.y + ITEM_WIDTH >= pos2.y && pos1.y + ITEM_WIDTH <= pos2.y + ITEM_WIDTH))
+		   ) {
+			return true; 
+		}
+		return false; 
+	}
+	
+	void doCollisions(const linear::EntityAndData& data) {
+		nbrCollisions = 0;
+		if (data.size() == 1) return;
+
+		for (std::size_t outerloop = 0; outerloop < data.size()-1; ++outerloop) 
+		{
+			for (std::size_t innerloop = outerloop + 1; innerloop < data.size(); ++innerloop)
+			{
+				if (aabb(data.positions[outerloop], data.positions[innerloop])) {
+					lastCollisions[nbrCollisions] = { data.entities[outerloop], data.entities[innerloop], nbrCollisions };
+					++nbrCollisions; 
+				}
+			}
+		}
+	}
+
+	std::span<const Collision> getCollisions() {
+		return { lastCollisions.data(), nbrCollisions};
+	}
+
+}
+
+namespace crossfire::keyboardinput {
+	struct EntityIdToMap {
+		Entity id {crossfire::INVALID_ENTITY};
+		Actions moveAction; 
+		Actions fireAction; 
+	};
+
+	struct KeyMapping {
+		int key;
+		Actions action;
+		Entity id; 
+	};
+	
+	std::array<EntityIdToMap, MAX_LOCAL_PLAYERS> players_input; 
+	std::size_t nbrPlayers{ 0 };
+
+	std::optional<EntityIdToMap&> find_player(Entity id) {
+		for (std::size_t i = 0; i < players_input.size(); ++i) {
+			if (players_input[i].id == id) return players_input[i];
+		}
+		return {};
+	}
+
+	std::vector<KeyMapping> keys; 
+
+	void mapKeysToEntity(Entity id, const KeyToActionMapper& map) {
+		for (const auto& item : map) {
+			keys.emplace_back(item.key, item.action, id);
+		}
+	}
+
+	void create(Entity id, const KeyToActionMapper & map) {
+		auto playerSearch = find_player(id);
+		if (playerSearch) {
+			// Todo: overwrite the key mappings
+			return;
+		}
+		else {
+			if (nbrPlayers > MAX_LOCAL_PLAYERS) return;
+			players_input[nbrPlayers].id = id;
+			mapKeysToEntity(id, map);
+			++nbrPlayers;
+		}
+	}
+	void remove(Entity id) {
+		// Do nothing
+	}
+
+	void inject_keys(Engine::KeyEvent key_event) {
+
+	}
+
 }
 

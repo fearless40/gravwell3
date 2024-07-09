@@ -32,7 +32,10 @@ namespace Game {
 	Engine::Camera	cam;
 
 	crossfire::Entity theOne; 
+	crossfire::Entity randomBox; 
 	crossfire::Heading desiredHeading; 
+	std::size_t lastPositionForRandomBox{ 0 };
+	
 
 	struct CrossFireVisual {
 		Engine::Visuals::Basic::Visual visualId{};
@@ -74,15 +77,37 @@ namespace Game {
 		Events::Event<Engine::KeyEvent>::Listen(&onKeyPress);
 		
 		theOne = crossfire::entities::create();
-		crossfire::linear::create(theOne, crossfire::Heading::Right, 0, 0, crossfire::Velocity::Quarter); 
+		randomBox = crossfire::entities::create();
+
+		crossfire::linear::create(theOne, crossfire::Heading::Right, 0, 0, crossfire::Velocity::Normal); 
+		crossfire::linear::create(randomBox, crossfire::Heading::Stopped, 60, 60);
 	}
 
 
 	void onLogicEvent(const Engine::NextLogicFrame& frame) {
 		crossfire::linear::changeHeading(theOne, desiredHeading);
-		//desiredHeading = crossfire::Heading::Stopped;
 		crossfire::linear::run(1.0f);
 		auto values = crossfire::linear::getEntitiesPositions();
+		crossfire::collider::doCollisions(values);
+
+		const crossfire::CurrentPosition randomPositions[] = {
+			{ crossfire::Heading::Stopped, 40, 0 },
+			{ crossfire::Heading::Stopped, 20, 40},
+			{ crossfire::Heading::Stopped, 60, 60},
+			{ crossfire::Heading::Stopped, 80, 40} 
+		};
+
+		const std::size_t randomPositionsSize = 3; 
+
+		auto collisions = crossfire::collider::getCollisions();
+		for (const auto & item : collisions) {
+			if (item.id1 == randomBox || item.id2 == randomBox) {
+				++lastPositionForRandomBox;
+				if (lastPositionForRandomBox > randomPositionsSize) lastPositionForRandomBox = 0;
+				crossfire::linear::changePosition(randomBox, randomPositions[lastPositionForRandomBox].x, randomPositions[lastPositionForRandomBox].y);
+			}
+		}
+
 		dynamic_elements.clear();
 		dynamic_elements.reserve(values.size()); 
 		for (int i = 0; i < values.size(); ++i) {
@@ -124,11 +149,11 @@ namespace Game {
 
 		int count = 0;
 		for (auto const& renderable : static_elements) {
-			//if (count > 7) break; 
+			
 			Engine::Matrix world;
 			Engine::fMatrix worldf;
 			worldf = math::XMMatrixTranslation(renderable.x, renderable.y, -200);
-			//worldf = math::XMMatrixTranslation(0, 0, -200.5);
+			
 			math::XMStoreFloat4x4(&world, worldf);
 			state.states.push_back({ world, renderable.visualId });
 			++count;
