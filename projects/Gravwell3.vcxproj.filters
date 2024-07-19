@@ -379,6 +379,9 @@
     <ClInclude Include="..\src\util\FixedFunctionFloat.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\engine\KeyMapper.hpp">
+      <Filter>engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

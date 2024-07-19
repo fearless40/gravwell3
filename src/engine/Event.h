@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 namespace Events {
 	template <class Msg>
 	class Event {

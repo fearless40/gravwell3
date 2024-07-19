@@ -74,11 +74,9 @@ namespace crossfire {
 		std::optional<unsigned int> nbrMisslesLeft(Entity id);
 	}
 
-	namespace keyboardinput {
-
-		const std::size_t MAX_LOCAL_PLAYERS = 4; 
-
+	namespace actions {
 		enum class Actions {
+			no_action = 0,
 			turn_right,
 			turn_left,
 			turn_up,
@@ -86,18 +84,36 @@ namespace crossfire {
 			fire_missle,
 			fire_special
 		};
-		
-		struct KeyToAction {
-			int key;
-			Actions action;
-		};
 
-		using KeyToActionMapper = std::span<const KeyToAction>;
-		
-		void create(Entity id, KeyToActionMapper map); 
+		void do_action(Entity id, Actions action); 
+
+		void turn_right(Entity id);
+		 void turn_left(Entity id);
+		 void turn_up(Entity id);
+		 void turn_down(Entity id);
+		 void fire_missle(Entity id);
+		 void fire_special(Entity id); 
+	}
+
+	namespace keyboardinput {
+
+		const std::size_t MAX_LOCAL_PLAYERS{ 4 };
+		struct KeyBoardMapping {};
+		// Consolidate Input per Entity
+
+		void intialize();
+		void on_logic_tick();
+
+		void create(Entity id, const KeyBoardMapping & map);
 		void remove(Entity id);
-		void inject_keys(Engine::KeyEvent key_event);
 
+		void on_turn_right(Entity id);
+		void on_turn_left(Entity id);
+		void on_turn_up(Entity id);
+		void on_turn_down(Entity id);
+		void on_fire_missle(Entity id);
+		void on_fire_special(Entity id);
+		
 	}
 
 	namespace missle {
@@ -115,11 +131,11 @@ namespace crossfire {
 		};
 		
 		
-		void doCollisions(const linear::EntityAndData& data);
-		std::span<const Collision> getCollisions();
+		void do_collisions(const linear::EntityAndData& data);
+		std::span<const Collision> get_collisions();
 
 		
-		
+		void add_wall(Coordinate x, Coordinate y, Coordinate x2, Coordinate y2);
 
 	}
 

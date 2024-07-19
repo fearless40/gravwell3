@@ -4,7 +4,9 @@
 #include <optional>
 #include <ranges>
 #include <algorithm>
+#include "../engine/Event.h"
 #include "../engine/GameEvent.h"
+#include "../engine/KeyMapper.hpp"
 #include "../util/Math/RectT.h"
 #include "../util/FixedFunctionFloat.h"
 #include "crossfire.h"
@@ -166,7 +168,11 @@ void run(float delta) {
 
 EntityAndData getEntitiesPositions() {
 	
-	std::transform(positions.cbegin(), positions.cend(), visiblePositions.begin(), [](const auto& input) { return CurrentPosition{ input.heading, input.getX(), input.getY()}; });
+	std::transform(positions.cbegin(), positions.cend(),
+		visiblePositions.begin(),
+		[](const auto& input) {
+			return CurrentPosition{ input.heading, input.getX(), input.getY()}; 
+		});
 	
 	
 	return {
@@ -298,24 +304,41 @@ namespace crossfire::collider {
 	std::array<Collision, MAX_COLLISIONS> lastCollisions;
 	std::size_t nbrCollisions;
 
-	bool aabb(const CurrentPosition& pos1, const CurrentPosition& pos2) noexcept {
-		if (  ((pos1.x >= pos2.x && pos1.x <= pos2.x + ITEM_WIDTH) || (pos1.x + ITEM_WIDTH >= pos2.x && pos1.x + ITEM_WIDTH <= pos2.x + ITEM_WIDTH))
-			&& ((pos1.y >= pos2.y && pos1.y <= pos2.y + ITEM_WIDTH) || (pos1.y + ITEM_WIDTH >= pos2.y && pos1.y + ITEM_WIDTH <= pos2.y + ITEM_WIDTH))
-		   ) {
-			return true; 
+	struct AABB {
+		int x, y;
+		int x2, y2;
+	};
+
+	bool aabb(const AABB & pos1, const AABB & pos2) noexcept {
+		if (((pos1.x >= pos2.x && pos1.x <= pos2.x2) || (pos1.x2 >= pos2.x && pos1.x2 <= pos2.x2 ))
+			&& ((pos1.y >= pos2.y && pos1.y <= pos2.y2) || (pos1.y2 >= pos2.y && pos1.y2 <= pos2.y2 ))
+			) {
+			return true;
 		}
-		return false; 
+		return false;
+	}
+
+	constexpr AABB make_AABB_from_position(const CurrentPosition & pos) {
+		return {
+			pos.x,pos.y,
+			pos.x + ITEM_WIDTH,pos.y + ITEM_WIDTH
+		};
+	}
+
+	void add_wall(Coordinate x, Coordinate y, Coordinate x2, Coordinate y2) {
+
 	}
 	
-	void doCollisions(const linear::EntityAndData& data) {
+	void do_collisions(const linear::EntityAndData& data) {
 		nbrCollisions = 0;
 		if (data.size() == 1) return;
 
 		for (std::size_t outerloop = 0; outerloop < data.size()-1; ++outerloop) 
 		{
+			const auto outerItemAABB = make_AABB_from_position(data.positions[outerloop]);
 			for (std::size_t innerloop = outerloop + 1; innerloop < data.size(); ++innerloop)
 			{
-				if (aabb(data.positions[outerloop], data.positions[innerloop])) {
+				if (aabb(outerItemAABB, make_AABB_from_position(data.positions[innerloop]) )) {
 					lastCollisions[nbrCollisions] = { data.entities[outerloop], data.entities[innerloop], nbrCollisions };
 					++nbrCollisions; 
 				}
@@ -323,63 +346,148 @@ namespace crossfire::collider {
 		}
 	}
 
-	std::span<const Collision> getCollisions() {
+	std::span<const Collision> get_collisions() {
 		return { lastCollisions.data(), nbrCollisions};
 	}
 
 }
 
 namespace crossfire::keyboardinput {
-	struct EntityIdToMap {
-		Entity id {crossfire::INVALID_ENTITY};
-		Actions moveAction; 
-		Actions fireAction; 
-	};
+	
+	const unsigned short VK_LEFT = 0x25;
+	const unsigned short VK_UP = 0x26;
+	const unsigned short VK_RIGHT = 0x27;
+	const unsigned short VK_DOWN = 0x28;
 
-	struct KeyMapping {
-		int key;
-		Actions action;
-		Entity id; 
+	KeyMapper<void(Entity), Entity> mapper; 
+
+	struct InputCachePerLogicEvent {
+		Entity id {};
+		actions::Actions movement {actions::Actions::no_action};
+		actions::Actions special  {actions::Actions::no_action};
 	};
 	
-	std::array<EntityIdToMap, MAX_LOCAL_PLAYERS> players_input; 
+	std::array<InputCachePerLogicEvent, MAX_LOCAL_PLAYERS> inputCache;
 	std::size_t nbrPlayers{ 0 };
 
-	std::optional<EntityIdToMap&> find_player(Entity id) {
-		for (std::size_t i = 0; i < players_input.size(); ++i) {
-			if (players_input[i].id == id) return players_input[i];
+	std::optional<InputCachePerLogicEvent*> find_entity(Entity id) {
+		for (std::size_t index = 0; index < nbrPlayers; ++index) {
+			if (id == inputCache[index].id) return &inputCache[index];
 		}
 		return {};
 	}
 
-	std::vector<KeyMapping> keys; 
-
-	void mapKeysToEntity(Entity id, const KeyToActionMapper& map) {
-		for (const auto& item : map) {
-			keys.emplace_back(item.key, item.action, id);
-		}
+	void on_key_event(const Engine::KeyEvent& evt) {
+		mapper.inject_key(evt); 
 	}
 
-	void create(Entity id, const KeyToActionMapper & map) {
-		auto playerSearch = find_player(id);
+	void create_key_mapping(Entity id, const KeyBoardMapping& map) {
+		mapper.set_key(VK_LEFT, on_turn_left, id);
+		mapper.set_key(VK_RIGHT, on_turn_right, id);
+		mapper.set_key(VK_UP, on_turn_up, id);
+		mapper.set_key(VK_DOWN, on_turn_down, id);
+	}
+
+	void intialize() {
+		Events::Event<Engine::KeyEvent>::Listen(on_key_event); 
+	}
+	
+	void create(Entity id, const KeyBoardMapping & map) {
+		auto playerSearch = find_entity(id); 
 		if (playerSearch) {
 			// Todo: overwrite the key mappings
 			return;
 		}
 		else {
 			if (nbrPlayers > MAX_LOCAL_PLAYERS) return;
-			players_input[nbrPlayers].id = id;
-			mapKeysToEntity(id, map);
+			inputCache[nbrPlayers].id = id;
 			++nbrPlayers;
+			create_key_mapping(id, map);
 		}
 	}
+
 	void remove(Entity id) {
 		// Do nothing
 	}
 
-	void inject_keys(Engine::KeyEvent key_event) {
-
+	void on_logic_tick() {
+		for (std::size_t index = 0; index < nbrPlayers; ++index) {
+			auto& player = inputCache[index];
+			actions::do_action(player.id, player.movement);
+			actions::do_action(player.id, player.special);
+			//player.movement = actions::Actions::no_action;
+			//player.special = actions::Actions::no_action;
+		}
 	}
 
+	void on_motion(Entity id, actions::Actions action){
+		auto optActionCache{ find_entity(id) };
+		if (optActionCache) {
+			auto actionCache = optActionCache.value();
+			actionCache->movement = action;
+		}
+	}
+
+	void on_turn_right(Entity id) {
+		on_motion(id, actions::Actions::turn_right);
+	}
+	void on_turn_left(Entity id) {
+		on_motion(id, actions::Actions::turn_left);
+	}
+	void on_turn_up(Entity id) {
+		on_motion(id, actions::Actions::turn_up);
+	}
+	void on_turn_down(Entity id){
+		on_motion(id, actions::Actions::turn_down);
+	}
+	void on_fire_missle(Entity id){
+		
+	}
+	void on_fire_special(Entity id){
+		
+	}
+}
+
+namespace crossfire::actions {
+	void do_action(Entity id, Actions action) {
+		switch (action) {
+		case Actions::turn_right:
+			turn_right(id);
+			return;
+		case Actions::turn_left:
+			turn_left(id);
+			return;
+		case Actions::turn_up:
+			turn_up(id);
+			return;
+		case Actions::turn_down:
+			turn_down(id);
+			return;
+		case Actions::fire_missle:
+			fire_missle(id);
+			return;
+		case Actions::fire_special:
+			fire_special(id);
+			return;
+		case Actions::no_action:
+			return;
+
+		}
+	}
+
+	void turn_right(Entity id) {
+		linear::changeHeading(id, Heading::Right);
+	}
+	void turn_left(Entity id) {
+		linear::changeHeading(id, Heading::Left);
+	}
+	void turn_up(Entity id) {
+		linear::changeHeading(id, Heading::Up);
+	}
+	void turn_down(Entity id) {
+		linear::changeHeading(id, Heading::Down);
+	}
+	void fire_missle(Entity id) {}
+	void fire_special(Entity id){}
 }
 

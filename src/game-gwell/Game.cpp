@@ -33,7 +33,7 @@ namespace Game {
 
 	crossfire::Entity theOne; 
 	crossfire::Entity randomBox; 
-	crossfire::Heading desiredHeading; 
+	
 	std::size_t lastPositionForRandomBox{ 0 };
 	
 
@@ -50,45 +50,28 @@ namespace Game {
 	std::vector<CrossFireVisual> dynamic_elements;
 	std::vector<CrossFireVisual> static_elements; 
 		
-	void onKeyPress(Engine::KeyEvent evt) {
-		if (!evt.isKeyUp) return;
-		
-		switch (evt.vkCode) {
-		case VK_RIGHT:
-			desiredHeading = crossfire::Heading::Right;
-			break;
-		case VK_LEFT:
-			desiredHeading = crossfire::Heading::Left;
-			break;
-		case VK_UP:
-			desiredHeading = crossfire::Heading::Up;
-			break;
-		case VK_DOWN:
-			desiredHeading = crossfire::Heading::Down;
-			break;
-
-		}
-	}
-
+	
 	void Initalize() {
 		Events::Event<Engine::NextLogicFrame>::Listen(&onLogicEvent);
 		Events::Event<Engine::NextRenderFrame>::Listen(&onRenderEvent);
 		Events::Event<Engine::GameInitalizeData>::Listen(&onGameInitalizeEvent);
-		Events::Event<Engine::KeyEvent>::Listen(&onKeyPress);
+		crossfire::keyboardinput::intialize();
 		
 		theOne = crossfire::entities::create();
 		randomBox = crossfire::entities::create();
 
 		crossfire::linear::create(theOne, crossfire::Heading::Right, 0, 0, crossfire::Velocity::Normal); 
 		crossfire::linear::create(randomBox, crossfire::Heading::Stopped, 60, 60);
+
+		crossfire::keyboardinput::create(theOne, {});
 	}
 
 
 	void onLogicEvent(const Engine::NextLogicFrame& frame) {
-		crossfire::linear::changeHeading(theOne, desiredHeading);
+		crossfire::keyboardinput::on_logic_tick();
 		crossfire::linear::run(1.0f);
 		auto values = crossfire::linear::getEntitiesPositions();
-		crossfire::collider::doCollisions(values);
+		crossfire::collider::do_collisions(values);
 
 		const crossfire::CurrentPosition randomPositions[] = {
 			{ crossfire::Heading::Stopped, 40, 0 },
@@ -99,7 +82,7 @@ namespace Game {
 
 		const std::size_t randomPositionsSize = 3; 
 
-		auto collisions = crossfire::collider::getCollisions();
+		auto collisions = crossfire::collider::get_collisions();
 		for (const auto & item : collisions) {
 			if (item.id1 == randomBox || item.id2 == randomBox) {
 				++lastPositionForRandomBox;
