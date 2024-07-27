@@ -10,6 +10,7 @@
 #include "../util/Math/RectT.h"
 #include "../util/FixedFunctionFloat.h"
 #include "crossfire.h"
+#include "../util/soa.hpp"
 
 
 namespace crossfire::entities {
@@ -46,6 +47,10 @@ namespace crossfire::linear {
 		constexpr auto getY() const { return y.as<Coordinate>(); }
 		
 	};
+
+
+	using soa = util::soa::SOA<util::soa::FixedArray<128>, Entity, Position, CurrentPosition>;
+	soa m_arrays;
 
 	std::array<Entity, 128> entityids;
 	std::array<Position, 128> positions;
@@ -84,9 +89,15 @@ namespace crossfire::linear {
 		return Velocities[static_cast<unsigned int>(vel)];
 	}
 
-	std::optional<int> find_first(Entity id) {
+	std::optional<soa::Iterator> find_first(Entity id) {
+		
+		
+		auto data = m_arrays.row_span<Entity>();
+		
+		
 		for (int i = 0; i < nbrEntitiesAndPositions; ++i) {
-			if (entityids[i] == id) return i;
+			if (data[i] == id) return soa::Iterator(i, m_arrays);
+			// if (entityids[i] == id) return i;
 		}
 		return {};
 	}
@@ -94,9 +105,9 @@ namespace crossfire::linear {
 	void changePosition(Entity id, Coordinate x, Coordinate y) {
 		auto found = find_first(id);
 		if (found) {
-			auto& pos = positions[found.value()];
-			pos.x = x;
-			pos.y = y;
+		//	auto& pos = positions[found.value()];
+		//	pos.x = x;
+		//	pos.y = y;
 		}
 	}
 
@@ -304,6 +315,8 @@ namespace crossfire::collider {
 	std::array<Collision, MAX_COLLISIONS> lastCollisions;
 	std::size_t nbrCollisions;
 
+	
+
 	struct AABB {
 		int x, y;
 		int x2, y2;
@@ -325,7 +338,7 @@ namespace crossfire::collider {
 		};
 	}
 
-	void add_wall(Coordinate x, Coordinate y, Coordinate x2, Coordinate y2) {
+	void add_static_collider(Coordinate x, Coordinate y, Coordinate x2, Coordinate y2) {
 
 	}
 	

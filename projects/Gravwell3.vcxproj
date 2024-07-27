@@ -127,6 +127,7 @@
     <ClInclude Include="..\src\util\MultiIterator.hpp" />
     <ClInclude Include="..\src\util\Overload.hpp" />
     <ClInclude Include="..\src\util\RefCountPointer.h" />
+    <ClInclude Include="..\src\util\soa.hpp" />
     <ClInclude Include="..\src\util\TagArray.h" />
     <ClInclude Include="..\src\util\Temp.hpp" />
     <ClInclude Include="..\src\util\ThreadPool.h" />
