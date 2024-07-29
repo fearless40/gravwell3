@@ -10,7 +10,7 @@
 namespace util::soa
 {
 	template<unsigned int MAX_CAPACITY>
-	struct ProtocolFixedArray {
+	struct FixedArray {
 
 		static const bool is_fixed_capacity = true;
 		static const bool is_contigious = true;
@@ -50,8 +50,8 @@ namespace util::soa
 
 		template<typename data_t>
 		//requires (data_t) { data_t.end() }
-		static constexpr auto end(const data_t& value) {
-			return value.end();
+		static constexpr auto end(const data_t& value, std::size_t endIndex) {
+			return value.begin() + endIndex;
 		}
 
 		template<typename data_t>
@@ -211,6 +211,11 @@ namespace util::soa
 
 			std::size_t index() { return mIndex; }
 
+			template<typename T>
+			T& get() {
+				return mSOA->view_at<T>(mIndex);
+			}
+
 			//static_assert(std::destructible<Iterator>);
 			//static_assert(std::random_access_iterator<Iterator>);
 		};
@@ -242,6 +247,11 @@ namespace util::soa
 			};
 		}
 
+		template<typename T>
+		T& view_at(index_t index) {
+			return protocol_t::at(get_array<T>(), index);
+		}
+
 		template<typename row_t>
 		typename protocol_t::template item_pointer_t<row_t> row() {
 			return protocol_t::get_pointer(get_array<row_t>());
@@ -259,7 +269,7 @@ namespace util::soa
 
 		template<typename row_t>
 		auto row_end() {
-			return protocol_t::end(get_array<row_t>());
+			return protocol_t::end(get_array<row_t>(),mSize);
 		}
 
 
@@ -272,13 +282,18 @@ namespace util::soa
 		}
 
 		template<typename T>
-		constexpr Iterator find_first(const T& to_find) {
-			const auto to_search = row_span();
-			for (index_t i = 0; i < mSize; ++i) {
-				if (to_search[i] == to_find) return Iterator(i, this);
+		constexpr Iterator find(const T& to_find) {
+			const auto to_search = row_span<T>();
+			auto foundIt = std::find(to_search.cbegin(), to_search.cend(), to_find);
+			if (foundIt != to_search.cend()) {
+				return Iterator(std::distance(to_search.cbegin(), foundIt), this);
 			}
 			return end();
 		}
+
+
+
+
 
 	};
 }

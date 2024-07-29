@@ -18,6 +18,7 @@ namespace Graphics::D3D11 {
 			comptr<ID3D11Device> device,
 			comptr<ID3D11DeviceContext> context,
 			const Graphics::Generic::DisplayMode mode);
+		~Driver() {}
 
 		static std::unique_ptr<Driver> CreateDevice(HWND hwnd,
 			const Graphics::Generic::DisplayMode mode);

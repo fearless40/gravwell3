@@ -5,6 +5,7 @@
 #include "..\util\InvasiveRefCount.h"
 #include "..\util\RefCountPointer.h"
 #include <unordered_map>
+#include <string>
 //#include <boost\container\flat_map.hpp>
 
 // Stripped down window class for use in a game engine. 

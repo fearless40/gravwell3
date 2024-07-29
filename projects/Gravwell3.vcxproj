@@ -133,6 +133,7 @@
     <ClInclude Include="..\src\util\ThreadPool.h" />
     <ClInclude Include="..\src\util\VectorCache.hpp" />
     <ClInclude Include="..\src\util\Work.h" />
+    <ClInclude Include="FindWrapper.hpp" />
     <ClInclude Include="TimeStep.h" />
   </ItemGroup>
   <ItemGroup>

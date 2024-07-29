@@ -19,9 +19,11 @@
 #include "../game-gwell/Game.h"
 
 
-WindowsGame::~WindowsGame() = default;
+WindowsGame::~WindowsGame() {
+	delete graphics_driver;
+}
 
-WindowsGame::WindowsGame(HINSTANCE hInstance, Util::CommandLineParameters clp) : mInst( hInstance ) {
+WindowsGame::WindowsGame(HINSTANCE hInstance, Util::CommandLineParameters clp) : mInst( hInstance ), mRunning(false) {
 	Window::RegisterWindowClasses(mInst, IDI_GRAVWELL3, IDI_SMALL, L"D3D Window", L"D3DWindow");
 	mAccelTable = LoadAccelerators(mInst, (LPCTSTR)IDI_GRAVWELL3);
 	setHWND(Window::createHWND(0, L"D3DWindow"));
@@ -37,10 +39,10 @@ void WindowsGame::run() {
 	unsigned int width = wndSize.right - wndSize.left;
 	unsigned int height = wndSize.bottom - wndSize.top;
 
-	graphics_driver = Graphics::D3D11::Driver::CreateDevice(getHWND(), { width,height,{0,0},false,false });
+	graphics_driver = Graphics::D3D11::Driver::CreateDevice(getHWND(), { width,height,{0,0},false,false }).release();
 	graphics_driver->setupDefaults();
 
-	Engine::Visuals::Basic::Init(graphics_driver.get());
+	Engine::Visuals::Basic::Init(graphics_driver);
 
 	Game::Initalize();
 	

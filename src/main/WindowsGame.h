@@ -3,6 +3,7 @@
 #include "TimeStep.h"
 
 
+
 namespace Graphics::D3D11 {
 	class Driver;
 }
@@ -28,6 +29,6 @@ private:
 	HACCEL	  mAccelTable;
 	Util::TimeStep timer;
 	bool mRunning;
-	std::unique_ptr<Graphics::D3D11::Driver> graphics_driver{ nullptr };
+	Graphics::D3D11::Driver * graphics_driver{ nullptr };
 
 };

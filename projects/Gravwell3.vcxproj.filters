@@ -385,6 +385,7 @@
     <ClInclude Include="..\src\util\soa.hpp">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="FindWrapper.hpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\media\VertexShaders\EngineVSPosNormalUV.hlsl">

@@ -49,7 +49,7 @@ namespace crossfire::linear {
 	};
 
 
-	using soa = util::soa::SOA<util::soa::FixedArray<128>, Entity, Position, CurrentPosition>;
+	using soa = util::soa::SOA<util::soa::FixedArray<128>, Entity, Position>;
 	soa m_arrays;
 
 	std::array<Entity, 128> entityids;
@@ -89,33 +89,23 @@ namespace crossfire::linear {
 		return Velocities[static_cast<unsigned int>(vel)];
 	}
 
-	std::optional<soa::Iterator> find_first(Entity id) {
-		
-		
-		auto data = m_arrays.row_span<Entity>();
-		
-		
-		for (int i = 0; i < nbrEntitiesAndPositions; ++i) {
-			if (data[i] == id) return soa::Iterator(i, m_arrays);
-			// if (entityids[i] == id) return i;
-		}
-		return {};
-	}
 
 	void changePosition(Entity id, Coordinate x, Coordinate y) {
-		auto found = find_first(id);
-		if (found) {
-		//	auto& pos = positions[found.value()];
-		//	pos.x = x;
-		//	pos.y = y;
+		//auto found = find_first(id);
+		auto foundIt = m_arrays.find<Entity>(id);
+
+		if (foundIt != m_arrays.end()) {
+			auto & pos = foundIt.get<Position>();
+			pos.x = x;
+			pos.y = y;
 		}
 	}
 
 	void changeHeading(Entity id, Heading heading, Velocity vel) {
 		// Happens immedietly should wait to the end of the current run
-		auto found = find_first(id);
-		if(found) {
-			auto& pos = positions[found.value()];
+		auto found = m_arrays.find<Entity>(id);
+		if(found != m_arrays.end()) {
+			auto& pos = found.get<Position>();
 
 			if (pos.heading == Heading::Up || pos.heading == Heading::Down) {
 				if (heading == Heading::Up || heading == Heading::Down)
@@ -139,9 +129,11 @@ namespace crossfire::linear {
 	}
 
 	void create(Entity id, Heading heading, Coordinate x, Coordinate y, Velocity vel ) {
-		entityids[nbrEntitiesAndPositions] = id;
+		m_arrays.push_back(id, { heading, coord{x}, coord{y}, asSpeed(vel) });
+		
+		/*entityids[nbrEntitiesAndPositions] = id;
 		positions[nbrEntitiesAndPositions] = { heading, coord{x}, coord{y}, asSpeed(vel)};
-		++nbrEntitiesAndPositions;
+		++nbrEntitiesAndPositions;*/
 	}
 
 void remove(Entity id) {
@@ -169,7 +161,7 @@ void run(float delta) {
 		if (pos.getY() < extents.y) pos.y = coord{extents.y};
 	};
 
-	std::ranges::for_each_n(positions.begin(), nbrEntitiesAndPositions, update_positions);
+	std::ranges::for_each(m_arrays.row_span<Position>(),  update_positions);
 
 	/*return {
 		{entityids.cbegin(), nbrEntitiesAndPositions},
@@ -179,7 +171,7 @@ void run(float delta) {
 
 EntityAndData getEntitiesPositions() {
 	
-	std::transform(positions.cbegin(), positions.cend(),
+	std::transform(m_arrays.row_begin<Position>(), m_arrays.row_end<Position>(),
 		visiblePositions.begin(),
 		[](const auto& input) {
 			return CurrentPosition{ input.heading, input.getX(), input.getY()}; 
@@ -187,8 +179,8 @@ EntityAndData getEntitiesPositions() {
 	
 	
 	return {
-		{entityids.cbegin(), nbrEntitiesAndPositions},
-		{visiblePositions.cbegin(), nbrEntitiesAndPositions}
+		m_arrays.row_span<Entity>(),
+		{visiblePositions.cbegin(), m_arrays.size()}
 	};
 }
 
@@ -315,14 +307,15 @@ namespace crossfire::collider {
 	std::array<Collision, MAX_COLLISIONS> lastCollisions;
 	std::size_t nbrCollisions;
 
-	
-
 	struct AABB {
 		int x, y;
 		int x2, y2;
 	};
 
-	bool aabb(const AABB & pos1, const AABB & pos2) noexcept {
+	using soa = util::soa::SOA<util::soa::FixedArray<24>, Entity, AABB>;
+	soa m_static_colliders;
+
+	constexpr bool aabb_collision(const AABB & pos1, const AABB & pos2) noexcept {
 		if (((pos1.x >= pos2.x && pos1.x <= pos2.x2) || (pos1.x2 >= pos2.x && pos1.x2 <= pos2.x2 ))
 			&& ((pos1.y >= pos2.y && pos1.y <= pos2.y2) || (pos1.y2 >= pos2.y && pos1.y2 <= pos2.y2 ))
 			) {
@@ -338,12 +331,31 @@ namespace crossfire::collider {
 		};
 	}
 
-	void add_static_collider(Coordinate x, Coordinate y, Coordinate x2, Coordinate y2) {
-
+	void add_static_collider(Entity id, Coordinate x, Coordinate y, Coordinate x2, Coordinate y2) {
+		m_static_colliders.push_back(id, { x,y,x2,y2 });
 	}
 	
+	void do_static_collisions(const linear::EntityAndData& data) {
+		auto static_aabbs = m_static_colliders.row_span<AABB>();
+		for (std::size_t outerloop = 0; outerloop < data.size() - 1; ++outerloop)
+		{
+			const auto outerItemAABB = make_AABB_from_position(data.positions[outerloop]);
+
+			for (std::size_t i = 0; i < static_aabbs.size(); ++i) {
+				if (aabb_collision(outerItemAABB, static_aabbs[i])) {
+					lastCollisions[nbrCollisions] = { data.entities[outerloop], m_static_colliders.view_at<Entity>(i), nbrCollisions };
+					++nbrCollisions;
+				}
+
+			}
+		}
+	}
+
+
 	void do_collisions(const linear::EntityAndData& data) {
 		nbrCollisions = 0;
+		do_static_collisions(data);
+		
 		if (data.size() == 1) return;
 
 		for (std::size_t outerloop = 0; outerloop < data.size()-1; ++outerloop) 
@@ -351,7 +363,7 @@ namespace crossfire::collider {
 			const auto outerItemAABB = make_AABB_from_position(data.positions[outerloop]);
 			for (std::size_t innerloop = outerloop + 1; innerloop < data.size(); ++innerloop)
 			{
-				if (aabb(outerItemAABB, make_AABB_from_position(data.positions[innerloop]) )) {
+				if (aabb_collision(outerItemAABB, make_AABB_from_position(data.positions[innerloop]) )) {
 					lastCollisions[nbrCollisions] = { data.entities[outerloop], data.entities[innerloop], nbrCollisions };
 					++nbrCollisions; 
 				}
