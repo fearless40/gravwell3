@@ -135,7 +135,7 @@ namespace crossfire {
 		std::span<const Collision> get_collisions();
 
 		
-		void add_static_collider(Entity idCoordinate x, Coordinate y, Coordinate x2, Coordinate y2);
+		void add_static_collider(Entity id, Coordinate x, Coordinate y, Coordinate x2, Coordinate y2);
 
 	}
 
