@@ -118,10 +118,6 @@ void create(Entity id, Heading heading, Coordinate x, Coordinate y,
             Velocity vel) {
   m_arrays.push_back(id, {heading, coord{x}, coord{y}, asSpeed(vel)});
 
-  /*entityids[nbrEntitiesAndPositions] = id;
-  positions[nbrEntitiesAndPositions] = { heading, coord{x}, coord{y},
-  asSpeed(vel)};
-  ++nbrEntitiesAndPositions;*/
 }
 
 void remove(Entity id) {
@@ -131,7 +127,6 @@ void remove(Entity id) {
 
 void run(float delta) {
   auto update_positions = [](auto &pos) {
-    const auto extents{map::getMapExtents()};
     auto delta = asHeadingDelta(pos.heading);
     pos.x = pos.x + (pos.velocity * delta.x);
     pos.y = pos.y + (pos.velocity * delta.y);
@@ -141,7 +136,7 @@ void run(float delta) {
 
     auto testx = pos.getX();
     auto testy = pos.getY();
-
+    /*
     if (pos.getX() + 10 > extents.x2)
       pos.x = coord{extents.x2 - 10};
     if (pos.getX() < extents.x)
@@ -150,9 +145,29 @@ void run(float delta) {
       pos.y = coord{extents.y2 - 10};
     if (pos.getY() < extents.y)
       pos.y = coord{extents.y};
+      */
   };
 
   std::ranges::for_each(m_arrays.row_span<Position>(), update_positions);
+}
+
+void force_entity_onto_map( Entity id ) {
+  const auto extents{map::getMapExtents()};
+  auto it = m_arrays.find<Entity>(id);
+  if (it == m_arrays.end())
+    return;
+
+  auto &pos = it.get<Position>();
+
+  if (pos.getX() + 10 > extents.x2)
+    pos.x = coord{extents.x2 - 10};
+  if (pos.getX() < extents.x)
+    pos.x = coord{extents.x};
+  if (pos.getY() + 10 > extents.y2)
+    pos.y = coord{extents.y2 - 10};
+  if (pos.getY() < extents.y)
+    pos.y = coord{extents.y};
+ 
 }
 
 EntityAndData getEntitiesPositions() {
@@ -171,12 +186,12 @@ void endFrame() {}
 
 namespace crossfire::map {
 
-path getRowPath(unsigned int x, unsigned int y) {
+path getRowPath( int x, int y) {
   return {x, y, x + ((nbrRows - 1) * 2 * corridorWidth + corridorWidth),
           y + corridorWidth};
 }
 
-path getColPath(unsigned int x, unsigned int y) {
+path getColPath( int x, int y) {
   return {x, y, corridorWidth + x,
           y + ((nbrCols - 1) * 2 * corridorWidth + corridorWidth)};
 }
@@ -185,13 +200,13 @@ std::array<path, nbrRows + nbrCols> getPaths() {
   std::array<path, nbrRows + nbrCols> paths;
 
   unsigned count = 0;
-  for (unsigned int row = 0; row < nbrRows; ++row) {
+  for (int row = 0; row < nbrRows; ++row) {
     paths[row] = getRowPath(0, count * corridorWidth);
     count += 2;
   };
 
   count = 0;
-  for (unsigned int col = 0; col < nbrCols; ++col) {
+  for (int col = 0; col < nbrCols; ++col) {
     paths[col + nbrRows] = getColPath(count * corridorWidth, 0);
     count += 2;
   }
@@ -259,8 +274,8 @@ constexpr AABB make_AABB_from_position(const CurrentPosition &pos) {
   return {pos.x, pos.y, pos.x + ITEM_WIDTH, pos.y + ITEM_WIDTH};
 }
 
-void add_static_collider(Entity id, Coordinate x, Coordinate y, Coordinate x2,
-                         Coordinate y2) {
+void add_static_collider(Entity id, Coordinate x, Coordinate y, Coordinate x2,Coordinate y2)
+{
   m_static_colliders.push_back(id, {x, y, x2, y2});
 }
 
@@ -308,6 +323,66 @@ std::span<const Collision> get_collisions() {
 }
 
 } // namespace crossfire::collider
+
+namespace crossfire::collision_behavior {
+    //using Behavior = int;
+    using EntityList = std::vector<crossfire::Entity>;
+    using BehaviorCallback = std::function<void(crossfire::Entity behavior_on, crossfire::Entity collided_with)>;
+    using soa = util::soa::SOA<util::soa::FixedArray<24>, Behavior, BehaviorCallback, EntityList>;
+    soa mSOA; 
+
+    struct EntityToBehavior
+    {
+      crossfire::Entity entity;
+      Behavior behavior;
+    };
+    
+    std::vector<EntityToBehavior> m_entity_to_behavior_map; 
+    
+    void execute_behavior(crossfire::Entity behavior_entity, crossfire::Entity collided_with) {
+      auto map = std::find_if(m_entity_to_behavior_map.begin(), m_entity_to_behavior_map.end(), [behavior_entity](auto &item) {
+        return item.entity == behavior_entity;
+      });
+
+      if (map != m_entity_to_behavior_map.end()) {
+        auto behaviorIt = mSOA.find<Behavior>((*map).behavior);
+        if (behaviorIt != mSOA.end()) {
+
+          const auto &callback = behaviorIt.get<BehaviorCallback>();
+          if (callback)
+            callback(behavior_entity, collided_with);
+        }
+        
+      }
+    }
+
+    void run( std::span<const crossfire::collider::Collision> collisions ) {
+      for (auto &collision : collisions) {
+        execute_behavior(collision.id1, collision.id2);
+        execute_behavior(collision.id2, collision.id1);
+      }
+    }
+
+    Behavior create(BehaviorCallback callback) {
+      const int current_pos = mSOA.size();
+      mSOA.push_back(current_pos, callback, {});
+      return current_pos;
+    }
+
+    void set_entity( crossfire::Entity id, Behavior b ) { 
+        auto find_it = mSOA.find<Behavior>(b);
+      if (find_it != mSOA.end()) {
+
+        auto &[b, callback, entities] = *find_it;
+        entities.push_back(b);
+
+      }
+
+      m_entity_to_behavior_map.emplace_back(id, b);
+
+    }
+
+} // namespace collision_behaviors
 
 namespace crossfire::keyboardinput {
 

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <array>
+#include <span>
+#include <optional>
+#include <functional>
 
 namespace crossfire {
 
@@ -51,6 +55,7 @@ namespace crossfire {
 				
 		void changeHeading(Entity id, Heading heading, Velocity vel = Velocity::Normal);
 		void changePosition(Entity id, Coordinate x, Coordinate y);
+        void force_entity_onto_map(Entity id);
 		void create(Entity id, Heading heading, Coordinate x, Coordinate y, Velocity vel = Velocity::Normal);
 		void remove(Entity id);
 	
@@ -133,19 +138,29 @@ namespace crossfire {
 		
 		void do_collisions(const linear::EntityAndData& data);
 		std::span<const Collision> get_collisions();
-
+                void add_static_collider(Entity id, Coordinate x, Coordinate y,
+                                         Coordinate x2, Coordinate y2); 
 		
-		void add_static_collider(Entity id, Coordinate x, Coordinate y, Coordinate x2, Coordinate y2);
+	}
 
+	
+	namespace collision_behavior {
+		using Behavior = int;
+		
+		void run(std::span<const crossfire::collider::Collision> collisions);
+		
+		Behavior create(std::function<void(Entity self, Entity other)> callback);
+                void set_entity(Entity id, Behavior b);
+		
 	}
 
 	namespace map {
-
+		
 		struct path {
-			unsigned int x;
-			unsigned int y;
-			unsigned int x2;
-			unsigned int y2;
+			int x;
+			int y;
+			int x2;
+			int y2;
 		};
 
 		struct ValidateHeadingChange {
@@ -167,8 +182,8 @@ namespace crossfire {
 		constexpr const int startingY{ 0 };
 
 		std::array<path, nbrRows+nbrCols> getPaths();
-		path getRowPath(unsigned int x = 0, unsigned int y = 0);
-		path getColPath(unsigned int x = 0, unsigned int y = 0);
+		path getRowPath( int x = 0, int y = 0);
+		path getColPath(int x = 0, int y = 0);
 		constexpr const path getMapExtents() {
 			return {
 				0,
