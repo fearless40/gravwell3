@@ -14,23 +14,56 @@
 #include "../util/Math/RectT.h"
 #include "../util/soa.hpp"
 
-namespace crossfire::entities {
-std::vector<Entity> entities;
-constinit Entity nextId = 0;
+namespace soa = util::soa;
 
-Entity create() {
+namespace crossfire::gametime {
+using Ticks = std::uint64_t;
+
+Ticks ticks{0};
+
+void on_logic_event() { ++ticks; }
+Ticks get_ticks() { return ticks; }
+Ticks elapsed_ticks( Ticks value ) { return ticks - value; }
+std::int64_t tick_to_ms( Ticks value ) { return value * 30; }
+}
+
+
+namespace crossfire::entities {
+
+const Entity environment{1};
+soa::SOA<soa::FixedArray<64>, Entity, Team> mSOA;
+
+constinit Entity nextId = 1;
+
+Entity create(Team team) {
   const auto id = ++nextId;
-  entities.push_back(id);
+  mSOA.push_back(id, team);
   return id;
 }
 
-void remove(Entity id) {
-  auto iter = std::ranges::find(entities, id);
-  if (iter != std::end(entities)) {
-    *iter = entities[entities.size()];
-    entities.pop_back();
+bool is_same_team(Entity leftid, Entity rightid) {
+  if (leftid == rightid)
+    return true;
+
+  auto leftDataIt = mSOA.find<Entity>(leftid);
+  auto rightDataIt = mSOA.find<Entity>(rightid);
+
+  if (leftDataIt != mSOA.end() && rightDataIt != mSOA.end()) {
+    return leftDataIt.get<Team>() == rightDataIt.get<Team>();
   }
 }
+
+Team get_team(Entity id) {
+  auto leftDataIt = mSOA.find<Entity>(id);
+  if (leftDataIt != mSOA.end())
+    return leftDataIt.get<Team>();
+}
+
+Entity get_environment() { return environment; }
+
+bool is_environment(Entity id) { return environment == id; }
+
+void remove(Entity id) {}
 } // namespace crossfire::entities
 
 namespace crossfire::linear {
@@ -117,7 +150,6 @@ void changeHeading(Entity id, Heading heading, Velocity vel) {
 void create(Entity id, Heading heading, Coordinate x, Coordinate y,
             Velocity vel) {
   m_arrays.push_back(id, {heading, coord{x}, coord{y}, asSpeed(vel)});
-
 }
 
 void remove(Entity id) {
@@ -151,7 +183,7 @@ void run(float delta) {
   std::ranges::for_each(m_arrays.row_span<Position>(), update_positions);
 }
 
-void force_entity_onto_map( Entity id ) {
+void force_entity_onto_map(Entity id) {
   const auto extents{map::getMapExtents()};
   auto it = m_arrays.find<Entity>(id);
   if (it == m_arrays.end())
@@ -167,7 +199,6 @@ void force_entity_onto_map( Entity id ) {
     pos.y = coord{extents.y2 - 10};
   if (pos.getY() < extents.y)
     pos.y = coord{extents.y};
- 
 }
 
 EntityAndData getEntitiesPositions() {
@@ -186,12 +217,12 @@ void endFrame() {}
 
 namespace crossfire::map {
 
-path getRowPath( int x, int y) {
+path getRowPath(int x, int y) {
   return {x, y, x + ((nbrRows - 1) * 2 * corridorWidth + corridorWidth),
           y + corridorWidth};
 }
 
-path getColPath( int x, int y) {
+path getColPath(int x, int y) {
   return {x, y, corridorWidth + x,
           y + ((nbrCols - 1) * 2 * corridorWidth + corridorWidth)};
 }
@@ -274,8 +305,8 @@ constexpr AABB make_AABB_from_position(const CurrentPosition &pos) {
   return {pos.x, pos.y, pos.x + ITEM_WIDTH, pos.y + ITEM_WIDTH};
 }
 
-void add_static_collider(Entity id, Coordinate x, Coordinate y, Coordinate x2,Coordinate y2)
-{
+void add_static_collider(Entity id, Coordinate x, Coordinate y, Coordinate x2,
+                         Coordinate y2) {
   m_static_colliders.push_back(id, {x, y, x2, y2});
 }
 
@@ -325,64 +356,63 @@ std::span<const Collision> get_collisions() {
 } // namespace crossfire::collider
 
 namespace crossfire::collision_behavior {
-    //using Behavior = int;
-    using EntityList = std::vector<crossfire::Entity>;
-    using BehaviorCallback = std::function<void(crossfire::Entity behavior_on, crossfire::Entity collided_with)>;
-    using soa = util::soa::SOA<util::soa::FixedArray<24>, Behavior, BehaviorCallback, EntityList>;
-    soa mSOA; 
+// using Behavior = int;
+using EntityList = std::vector<crossfire::Entity>;
+using BehaviorCallback = std::function<void(crossfire::Entity behavior_on,
+                                            crossfire::Entity collided_with)>;
+using soa = util::soa::SOA<util::soa::FixedArray<24>, Behavior,
+                           BehaviorCallback, EntityList>;
+soa mSOA;
 
-    struct EntityToBehavior
-    {
-      crossfire::Entity entity;
-      Behavior behavior;
-    };
-    
-    std::vector<EntityToBehavior> m_entity_to_behavior_map; 
-    
-    void execute_behavior(crossfire::Entity behavior_entity, crossfire::Entity collided_with) {
-      auto map = std::find_if(m_entity_to_behavior_map.begin(), m_entity_to_behavior_map.end(), [behavior_entity](auto &item) {
-        return item.entity == behavior_entity;
-      });
+struct EntityToBehavior {
+  crossfire::Entity entity;
+  Behavior behavior;
+};
 
-      if (map != m_entity_to_behavior_map.end()) {
-        auto behaviorIt = mSOA.find<Behavior>((*map).behavior);
-        if (behaviorIt != mSOA.end()) {
+std::vector<EntityToBehavior> m_entity_to_behavior_map;
 
-          const auto &callback = behaviorIt.get<BehaviorCallback>();
-          if (callback)
-            callback(behavior_entity, collided_with);
-        }
-        
-      }
+void execute_behavior(crossfire::Entity behavior_entity,
+                      crossfire::Entity collided_with) {
+  auto map = std::find_if(
+      m_entity_to_behavior_map.begin(), m_entity_to_behavior_map.end(),
+      [behavior_entity](auto &item) { return item.entity == behavior_entity; });
+
+  if (map != m_entity_to_behavior_map.end()) {
+    auto behaviorIt = mSOA.find<Behavior>((*map).behavior);
+    if (behaviorIt != mSOA.end()) {
+
+      const auto &callback = behaviorIt.get<BehaviorCallback>();
+      if (callback)
+        callback(behavior_entity, collided_with);
     }
+  }
+}
 
-    void run( std::span<const crossfire::collider::Collision> collisions ) {
-      for (auto &collision : collisions) {
-        execute_behavior(collision.id1, collision.id2);
-        execute_behavior(collision.id2, collision.id1);
-      }
-    }
+void run(std::span<const crossfire::collider::Collision> collisions) {
+  for (auto &collision : collisions) {
+    execute_behavior(collision.id1, collision.id2);
+    execute_behavior(collision.id2, collision.id1);
+  }
+}
 
-    Behavior create(BehaviorCallback callback) {
-      const int current_pos = mSOA.size();
-      mSOA.push_back(current_pos, callback, {});
-      return current_pos;
-    }
+Behavior create(BehaviorCallback callback) {
+  const int current_pos = mSOA.size();
+  mSOA.push_back(current_pos, callback, {});
+  return current_pos;
+}
 
-    void set_entity( crossfire::Entity id, Behavior b ) { 
-        auto find_it = mSOA.find<Behavior>(b);
-      if (find_it != mSOA.end()) {
+void set_entity(crossfire::Entity id, Behavior b) {
+  auto find_it = mSOA.find<Behavior>(b);
+  if (find_it != mSOA.end()) {
 
-        auto &[b, callback, entities] = *find_it;
-        entities.push_back(b);
+    auto &[b, callback, entities] = *find_it;
+    entities.push_back(b);
+  }
 
-      }
+  m_entity_to_behavior_map.emplace_back(id, b);
+}
 
-      m_entity_to_behavior_map.emplace_back(id, b);
-
-    }
-
-} // namespace collision_behaviors
+} // namespace crossfire::collision_behavior
 
 namespace crossfire::keyboardinput {
 
@@ -390,6 +420,7 @@ const unsigned short VK_LEFT = 0x25;
 const unsigned short VK_UP = 0x26;
 const unsigned short VK_RIGHT = 0x27;
 const unsigned short VK_DOWN = 0x28;
+const unsigned short VK_SPACE = 0x20;
 
 KeyMapper<void(Entity), Entity> mapper;
 
@@ -417,6 +448,7 @@ void create_key_mapping(Entity id, const KeyBoardMapping &map) {
   mapper.set_key(VK_RIGHT, on_turn_right, id);
   mapper.set_key(VK_UP, on_turn_up, id);
   mapper.set_key(VK_DOWN, on_turn_down, id);
+  mapper.set_key(VK_SPACE, on_fire_missle, id);
 }
 
 void intialize() { Events::Event<Engine::KeyEvent>::Listen(on_key_event); }
@@ -457,11 +489,21 @@ void on_motion(Entity id, actions::Actions action) {
   }
 }
 
+void on_special(Entity id, actions::Actions action) {
+  auto optActionCache{find_entity(id)};
+  if (optActionCache) {
+    auto actionCache = optActionCache.value();
+    actionCache->special = action;
+  }
+}
+
 void on_turn_right(Entity id) { on_motion(id, actions::Actions::turn_right); }
 void on_turn_left(Entity id) { on_motion(id, actions::Actions::turn_left); }
 void on_turn_up(Entity id) { on_motion(id, actions::Actions::turn_up); }
 void on_turn_down(Entity id) { on_motion(id, actions::Actions::turn_down); }
-void on_fire_missle(Entity id) {}
+void on_fire_missle(Entity id) {
+  on_special(id, actions::Actions::fire_missle);
+}
 void on_fire_special(Entity id) {}
 } // namespace crossfire::keyboardinput
 
@@ -498,3 +540,19 @@ void turn_down(Entity id) { linear::changeHeading(id, Heading::Down); }
 void fire_missle(Entity id) {}
 void fire_special(Entity id) {}
 } // namespace crossfire::actions
+
+namespace crossfire::missle_shooter {
+struct MissleDef {
+  unsigned max_on_screen_at_once;
+  std::uint64_t ms_delay;
+  unsigned nbr_missles_on_screen;
+  std::uint64_t ms_last_fired;
+};
+
+soa::SOA<soa::FixedArray<16>, Entity, MissleDef> mSOA;
+
+void update_missle_shooter(Entity id, unsigned int max_missles,
+                           unsigned int delay_ms);
+
+void fire(Entity owner, CurrentPosition pos);
+} // namespace crossfire::missle_shooter

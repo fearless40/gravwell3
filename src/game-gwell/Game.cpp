@@ -29,7 +29,6 @@ Engine::Visuals::Basic::Visual col_visual;
 float rotAngle = 0.f;
 Engine::Camera cam;
 
-crossfire::Entity enviroment;
 crossfire::Entity theOne;
 crossfire::Entity randomBox;
 
@@ -50,6 +49,9 @@ struct CrossFireVisual {
 std::vector<CrossFireVisual> dynamic_elements;
 std::vector<CrossFireVisual> static_elements;
 
+static const int Team1 = 1;
+static const int Team2 = 2;
+
 void Initalize() {
   Events::Event<Engine::NextLogicFrame>::Listen(&onLogicEvent);
   Events::Event<Engine::NextRenderFrame>::Listen(&onRenderEvent);
@@ -58,9 +60,9 @@ void Initalize() {
   
   crossfire::keyboardinput::intialize();
 
-  enviroment = crossfire::entities::create();
-  theOne = crossfire::entities::create();
-  randomBox = crossfire::entities::create();
+  
+  theOne = crossfire::entities::create(Team1);
+  randomBox = crossfire::entities::create(Team2);
 
   crossfire::linear::create(theOne, crossfire::Heading::Right, 0, 0,
                             crossfire::Velocity::Normal);
@@ -74,10 +76,10 @@ void Initalize() {
 
   const auto player_behavior = crossfire::collision_behavior::create(
       [=](crossfire::Entity self, crossfire::Entity other) {
-        if (other == enviroment) {
+        if (other == crossfire::entities::get_environment()) {
           crossfire::linear::changeHeading(self, crossfire::Heading::Stopped);
           crossfire::linear::force_entity_onto_map(self);
-           //crossfire::linear::changePosition(self, 0, 0);
+          //crossfire::linear::changePosition(self, 0, 0);
           return;
         }
       
@@ -114,7 +116,7 @@ void Initalize() {
   // Left most wall
   
   crossfire::collider::add_static_collider(
-      enviroment,
+      crossfire::entities::get_environment(),
       map_extents.x - MAP_BORDER_EXTENTS,
       map_extents.y - 1,
       map_extents.x - 1,
@@ -123,7 +125,7 @@ void Initalize() {
 
   // Right most wall
   crossfire::collider::add_static_collider(
-      enviroment,
+      crossfire::entities::get_environment(),
       map_extents.x2 + 1,
       map_extents.y - 1,
       map_extents.x2 + MAP_BORDER_EXTENTS,
@@ -132,7 +134,7 @@ void Initalize() {
 
   // Top wall
   crossfire::collider::add_static_collider(
-      enviroment,
+      crossfire::entities::get_environment(),
       map_extents.x - 1,
       map_extents.y - MAP_BORDER_EXTENTS,
       map_extents.x2 + 1,
@@ -141,7 +143,7 @@ void Initalize() {
 
   // Bottom Wall
   crossfire::collider::add_static_collider(
-      enviroment,
+      crossfire::entities::get_environment(),
       map_extents.x - 1,
       map_extents.y2 + 1,
       map_extents.x2 + 1,
@@ -151,7 +153,8 @@ void Initalize() {
 }
 
 void onLogicEvent(const Engine::NextLogicFrame &frame) {
-  crossfire::keyboardinput::on_logic_tick();
+  crossfire::gametime::on_logic_event();
+    crossfire::keyboardinput::on_logic_tick();
   crossfire::linear::run(1.0f);
   auto values = crossfire::linear::getEntitiesPositions();
   crossfire::collider::do_collisions(values);
