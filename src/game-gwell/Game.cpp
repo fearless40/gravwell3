@@ -56,11 +56,9 @@ void Initalize() {
   Events::Event<Engine::NextLogicFrame>::Listen(&onLogicEvent);
   Events::Event<Engine::NextRenderFrame>::Listen(&onRenderEvent);
   Events::Event<Engine::GameInitalizeData>::Listen(&onGameInitalizeEvent);
-  
-  
+
   crossfire::keyboardinput::intialize();
 
-  
   theOne = crossfire::entities::create(Team1);
   randomBox = crossfire::entities::create(Team2);
 
@@ -79,11 +77,11 @@ void Initalize() {
         if (other == crossfire::entities::get_environment()) {
           crossfire::linear::changeHeading(self, crossfire::Heading::Stopped);
           crossfire::linear::force_entity_onto_map(self);
-          //crossfire::linear::changePosition(self, 0, 0);
+          // crossfire::linear::changePosition(self, 0, 0);
           return;
         }
-      
-      --player_lives;
+
+        --player_lives;
         if (player_lives < 0)
           player_lives = 3;
 
@@ -93,8 +91,7 @@ void Initalize() {
   crossfire::collision_behavior::set_entity(theOne, player_behavior);
 
   const auto random_box_behavior = crossfire::collision_behavior::create(
-      [=]( crossfire::Entity self, crossfire::Entity other ) 
-      {
+      [=](crossfire::Entity self, crossfire::Entity other) {
         const crossfire::CurrentPosition randomPositions[] = {
             {crossfire::Heading::Stopped, 40, 0},
             {crossfire::Heading::Stopped, 20, 40},
@@ -108,57 +105,48 @@ void Initalize() {
         crossfire::linear::changePosition(
             randomBox, randomPositions[lastPositionForRandomBox].x,
             randomPositions[lastPositionForRandomBox].y);
-      }
-  );
+      });
 
   crossfire::collision_behavior::set_entity(randomBox, random_box_behavior);
 
-  // Left most wall
-  
-  crossfire::collider::add_static_collider(
-      crossfire::entities::get_environment(),
-      map_extents.x - MAP_BORDER_EXTENTS,
-      map_extents.y - 1,
-      map_extents.x - 1,
-      map_extents.y2+ 1  
-  );
+  crossfire::collision_behavior::create(
+      [=](crossfire::Entity self, crossfire::Entity other) {
+        crossfire::entities::remove(self);
+
+      });
+
+      // Left most wall
+
+      crossfire::collider::add_static_collider(
+          crossfire::entities::get_environment(),
+          map_extents.x - MAP_BORDER_EXTENTS, map_extents.y - 1,
+          map_extents.x - 1, map_extents.y2 + 1);
 
   // Right most wall
   crossfire::collider::add_static_collider(
-      crossfire::entities::get_environment(),
-      map_extents.x2 + 1,
-      map_extents.y - 1,
-      map_extents.x2 + MAP_BORDER_EXTENTS,
-      map_extents.y2 + 1
-  );
+      crossfire::entities::get_environment(), map_extents.x2 + 1,
+      map_extents.y - 1, map_extents.x2 + MAP_BORDER_EXTENTS,
+      map_extents.y2 + 1);
 
   // Top wall
   crossfire::collider::add_static_collider(
-      crossfire::entities::get_environment(),
-      map_extents.x - 1,
-      map_extents.y - MAP_BORDER_EXTENTS,
-      map_extents.x2 + 1,
-      map_extents.y - 1
-  );
+      crossfire::entities::get_environment(), map_extents.x - 1,
+      map_extents.y - MAP_BORDER_EXTENTS, map_extents.x2 + 1,
+      map_extents.y - 1);
 
   // Bottom Wall
   crossfire::collider::add_static_collider(
-      crossfire::entities::get_environment(),
-      map_extents.x - 1,
-      map_extents.y2 + 1,
-      map_extents.x2 + 1,
-      map_extents.y2 + MAP_BORDER_EXTENTS
-  );
-      
+      crossfire::entities::get_environment(), map_extents.x - 1,
+      map_extents.y2 + 1, map_extents.x2 + 1,
+      map_extents.y2 + MAP_BORDER_EXTENTS);
 }
 
 void onLogicEvent(const Engine::NextLogicFrame &frame) {
   crossfire::gametime::on_logic_event();
-    crossfire::keyboardinput::on_logic_tick();
+  crossfire::keyboardinput::on_logic_tick();
   crossfire::linear::run(1.0f);
   auto values = crossfire::linear::getEntitiesPositions();
   crossfire::collider::do_collisions(values);
-
 
   auto collisions = crossfire::collider::get_collisions();
   crossfire::collision_behavior::run(collisions);
@@ -180,26 +168,20 @@ void onRenderEvent(const Engine::NextRenderFrame &frame) {
   for (auto const &renderable : dynamic_elements) {
     Engine::Matrix world;
     Engine::fMatrix worldf;
-   
-    worldf = math::XMMatrixTranslation(
-        renderable.x + 5,
-        renderable.y + 5,
-        -205
-    );
-    
+
+    worldf =
+        math::XMMatrixTranslation(renderable.x + 5, renderable.y + 5, -205);
+
     math::XMStoreFloat4x4(&world, worldf);
 
     state.states.push_back({world, renderable.visualId});
 
-    state.lights.push_back(
-        Engine::Lights::AnyLight{
+    state.lights.push_back(Engine::Lights::AnyLight{
         Engine::Lights::Point{{renderable.x + 5, renderable.y + 5, -180},
                               {0, 0.3, 0, 0},
                               0.01,
                               0.02,
-                              0.0003}
-        }
-    );
+                              0.0003}});
   }
 
   for (int nbrLives = 0; nbrLives < player_lives; ++nbrLives) {
@@ -207,10 +189,8 @@ void onRenderEvent(const Engine::NextRenderFrame &frame) {
     Engine::fMatrix worldf;
     worldf = math::XMMatrixMultiply(
         math::XMMatrixScaling(.7f, .7f, .7f),
-        math::XMMatrixTranslation(-50 + nbrLives * 15, 0, -205)
-    );
+        math::XMMatrixTranslation(-50 + nbrLives * 15, 0, -205));
     math::XMStoreFloat4x4(&world, worldf);
-      
 
     state.states.push_back({world, box_visual});
   }
@@ -229,8 +209,7 @@ void onRenderEvent(const Engine::NextRenderFrame &frame) {
 
   state.GlobalAmbientLight = {0.1, 0.1, 0.1, 1};
   state.lights.push_back(
-      Engine::Lights::Directional{{0, 0, -1}, {0.3, 0.3, 0.3, 0}}
-  );
+      Engine::Lights::Directional{{0, 0, -1}, {0.3, 0.3, 0.3, 0}});
 
   /*state.lights.push_back(Engine::Lights::AnyLight{
           Engine::Lights::Point {
@@ -330,8 +309,7 @@ void onGameInitalizeEvent(const Engine::GameInitalizeData &data) {
 }
 } // namespace Game
 
-
- // Engine::fVector4 rotVector = math::XMVectorSet(0, 1, 1, 0);
+// Engine::fVector4 rotVector = math::XMVectorSet(0, 1, 1, 0);
 
 // rotAngle += 0.01;
 

@@ -25,6 +25,26 @@ struct CurrentPosition {
   Heading heading;
   Coordinate x;
   Coordinate y;
+
+  CurrentPosition get_position_infront_by(unsigned int unitamount) {
+    CurrentPosition temp;
+
+    switch (heading) {
+    case Heading::Up:
+      temp.y -= unitamount;
+      break;
+    case Heading::Down:
+      temp.y += unitamount;
+      break;
+    case Heading::Left:
+      temp.x -= unitamount;
+      break;
+    case Heading::Right:
+      temp.x += unitamount;
+      break;
+    }
+    return temp;
+  }
 };
 
 enum class Velocity : unsigned int {
@@ -37,19 +57,45 @@ enum class Velocity : unsigned int {
   Quadruple = 6
 };
 
-
 namespace gametime {
-    using Ticks = std::uint64_t;
-    void on_logic_event();
-    Ticks get_ticks();
-    Ticks elapsed_ticks(Ticks value);
-    std::int64_t tick_to_ms(Ticks value);
 
-}
+struct Ticks {
+  std::uint64_t mTick{0};
+
+  constexpr std::strong_ordering operator<=>(const Ticks &b) const = default;
+  constexpr bool operator==(const Ticks &b) const = default;
+
+  constexpr Ticks &operator++() {
+    mTick += 1;
+    return *this;
+  }
+
+  bool timer_elapsed(const Ticks amount) {
+    const auto elapsed = get_ticks();
+    return amount >= elapsed - (*this);
+  }
+
+  friend Ticks operator-(const Ticks a, const Ticks b) {
+    return Ticks{a.mTick - b.mTick};
+  }
+
+  friend Ticks operator+(const Ticks a, const Ticks b) {
+    return Ticks{a.mTick + b.mTick};
+  }
+
+  static constexpr Ticks from_milliseconds(std::uint32_t milli) {
+    return Ticks{milli * 30};
+  }
+};
+
+void on_logic_event();
+Ticks get_ticks();
+
+} // namespace gametime
 
 namespace entities {
 
-using Team = unsigned char; 
+using Team = unsigned char;
 
 Entity create(Team team);
 Team get_team(Entity id);
@@ -74,6 +120,9 @@ void changePosition(Entity id, Coordinate x, Coordinate y);
 void force_entity_onto_map(Entity id);
 void create(Entity id, Heading heading, Coordinate x, Coordinate y,
             Velocity vel = Velocity::Normal);
+void create(Entity id, const CurrentPosition & pos,
+            Velocity vel = Velocity::Normal);
+
 void remove(Entity id);
 
 void run(float delta);
@@ -83,16 +132,6 @@ void endFrame();
 
 // onEntityStopped()
 } // namespace linear
-
-namespace missle_shooter {
-void create(Entity id, unsigned int maxLivingMissles, unsigned int delay);
-void fireMissle(Entity id);
-
-void run(float delta);
-
-std::optional<bool> canFireMissles(Entity id);
-std::optional<unsigned int> nbrMisslesLeft(Entity id);
-} // namespace missle_shooter
 
 namespace actions {
 enum class Actions {
@@ -138,14 +177,12 @@ void on_fire_special(Entity id);
 
 namespace missle_shooter {
 
-    void update_missle_shooter(Entity id, unsigned int max_missles, unsigned int delay_ms);
+void set(Entity id, unsigned int max_missles,
+         crossfire::gametime::Ticks time_delay);
+void remove(Entity id);
+Entity fire_missle(Entity owner, CurrentPosition pos);
 
-    void fire(Entity owner, CurrentPosition pos);
-
-
-
-
-} // namespace missle
+} // namespace missle_shooter
 
 namespace collider {
 struct Collision {

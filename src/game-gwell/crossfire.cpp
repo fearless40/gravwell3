@@ -17,16 +17,13 @@
 namespace soa = util::soa;
 
 namespace crossfire::gametime {
-using Ticks = std::uint64_t;
 
-Ticks ticks{0};
+Ticks game_ticks{0};
 
-void on_logic_event() { ++ticks; }
-Ticks get_ticks() { return ticks; }
-Ticks elapsed_ticks( Ticks value ) { return ticks - value; }
-std::int64_t tick_to_ms( Ticks value ) { return value * 30; }
-}
+void on_logic_event() { ++game_ticks; }
+Ticks get_ticks() { return game_ticks; }
 
+} // namespace crossfire::gametime
 
 namespace crossfire::entities {
 
@@ -151,6 +148,15 @@ void create(Entity id, Heading heading, Coordinate x, Coordinate y,
             Velocity vel) {
   m_arrays.push_back(id, {heading, coord{x}, coord{y}, asSpeed(vel)});
 }
+
+void create( Entity id, const CurrentPosition& pos,
+    Velocity vel = Velocity::Normal ) {
+  m_arrays.push_back(id,
+                     {pos.heading, coord{pos.x}, coord{pos.y}, asSpeed(vel)});
+                    
+}
+
+
 
 void remove(Entity id) {
   flaggedForRemoval[nbrFlaggedForRemoval] = id;
@@ -543,16 +549,61 @@ void fire_special(Entity id) {}
 
 namespace crossfire::missle_shooter {
 struct MissleDef {
-  unsigned max_on_screen_at_once;
-  std::uint64_t ms_delay;
-  unsigned nbr_missles_on_screen;
-  std::uint64_t ms_last_fired;
+  unsigned int max_missles;
+  crossfire::gametime::Ticks delay;
+
+  crossfire::gametime::Ticks last_fired;
+  unsigned nbr_missles_active;
 };
 
 soa::SOA<soa::FixedArray<16>, Entity, MissleDef> mSOA;
 
-void update_missle_shooter(Entity id, unsigned int max_missles,
-                           unsigned int delay_ms);
+void set(Entity id, unsigned int max_missles,
+         crossfire::gametime::Ticks time_delay) {
 
-void fire(Entity owner, CurrentPosition pos);
+  auto it = mSOA.find<Entity>(id);
+  if (it != mSOA.end()) {
+    auto mdef = it.get<MissleDef>();
+    mdef.max_missles = max_missles;
+    mdef.delay = time_delay;
+    return;
+  }
+
+  mSOA.push_back(id, {max_missles, time_delay, {0}, 0});
+}
+
+void remove(Entity id) {
+  auto it = mSOA.find<Entity>(id);
+  if (it != mSOA.end())
+    mSOA.remove(it);
+}
+
+Entity fire_missle(Entity owner, CurrentPosition pos) {
+  auto it = mSOA.find<Entity>(owner);
+  if (it == mSOA.end())
+    return;
+
+  auto mdef = it.get<MissleDef>();
+
+  if (mdef.nbr_missles_active + 1 > mdef.max_missles)
+    return crossfire::INVALID_ENTITY;
+
+  if (!mdef.last_fired.timer_elapsed(mdef.delay))
+    return crossfire::INVALID_ENTITY;
+
+  // Fire the missle
+
+  mdef.last_fired = crossfire::gametime::get_ticks();
+
+  ++mdef.nbr_missles_active;
+
+  auto missileid = crossfire::entities::create(crossfire::entities::get_team(owner));
+
+  auto new_position = pos.get_position_infront_by(10);
+
+  crossfire::linear::create(missileid, pos, crossfire::Velocity::Double);
+
+  return missileid;
+}
+
 } // namespace crossfire::missle_shooter
