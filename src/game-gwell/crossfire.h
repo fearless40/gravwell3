@@ -59,6 +59,11 @@ enum class Velocity : unsigned int {
 
 namespace gametime {
 
+struct Ticks;
+
+void on_logic_event();
+Ticks get_ticks();
+
 struct Ticks {
   std::uint64_t mTick{0};
 
@@ -72,7 +77,7 @@ struct Ticks {
 
   bool timer_elapsed(const Ticks amount) {
     const auto elapsed = get_ticks();
-    return amount >= elapsed - (*this);
+    return amount.mTick <= elapsed.mTick - mTick;
   }
 
   friend Ticks operator-(const Ticks a, const Ticks b) {
@@ -84,16 +89,18 @@ struct Ticks {
   }
 
   static constexpr Ticks from_milliseconds(std::uint32_t milli) {
-    return Ticks{milli * 30};
+    return Ticks{milli / 30};
   }
 };
-
-void on_logic_event();
-Ticks get_ticks();
 
 } // namespace gametime
 
 namespace entities {
+
+struct EntityRemovedEvent {
+  std::span<const Entity> toBeRemoved;
+};
+
 
 using Team = unsigned char;
 
@@ -104,6 +111,7 @@ bool is_same_team(Entity leftid, Entity rightid);
 Entity get_environment();
 bool is_environment(Entity id);
 void remove(Entity id);
+void on_logic_finished();
 } // namespace entities
 
 namespace linear {
@@ -115,12 +123,13 @@ struct EntityAndData {
   const auto size() const { return entities.size(); };
 };
 
+std::optional<CurrentPosition> get_position(Entity id);
 void changeHeading(Entity id, Heading heading, Velocity vel = Velocity::Normal);
 void changePosition(Entity id, Coordinate x, Coordinate y);
 void force_entity_onto_map(Entity id);
 void create(Entity id, Heading heading, Coordinate x, Coordinate y,
             Velocity vel = Velocity::Normal);
-void create(Entity id, const CurrentPosition & pos,
+void create(Entity id, const CurrentPosition &pos,
             Velocity vel = Velocity::Normal);
 
 void remove(Entity id);
@@ -175,15 +184,6 @@ void on_fire_special(Entity id);
 
 } // namespace keyboardinput
 
-namespace missle_shooter {
-
-void set(Entity id, unsigned int max_missles,
-         crossfire::gametime::Ticks time_delay);
-void remove(Entity id);
-Entity fire_missle(Entity owner, CurrentPosition pos);
-
-} // namespace missle_shooter
-
 namespace collider {
 struct Collision {
   Entity id1;
@@ -197,7 +197,6 @@ void add_static_collider(Entity id, Coordinate x, Coordinate y, Coordinate x2,
                          Coordinate y2);
 
 } // namespace collider
-
 namespace collision_behavior {
 using Behavior = int;
 
@@ -207,6 +206,20 @@ Behavior create(std::function<void(Entity self, Entity other)> callback);
 void set_entity(Entity id, Behavior b);
 
 } // namespace collision_behavior
+
+namespace missle_shooter {
+
+struct MissleFiredEvent {
+  Entity owner;
+  Entity missle;
+};
+
+void set(Entity id, crossfire::collision_behavior::Behavior behavior,
+         unsigned int max_missles, crossfire::gametime::Ticks time_delay);
+void remove(Entity id);
+void fire_missle(Entity owner, CurrentPosition pos);
+
+} // namespace missle_shooter
 
 namespace map {
 

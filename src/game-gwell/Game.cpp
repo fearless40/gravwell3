@@ -14,18 +14,27 @@
 #include "../engine/Visuals.h"
 #include "../game-gwell/crossfire.h"
 #include "../procedural/Geometry.h"
+#include "../util/soa.hpp"
 #include <algorithm>
 
 const unsigned short VK_LEFT = 0x25;
 const unsigned short VK_UP = 0x26;
 const unsigned short VK_RIGHT = 0x27;
 const unsigned short VK_DOWN = 0x28;
+const unsigned short VK_SPACE = 0x20;
 
 namespace Game {
 
 Engine::Visuals::Basic::Visual box_visual;
 Engine::Visuals::Basic::Visual row_visual;
 Engine::Visuals::Basic::Visual col_visual;
+Engine::Visuals::Basic::Visual sphere_visual;
+Engine::Visuals::Basic::Visual teapot_visual;
+
+util::soa::SOA<util::soa::FixedArray<24>, crossfire::Entity,
+               Engine::Visuals::Basic::Visual>
+    visual_map;
+
 float rotAngle = 0.f;
 Engine::Camera cam;
 
@@ -56,89 +65,6 @@ void Initalize() {
   Events::Event<Engine::NextLogicFrame>::Listen(&onLogicEvent);
   Events::Event<Engine::NextRenderFrame>::Listen(&onRenderEvent);
   Events::Event<Engine::GameInitalizeData>::Listen(&onGameInitalizeEvent);
-
-  crossfire::keyboardinput::intialize();
-
-  theOne = crossfire::entities::create(Team1);
-  randomBox = crossfire::entities::create(Team2);
-
-  crossfire::linear::create(theOne, crossfire::Heading::Right, 0, 0,
-                            crossfire::Velocity::Normal);
-  crossfire::linear::create(randomBox, crossfire::Heading::Stopped, 60, 60);
-
-  crossfire::keyboardinput::create(theOne, {});
-
-  const int MAP_BORDER_EXTENTS = 100;
-
-  auto map_extents = crossfire::map::getMapExtents();
-
-  const auto player_behavior = crossfire::collision_behavior::create(
-      [=](crossfire::Entity self, crossfire::Entity other) {
-        if (other == crossfire::entities::get_environment()) {
-          crossfire::linear::changeHeading(self, crossfire::Heading::Stopped);
-          crossfire::linear::force_entity_onto_map(self);
-          // crossfire::linear::changePosition(self, 0, 0);
-          return;
-        }
-
-        --player_lives;
-        if (player_lives < 0)
-          player_lives = 3;
-
-        crossfire::linear::changePosition(self, 0, 0);
-      });
-
-  crossfire::collision_behavior::set_entity(theOne, player_behavior);
-
-  const auto random_box_behavior = crossfire::collision_behavior::create(
-      [=](crossfire::Entity self, crossfire::Entity other) {
-        const crossfire::CurrentPosition randomPositions[] = {
-            {crossfire::Heading::Stopped, 40, 0},
-            {crossfire::Heading::Stopped, 20, 40},
-            {crossfire::Heading::Stopped, 60, 60},
-            {crossfire::Heading::Stopped, 80, 40}};
-
-        const std::size_t randomPositionsSize = 3;
-        ++lastPositionForRandomBox;
-        if (lastPositionForRandomBox > randomPositionsSize)
-          lastPositionForRandomBox = 0;
-        crossfire::linear::changePosition(
-            randomBox, randomPositions[lastPositionForRandomBox].x,
-            randomPositions[lastPositionForRandomBox].y);
-      });
-
-  crossfire::collision_behavior::set_entity(randomBox, random_box_behavior);
-
-  crossfire::collision_behavior::create(
-      [=](crossfire::Entity self, crossfire::Entity other) {
-        crossfire::entities::remove(self);
-
-      });
-
-      // Left most wall
-
-      crossfire::collider::add_static_collider(
-          crossfire::entities::get_environment(),
-          map_extents.x - MAP_BORDER_EXTENTS, map_extents.y - 1,
-          map_extents.x - 1, map_extents.y2 + 1);
-
-  // Right most wall
-  crossfire::collider::add_static_collider(
-      crossfire::entities::get_environment(), map_extents.x2 + 1,
-      map_extents.y - 1, map_extents.x2 + MAP_BORDER_EXTENTS,
-      map_extents.y2 + 1);
-
-  // Top wall
-  crossfire::collider::add_static_collider(
-      crossfire::entities::get_environment(), map_extents.x - 1,
-      map_extents.y - MAP_BORDER_EXTENTS, map_extents.x2 + 1,
-      map_extents.y - 1);
-
-  // Bottom Wall
-  crossfire::collider::add_static_collider(
-      crossfire::entities::get_environment(), map_extents.x - 1,
-      map_extents.y2 + 1, map_extents.x2 + 1,
-      map_extents.y2 + MAP_BORDER_EXTENTS);
 }
 
 void onLogicEvent(const Engine::NextLogicFrame &frame) {
@@ -154,10 +80,16 @@ void onLogicEvent(const Engine::NextLogicFrame &frame) {
   dynamic_elements.clear();
   dynamic_elements.reserve(values.size());
   for (int i = 0; i < values.size(); ++i) {
-    dynamic_elements.emplace_back(
-        box_visual, CrossFireVisual::gameUnitToFloat(values.positions[i].x),
-        CrossFireVisual::gameUnitToFloat(values.positions[i].y));
+    auto findVisual = visual_map.find<crossfire::Entity>(values.entities[i]);
+    if (findVisual != visual_map.end()) {
+
+      dynamic_elements.emplace_back(
+          findVisual.get<Engine::Visuals::Basic::Visual>(),
+          CrossFireVisual::gameUnitToFloat(values.positions[i].x),
+          CrossFireVisual::gameUnitToFloat(values.positions[i].y));
+    }
   };
+  crossfire::entities::on_logic_finished();
 }
 
 void onRenderEvent(const Engine::NextRenderFrame &frame) {
@@ -253,6 +185,33 @@ void onGameInitalizeEvent(const Engine::GameInitalizeData &data) {
   {
     vbs.clear();
     ids.clear();
+    Geometry::ComputeSphere(vbs, ids, 10, 4, false, false);
+    // Geometry::ComputeTeapot(vbs, ids, 2, 4, false);
+
+    Engine::MeshView mesh_view{Engine::make_meshview(vbs, ids)};
+    Engine::Material mat{{0, 0, 0, 0},
+                         {0.9, 0.9, 0.9, 1},
+                         {0.9, 0.9, 0.9, 1},
+                         {0.9, 1, 0.9, 1},
+                         128};
+    sphere_visual = vs::Create(mesh_view, mat);
+  }
+  {
+    vbs.clear();
+    ids.clear();
+    Geometry::ComputeTeapot(vbs, ids, 10, 4, false);
+
+    Engine::MeshView mesh_view{Engine::make_meshview(vbs, ids)};
+    Engine::Material mat{{0, 0, 0, 0},
+                         {0.5, 0.4, 0.3, 1},
+                         {0.2, 0.2, 0.2, 1},
+                         {0.6, 1, 0.1, 1},
+                         128};
+    teapot_visual = vs::Create(mesh_view, mat);
+  }
+  {
+    vbs.clear();
+    ids.clear();
     auto path = crossfire::map::getRowPath();
     Geometry::ComputeBox(vbs, ids,
                          {static_cast<float>(path.x2 - path.x),
@@ -306,6 +265,124 @@ void onGameInitalizeEvent(const Engine::GameInitalizeData &data) {
   // cam.setPosition({ 0,0,-10,0 });
   // cam.setRotation({ })
   cam.lookAt({85, 85, 50, 0}, {85, 85, -1, 0}, {0, -1, 0, 0});
+
+
+  Events::Event<crossfire::entities::EntityRemovedEvent>::Listen(
+      [](const crossfire::entities::EntityRemovedEvent &values) {
+        for (auto &value : values.toBeRemoved) {
+
+          auto it = visual_map.find<crossfire::Entity>(value);
+          if (it != visual_map.end())
+            visual_map.remove(it);
+        }
+      });
+  Events::Event<crossfire::missle_shooter::MissleFiredEvent>::Listen(
+      [](const crossfire::missle_shooter::MissleFiredEvent &evt) {
+        visual_map.push_back(evt.missle, sphere_visual);
+      });
+
+  crossfire::keyboardinput::intialize();
+
+  theOne = crossfire::entities::create(Team1);
+  visual_map.push_back(theOne, box_visual);
+
+  randomBox = crossfire::entities::create(Team2);
+  visual_map.push_back(randomBox, teapot_visual);
+
+  crossfire::linear::create(theOne, crossfire::Heading::Right, 0, 0,
+                            crossfire::Velocity::Normal);
+  crossfire::linear::create(randomBox, crossfire::Heading::Stopped, 60, 60);
+
+  crossfire::keyboardinput::create(theOne, {});
+
+  const int MAP_BORDER_EXTENTS = 500;
+
+  auto map_extents = crossfire::map::getMapExtents();
+
+  const auto player_behavior = crossfire::collision_behavior::create(
+      [=](crossfire::Entity self, crossfire::Entity other) {
+        if (other == crossfire::entities::get_environment()) {
+          crossfire::linear::changeHeading(self, crossfire::Heading::Stopped);
+          crossfire::linear::force_entity_onto_map(self);
+          // crossfire::linear::changePosition(self, 0, 0);
+          return;
+        }
+
+        if (crossfire::entities::is_same_team(self, other))
+          return;
+
+        --player_lives;
+        if (player_lives < 0)
+          player_lives = 3;
+
+        crossfire::linear::changePosition(self, 0, 0);
+      });
+
+  crossfire::collision_behavior::set_entity(theOne, player_behavior);
+
+  const auto player_missle_behavior = crossfire::collision_behavior::create(
+      [](crossfire::Entity self, crossfire::Entity other) {
+        if (crossfire::entities::is_same_team(self, other))
+          return;
+        crossfire::entities::remove(self);
+      });
+
+  crossfire::missle_shooter::set(
+      theOne, player_missle_behavior, 4,
+      crossfire::gametime::Ticks::from_milliseconds(500));
+
+  const auto random_box_behavior = crossfire::collision_behavior::create(
+      [=](crossfire::Entity self, crossfire::Entity other) {
+        const crossfire::CurrentPosition randomPositions[] = {
+            {crossfire::Heading::Stopped, 40, 0},
+            {crossfire::Heading::Stopped, 20, 40},
+            {crossfire::Heading::Stopped, 60, 60},
+            {crossfire::Heading::Stopped, 80, 40}};
+
+        const std::size_t randomPositionsSize = 3;
+        ++lastPositionForRandomBox;
+        if (lastPositionForRandomBox > randomPositionsSize)
+          lastPositionForRandomBox = 0;
+        crossfire::linear::changePosition(
+            randomBox, randomPositions[lastPositionForRandomBox].x,
+            randomPositions[lastPositionForRandomBox].y);
+      });
+
+  crossfire::collision_behavior::set_entity(randomBox, random_box_behavior);
+
+  crossfire::collision_behavior::create(
+      [](crossfire::Entity self, crossfire::Entity other) {
+        if (crossfire::entities::is_same_team(self, other))
+          return;
+        crossfire::entities::remove(self);
+      });
+
+  // Left most wall
+
+  crossfire::collider::add_static_collider(
+      crossfire::entities::get_environment(),
+      map_extents.x - MAP_BORDER_EXTENTS, map_extents.y - 1, map_extents.x - 1,
+      map_extents.y2 + 1);
+
+  // Right most wall
+  crossfire::collider::add_static_collider(
+      crossfire::entities::get_environment(), map_extents.x2 + 1,
+      map_extents.y - 1, map_extents.x2 + MAP_BORDER_EXTENTS,
+      map_extents.y2 + 1);
+
+  // Top wall
+  crossfire::collider::add_static_collider(
+      crossfire::entities::get_environment(), map_extents.x - 1,
+      map_extents.y - MAP_BORDER_EXTENTS, map_extents.x2 + 1,
+      map_extents.y - 1);
+
+  // Bottom Wall
+  crossfire::collider::add_static_collider(
+      crossfire::entities::get_environment(), map_extents.x - 1,
+      map_extents.y2 + 1, map_extents.x2 + 1,
+      map_extents.y2 + MAP_BORDER_EXTENTS);
+
+
 }
 } // namespace Game
 

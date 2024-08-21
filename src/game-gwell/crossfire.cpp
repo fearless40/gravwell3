@@ -29,6 +29,7 @@ namespace crossfire::entities {
 
 const Entity environment{1};
 soa::SOA<soa::FixedArray<64>, Entity, Team> mSOA;
+std::vector<Entity> mToBeRemoved;
 
 constinit Entity nextId = 1;
 
@@ -48,19 +49,36 @@ bool is_same_team(Entity leftid, Entity rightid) {
   if (leftDataIt != mSOA.end() && rightDataIt != mSOA.end()) {
     return leftDataIt.get<Team>() == rightDataIt.get<Team>();
   }
+
+  return false;
 }
 
 Team get_team(Entity id) {
   auto leftDataIt = mSOA.find<Entity>(id);
   if (leftDataIt != mSOA.end())
     return leftDataIt.get<Team>();
+
+  return 0;
 }
 
 Entity get_environment() { return environment; }
 
 bool is_environment(Entity id) { return environment == id; }
 
-void remove(Entity id) {}
+void remove(Entity id) { mToBeRemoved.push_back(id); }
+
+void on_logic_finished() {
+  if (mToBeRemoved.size() == 0)
+    return;
+
+  auto newEnd = std::unique(mToBeRemoved.begin(), mToBeRemoved.end());
+
+  mToBeRemoved.erase(newEnd, mToBeRemoved.end());
+
+  Events::Event<EntityRemovedEvent>::Fire(
+      {std::span<const Entity>(mToBeRemoved.data(), mToBeRemoved.size())});
+  mToBeRemoved.clear();
+}
 } // namespace crossfire::entities
 
 namespace crossfire::linear {
@@ -85,8 +103,13 @@ std::array<Position, 128> positions;
 std::array<CurrentPosition, 128> visiblePositions;
 std::size_t nbrEntitiesAndPositions = 0;
 
-std::array<Entity, 64> flaggedForRemoval;
-std::size_t nbrFlaggedForRemoval = 0;
+void on_remove(const entities::EntityRemovedEvent &evt) {
+  for (const auto &item : evt.toBeRemoved)
+    remove(item);
+}
+
+Events::Event<entities::EntityRemovedEvent>::Token mEventEntityRemovedHandle{
+    Events::Event<entities::EntityRemovedEvent>::Listen(&on_remove)};
 
 struct DeltaXY {
   util::FixedFunctionMagnitude x;
@@ -149,18 +172,25 @@ void create(Entity id, Heading heading, Coordinate x, Coordinate y,
   m_arrays.push_back(id, {heading, coord{x}, coord{y}, asSpeed(vel)});
 }
 
-void create( Entity id, const CurrentPosition& pos,
-    Velocity vel = Velocity::Normal ) {
+void create(Entity id, const CurrentPosition &pos, Velocity vel) {
   m_arrays.push_back(id,
                      {pos.heading, coord{pos.x}, coord{pos.y}, asSpeed(vel)});
-                    
 }
 
-
-
 void remove(Entity id) {
-  flaggedForRemoval[nbrFlaggedForRemoval] = id;
-  ++nbrFlaggedForRemoval;
+  auto it = m_arrays.find<Entity>(id);
+  if (it != m_arrays.end()) {
+    m_arrays.remove(it);
+  }
+}
+
+std::optional<CurrentPosition> get_position(Entity id) {
+  auto it = m_arrays.find<Entity>(id);
+  if (it != m_arrays.end()) {
+    auto &itemData = it.get<Position>();
+    return CurrentPosition{itemData.heading, itemData.getX(), itemData.getY()};
+  }
+  return {};
 }
 
 void run(float delta) {
@@ -318,7 +348,7 @@ void add_static_collider(Entity id, Coordinate x, Coordinate y, Coordinate x2,
 
 void do_static_collisions(const linear::EntityAndData &data) {
   auto static_aabbs = m_static_colliders.row_span<AABB>();
-  for (std::size_t outerloop = 0; outerloop < data.size() - 1; ++outerloop) {
+  for (std::size_t outerloop = 0; outerloop < data.size() ; ++outerloop) {
     const auto outerItemAABB =
         make_AABB_from_position(data.positions[outerloop]);
 
@@ -457,7 +487,7 @@ void create_key_mapping(Entity id, const KeyBoardMapping &map) {
   mapper.set_key(VK_SPACE, on_fire_missle, id);
 }
 
-void intialize() { Events::Event<Engine::KeyEvent>::Listen(on_key_event); }
+void intialize() { Events::Event<Engine::KeyEvent>::Listen(&on_key_event); }
 
 void create(Entity id, const KeyBoardMapping &map) {
   auto playerSearch = find_entity(id);
@@ -483,7 +513,7 @@ void on_logic_tick() {
     actions::do_action(player.id, player.movement);
     actions::do_action(player.id, player.special);
     // player.movement = actions::Actions::no_action;
-    // player.special = actions::Actions::no_action;
+    player.special = actions::Actions::no_action;
   }
 }
 
@@ -543,12 +573,20 @@ void turn_right(Entity id) { linear::changeHeading(id, Heading::Right); }
 void turn_left(Entity id) { linear::changeHeading(id, Heading::Left); }
 void turn_up(Entity id) { linear::changeHeading(id, Heading::Up); }
 void turn_down(Entity id) { linear::changeHeading(id, Heading::Down); }
-void fire_missle(Entity id) {}
+void fire_missle(Entity id) {
+
+  auto entPosition = linear::get_position(id);
+  if (entPosition) {
+    missle_shooter::fire_missle(id, entPosition.value());
+  }
+}
 void fire_special(Entity id) {}
 } // namespace crossfire::actions
 
 namespace crossfire::missle_shooter {
 struct MissleDef {
+  crossfire::collision_behavior::Behavior behavior;
+
   unsigned int max_missles;
   crossfire::gametime::Ticks delay;
 
@@ -556,10 +594,28 @@ struct MissleDef {
   unsigned nbr_missles_active;
 };
 
+struct OwnerToMissle {
+  Entity owner;
+  Entity missle;
+};
+
+Events::Event<crossfire::entities::EntityRemovedEvent>::Token
+    EntityRemovedEventHandle{};
+
 soa::SOA<soa::FixedArray<16>, Entity, MissleDef> mSOA;
 
-void set(Entity id, unsigned int max_missles,
-         crossfire::gametime::Ticks time_delay) {
+std::vector<OwnerToMissle> mMissleMap;
+
+void set(Entity id, crossfire::collision_behavior::Behavior behavior,
+         unsigned int max_missles, crossfire::gametime::Ticks time_delay) {
+
+  if (!EntityRemovedEventHandle)
+    Events::Event<crossfire::entities::EntityRemovedEvent>::Listen(
+        [](const crossfire::entities::EntityRemovedEvent &value) {
+          for (const auto i : value.toBeRemoved) {
+            remove(i);
+          };
+        });
 
   auto it = mSOA.find<Entity>(id);
   if (it != mSOA.end()) {
@@ -569,27 +625,57 @@ void set(Entity id, unsigned int max_missles,
     return;
   }
 
-  mSOA.push_back(id, {max_missles, time_delay, {0}, 0});
+  mSOA.push_back(id, {behavior, max_missles, time_delay, {0}, 0});
+}
+
+bool remove_missle(Entity id) {
+  auto missleit = std::find_if(
+      mMissleMap.begin(), mMissleMap.end(),
+      [id](const OwnerToMissle &value) { return value.missle == id; });
+
+  if (missleit != mMissleMap.end()) {
+
+    auto entityIt = mSOA.find<Entity>((*missleit).owner);
+    if (entityIt != mSOA.end()) {
+      auto &missledef = entityIt.get<MissleDef>();
+      --missledef.nbr_missles_active;
+      
+    }
+
+    std::erase_if(mMissleMap, [id](const OwnerToMissle &value) {
+      return id == value.missle;
+    });
+
+    return true;
+  }
+  return false;
 }
 
 void remove(Entity id) {
+
+  if (remove_missle(id))
+    return;
+
   auto it = mSOA.find<Entity>(id);
   if (it != mSOA.end())
     mSOA.remove(it);
+
+  std::erase_if(mMissleMap,
+                [id](const OwnerToMissle &value) { return id == value.owner; });
 }
 
-Entity fire_missle(Entity owner, CurrentPosition pos) {
+void fire_missle(crossfire::Entity owner, crossfire::CurrentPosition pos) {
   auto it = mSOA.find<Entity>(owner);
   if (it == mSOA.end())
     return;
 
-  auto mdef = it.get<MissleDef>();
+  auto &mdef = it.get<MissleDef>();
 
   if (mdef.nbr_missles_active + 1 > mdef.max_missles)
-    return crossfire::INVALID_ENTITY;
+    return;
 
   if (!mdef.last_fired.timer_elapsed(mdef.delay))
-    return crossfire::INVALID_ENTITY;
+    return;
 
   // Fire the missle
 
@@ -597,13 +683,20 @@ Entity fire_missle(Entity owner, CurrentPosition pos) {
 
   ++mdef.nbr_missles_active;
 
-  auto missileid = crossfire::entities::create(crossfire::entities::get_team(owner));
+  auto missileid =
+      crossfire::entities::create(crossfire::entities::get_team(owner));
 
   auto new_position = pos.get_position_infront_by(10);
 
   crossfire::linear::create(missileid, pos, crossfire::Velocity::Double);
 
-  return missileid;
+  crossfire::collision_behavior::set_entity(missileid, mdef.behavior);
+
+  mMissleMap.emplace_back(owner, missileid);
+
+  Events::Event<MissleFiredEvent>::Fire({owner, missileid});
+
+  return;
 }
 
 } // namespace crossfire::missle_shooter
